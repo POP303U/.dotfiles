@@ -5,6 +5,7 @@ nightfly-configs is a easy to use list of configs tailored to powerusers that lo
 ## Setup
 
 **Terminals**
+
 Install the terminal theme for your prefered terminal
 The install script/configurations are in the terminal folder.
 Please read the documentation of your terminal/shell.
