@@ -12,6 +12,7 @@ Credits to configurations: [nightfly-repo](https://github.com/bluz71/vim-nightfl
 )
 
 **.dotfiles**
+
 i3 has to be installed before any of these steps are taken!
 To install all required dotfiles for the config you need to have all the necessary packages:
 
@@ -28,5 +29,6 @@ pacman -S gnome-terminal nitrogen rofi maim xclip xdotool
 After that all the necessary dotfiles can be moved into your .config folder (the folder structure is already correct and doesn't need to be changed)
 
 **nvim**
+
 unfinished
 
