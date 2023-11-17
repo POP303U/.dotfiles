@@ -2,7 +2,7 @@ configuration {
   display-drun: "Applications:";
   display-window: "Windows:";
   drun-display-format: "{name}";
-  font: "JetBrainsMono Nerd Font SemiBold 10";
+  font: "CaskaydiaCove Nerd Font 10";
   modi: "window,run,drun,emoji,calc";
   show-icons: true;
   filebrowser {
@@ -14,9 +14,9 @@ configuration {
 @theme "/dev/null"
 
 * {
-  bg: #1e1e2e88;
-  bg-alt: #585b7088;
-  bg-selected: #31324488;
+  bg: #1f1d2e;
+  bg-alt: #26233a;
+  bg-selected: #524f67;
 
   fg: #cdd6f4;
   fg-alt: #7f849c;
@@ -24,7 +24,7 @@ configuration {
   
   border: 0;
   margin: 0;
-  padding: 0;
+  padding: 1;
   spacing: 0;
 }
 
