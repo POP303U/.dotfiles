@@ -468,10 +468,10 @@ unset bash_prompt
 alias ls='eza --icons --long --colour=always --binary --header'
 alias vim='nvim'
 alias vi='nvim'
-alias grep='rg'
-alias cat='bat'
-alias htop='btm'
-alias find='fd --color=always'
+#alias grep='rg'
+#alias cat='bat'
+#alias htop='btm'
+# alias find='fd --color=always'
 
 # no lib's needed
 alias ..='cd ..'
@@ -480,8 +480,10 @@ alias ....='cd ../../..'
 alias .....='cd ../../../..'
 
 # Startup
+PATH=$PATH:~/.cargo/bin
 
 clear # Could cause issues if errors aren't reported
 neofetch
 
 ### EOF ###
+. "$HOME/.cargo/env"

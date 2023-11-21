@@ -18,7 +18,7 @@
 # ------------- #
 
 # Here you can set variables influencing audio steps, terminal, gap size etc..
-set $terminal "alacritty" 
+set $terminal "kitty" 
 set $keyboard_layout "de"
 set $mod Mod1
 set $volume_steps 2
@@ -33,16 +33,16 @@ set $outer_gaps_size 1
 # ------------------------- #
 
 # Start the specified Terminal 
-bindsym $mod+Return exec $terminal
+bindsym $mod+Return exec --no-startup-id $terminal
 
 # Custom window font
 font pango:CaskaydiaCove Nerd Font $font_size
 
 # Set keyboard layout
-exec_always setxkbmap -layout de
+exec_always --no-startup-id setxkbmap -layout de
 
 #Start all custom services (nitrogen, autotiling, picom, polybar):
-exec_always --no-startup-id picom --config /home/$USER/.config/i3/picom.conf -b
+exec_always --no-startup-id picom
 exec_always --no-startup-id nitrogen --restore
 exec_always --no-startup-id autotiling
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
@@ -73,13 +73,36 @@ bindsym XF86AudioMicMute     exec --no-startup-id pactl set-source-mute @DEFAULT
 bindsym $mod+m bar mode toggle
 
 # Screenshots
-exec_always mkdir ~/Screenshots
+exec_always --no-startup-id mkdir ~/Screenshots
 bindsym Print exec --no-startup-id maim "/home/$USER/Screenshots/$(date).png"
 bindsym Ctrl+Print exec --no-startup-id maim --window $(xdotool getactivewindow) "/home/$USER/Screenshots/$(date).png"
 bindsym Shift+Print exec --no-startup-id maim --select "/home/$USER/Screenshots/$(date).png"
 
-# Apps
-bindsym $mod+shift+d exec rustup docs
+# Apps (why no work)
+bindsym $mod+Shift+d exec rustup doc
+
+# Assign apps to workspaces
+# (Terminals)
+assign [class="kitty"] 1
+assign [class="Alacritty"] 1
+
+# (Browsers)
+assign [class="Brave"] 2
+assign [class="Firefox"] 2
+assign [class="Chromium"] 2
+
+# (Games)
+assign [class="Lutris"] 3
+assign [class="Steam"] 3
+
+# (Chatting Services)
+assign [class="Discord"] 4
+assign [class="Vencord"] 4
+assign [class="Vesktop"] 4
+
+# (virtual machines)
+assign [class="virt-manager"] 5
+assign [class="Virt-manager"] 5
 
 # Custom border colours 
 # class                 border  backgr. text    indica. child_border
@@ -116,46 +139,19 @@ floating_modifier $mod
 bindsym $mod+Shift+q kill
 
 # change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+odiaeresis focus right
-
-# alternatively, you can use the cursor keys:
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
 
 # move focused window
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+odiaeresis move right
-
-# alternatively, you can use the cursor keys:
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
-bindsym $mod+Shift+Right move right
-
-# split in horizontal orientation
-bindsym $mod+h split h
-
-# split in vertical orientation
-bindsym $mod+v split v
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
-
-# change container layout (stacked, tabbed, toggle split) the other sucks
-bindsym $mod+e layout toggle split
-
-# toggle tiling / floating
-bindsym $mod+Shift+space floating toggle
-
-# change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
 
 # Switching to workspaces
 bindsym $mod+1 workspace number 1
@@ -184,30 +180,10 @@ bindsym $mod+Shift+0 move container to workspace number 0
 # Reload config, Restart config, Logout
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
-mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
-        bindsym h resize shrink width 10 px or 10 ppt
-        bindsym j resize grow height 10 px or 10 ppt
-        bindsym k resize shrink height 10 px or 10 ppt
-        bindsym l resize grow width 10 px or 10 ppt
+exec --no-startup-id $terminal
 
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
-
-        # back to normal: Enter or Escape or $mod+r
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-        bindsym $mod+r mode "default"
-}
-
-bindsym $mod+r mode "resize"
-
-exec $terminal
 # give me a terminal when i start pls (not when i reload tho)
 
 
@@ -220,4 +196,11 @@ exec $terminal
 # exec --no-startup-id compton
 
 # Compton is faster but nitrogen is more convenient (choose your tradeoff)
+
+#  toggle tiling / floating
+# bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+# bindsym $mod+space focus mode_toggle
+
 
