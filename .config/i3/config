@@ -10,7 +10,8 @@
 
 # Knowing vim bindings is probably mandatory for this config lol
 
-# NEEDED PACKAGES: autotiling nitrogen picom maim xclip xdotool rofi kitty
+# BASE PACKAGES: autotiling nitrogen picom maim xclip xdotool rofi kitty
+# RECOMMENDED PACKAGES: brave (rust toolchain)
 # NEEDED FONT: CaskaydiaCove Nerd Font
 
 # ------------- #
@@ -19,11 +20,13 @@
 
 # Here you can set variables influencing audio steps, terminal, gap size etc..
 set $terminal "kitty" 
-set $keyboard_layout "de"
+# Set your browser for the shortcut
+set $browser "brave"
+# Mod1 Being Alt and Mod4 Being Win
 set $mod Mod1
-set $volume_steps 2
+set $volume_steps 5
 set $font_size 14
-set $inner_gaps_size 15
+set $inner_gaps_size 10
 set $outer_gaps_size 1
 
 # ------------------------- #
@@ -37,9 +40,6 @@ bindsym $mod+Return exec --no-startup-id $terminal
 
 # Custom window font
 font pango:CaskaydiaCove Nerd Font $font_size
-
-# Set keyboard layout
-exec_always --no-startup-id setxkbmap -layout de
 
 #Start all custom services (nitrogen, autotiling, picom, polybar):
 exec_always --no-startup-id picom
@@ -58,19 +58,15 @@ bindsym $mod+Ctrl+h resize grow width 1 px or 1 ppt
 # Resizing by 10
 bindsym $mod+Ctrl+Shift+l resize shrink width 10 px or 10 ppt
 bindsym $mod+Ctrl+Shift+k resize grow height 10 px or 10 ppt
-bindsym $mod+Ctrl+Shift+j resize shrink height 10 px or 10 ppt
+bindsym $mod+Ctrl+Shift+j resize shrink height 10 px or 10 ppt 
 bindsym $mod+Ctrl+Shift+h resize grow width 10 px or 10 ppt
 
-# Audio control in Pulseaudio
-
-# set $refresh_i3status killall -SIGUSR1 i3status
+# Audio control in Pulseaudio (Pipewire has a Pulseaudio interface 'pipewire-pulseaudio'
+#                              This is needed for this to work)
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +$volume_steps% && $refresh_i3status
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -$volume_steps% && $refresh_i3status
 bindsym XF86AudioMute        exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute     exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
-
-# Turn Bar on or off (only for i3status)
-bindsym $mod+m bar mode toggle
 
 # Screenshots
 exec_always --no-startup-id mkdir ~/Screenshots
@@ -78,8 +74,9 @@ bindsym Print exec --no-startup-id maim "/home/$USER/Screenshots/$(date).png"
 bindsym Ctrl+Print exec --no-startup-id maim --window $(xdotool getactivewindow) "/home/$USER/Screenshots/$(date).png"
 bindsym Shift+Print exec --no-startup-id maim --select "/home/$USER/Screenshots/$(date).png"
 
-# Apps (why no work)
-bindsym $mod+Shift+d exec rustup doc
+# Apps ((nvm it work) why no work)
+bindsym $mod+Shift+d exec --no-startup-id rustup doc
+bindsym $mod+Shift+w exec --no-startup-id $browser
 
 # Assign apps to workspaces
 # (Terminals)
@@ -103,13 +100,14 @@ assign [class="Vesktop"] 4
 # (virtual machines)
 assign [class="virt-manager"] 5
 assign [class="Virt-manager"] 5
+#(rose: ea9a97)
 
-# Custom border colours 
-# class                 border  backgr. text    indica. child_border
-client.focused          #4c4f69 #4c4f69 #ffffff #6g7480 #4c4f69
-client.focused_inactive #4c4f69 #4c4f69 #ffffff #4c4f69 #4c4f69
-client.unfocused        #000000 #000000 #888888 #292d2e #000022
-client.urgent           #4c4f69 #179299 #ffffff #179299 #179299
+# Custom border colours (text is not neccessary)
+# class                 border  backgr. (     ) indica. child_border
+client.focused          #4c4f69 #4c4f69 #ffffff #f6c177 #4c4f69
+client.focused_inactive #ea9a97 #4c4f69 #ffffff #4c4f69 #4c4f69
+client.unfocused        #4c4f69 #000000 #ffffff #ea9a97 #4c4f69
+client.urgent           #4c4f69 #4c4f69 #ffffff #ea9a97 #179299
 
 # Custom gaps + Borders 
 smart_borders on
@@ -196,11 +194,10 @@ exec --no-startup-id $terminal
 # exec --no-startup-id compton
 
 # Compton is faster but nitrogen is more convenient (choose your tradeoff)
+# why did i compare compton with nitrogen bruh
 
 #  toggle tiling / floating
 # bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
 # bindsym $mod+space focus mode_toggle
-
-
