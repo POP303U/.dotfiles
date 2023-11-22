@@ -1,20 +1,9 @@
-#
-# ~/.bashrc
-#
+#!/usr/bin/env bash
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
 PS1='[\u@\h \W]\$ '
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
-
-# If not running interactively, don't do anything
-case $- in
-    *i*) ;;
-      *) return;;
-esac
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -80,38 +69,6 @@ xterm*|rxvt*)
     ;;
 esac
 
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
-
-# colored GCC warnings and errors
-#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -124,47 +81,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-#!/bin/sh
-
-##	+-----------------------------------+-----------------------------------+
-##	|                                                                       |
-##	|                            FANCY BASH PROMT                           |
-##	|                                                                       |
-##	| Copyright (c) 2018, Andres Gongora <mail@andresgongora.com>.          |
-##	|                                                                       |
-##	| This program is free software: you can redistribute it and/or modify  |
-##	| it under the terms of the GNU General Public License as published by  |
-##	| the Free Software Foundation, either version 3 of the License, or     |
-##	| (at your option) any later version.                                   |
-##	|                                                                       |
-##	| This program is distributed in the hope that it will be useful,       |
-##	| but WITHOUT ANY WARRANTY; without even the implied warranty of        |
-##	| MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         |
-##	| GNU General Public License for more details.                          |
-##	|                                                                       |
-##	| You should have received a copy of the GNU General Public License     |
-##	| along with this program. If not, see <http://www.gnu.org/licenses/>.  |
-##	|                                                                       |
-##	+-----------------------------------------------------------------------+
-
-
-##
-##	DESCRIPTION:
-##	This script updates your "PS1" environment variable to display colors.
-##	Addicitionally, it also shortens the name of your current part to maximum
-##	25 characters, which is quite useful when working in deeply nested folders.
-##
-##
-##
-##	INSTALLATION:
-##	Copy this script to your home folder and rename it to ".fancy-bash-promt.sh"
-##	Run this command from any terminal: 
-##		echo "source ~/.fancy-bash-promt.sh" >> ~/.bashrc
-##
-##	Alternatively, copy the content of this file into your .bashrc file
-##
-##
-##
 ##	FUNCTIONS:
 ##
 ##	* bash_prompt_command()
@@ -189,9 +105,6 @@ fi
 ##	* Main script body:	
 ##	  It calls the adequate helper functions to colorize your promt and sets
 ##	  a hook to regenerate your working directory "NEW_PWD" when you change it.
-## 
-
-
 
 
 ################################################################################
@@ -209,9 +122,10 @@ fi
 ##	Original source: WOLFMAN'S color bash promt
 ##	https://wiki.chakralinux.org/index.php?title=Color_Bash_Prompt#Wolfman.27s
 ##
+
 bash_prompt_command() {
 	# How many characters of the $PWD should be kept
-	local pwdmaxlen=25
+	local pwdmaxlen=30
 
 	# Indicate that there has been dir truncation
 	local trunc_symbol=".."
@@ -233,9 +147,6 @@ bash_prompt_command() {
 		NEW_PWD=${trunc_symbol}/${NEW_PWD#*/}
 	fi
 }
-
-
-
 
 ##
 ##	GENERATE A FORMAT SEQUENCE
@@ -262,8 +173,6 @@ format_font()
 	esac
 }
 
-
-
 ##
 ## COLORIZE BASH PROMT
 ##
@@ -282,7 +191,6 @@ bash_prompt() {
 	local     BLINK='5'
 	local    INVERT='7'
 	local    HIDDEN='8'
-	
 	
 	## COLORS
 	local   DEFAULT='9'
@@ -303,13 +211,11 @@ bash_prompt() {
 	local    L_CYAN='66'
 	local     WHITE='67'
 	
-	
 	## TYPE
 	local     RESET='0'
 	local    EFFECT='0'
 	local     COLOR='30'
 	local        BG='40'
-	
 	
 	## 256 COLOR CODES
 	local NO_FORMAT="\[\033[0m\]"
@@ -321,10 +227,6 @@ bash_prompt() {
 	local WHITE_BOLD="\[\033[1;38;5;15m\]"
 	local GRAY_BOLD="\[\033[1;90m\]"
 	local BLUE_BOLD="\[\033[1;38;5;74m\]"
-	
-	
-	
-	
 	
 	##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  
 	  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##
@@ -364,7 +266,6 @@ bash_prompt() {
 	FC4=$(($FONT_COLOR_4+$COLOR))
 	BG4=$(($BACKGROUND_4+$BG))
 	FE4=$(($TEXTEFFECT_4+$EFFECT))
-	
 
 	## CALL FORMATING HELPER FUNCTION: effect + font color + BG color
 	local TEXT_FORMAT_1
@@ -376,13 +277,11 @@ bash_prompt() {
 	format_font TEXT_FORMAT_3 $FC3 $FE3 $BG3
 	format_font TEXT_FORMAT_4 $FC4 $FE4 $BG4
 	
-	
 	# GENERATE PROMT SECTIONS
 	local PROMT_USER=$"$TEXT_FORMAT_1 \u "
 	local PROMT_HOST=$"$TEXT_FORMAT_2 \h "
 	local PROMT_PWD=$"$TEXT_FORMAT_3 \${NEW_PWD} "
 	local PROMT_INPUT=$"$PROMT_FORMAT "
-
 
 	############################################################################
 	## SEPARATOR FORMATING                                                    ##
@@ -400,7 +299,6 @@ bash_prompt() {
 	TSFC3=$(($BACKGROUND_3+$COLOR))
 	TSBG3=$(($DEFAULT+$BG))
 	
-
 	## CALL FORMATING HELPER FUNCTION: effect + font color + BG color
 	local SEPARATOR_FORMAT_1
 	local SEPARATOR_FORMAT_2
@@ -409,14 +307,11 @@ bash_prompt() {
 	format_font SEPARATOR_FORMAT_2 $TSFC2 $TSBG2
 	format_font SEPARATOR_FORMAT_3 $TSFC3 $TSBG3
 	
-
 	# GENERATE SEPARATORS WITH FANCY TRIANGLE
-	local TRIANGLE=$'\uE0B0'	
+	local TRIANGLE=$'\ue0bc'	
 	local SEPARATOR_1=$SEPARATOR_FORMAT_1$TRIANGLE
 	local SEPARATOR_2=$SEPARATOR_FORMAT_2$TRIANGLE
 	local SEPARATOR_3=$SEPARATOR_FORMAT_3$TRIANGLE
-
-
 
 	############################################################################
 	## WINDOW TITLE                                                           ##
@@ -431,23 +326,16 @@ bash_prompt() {
 		;;
 	esac
 
-
-
 	############################################################################
 	## BASH PROMT                                                             ##
 	## Generate promt and remove format from the rest                         ##
 	############################################################################
 	PS1="$TITLEBAR\n${PROMT_USER}${SEPARATOR_1}${PROMT_HOST}${SEPARATOR_2}${PROMT_PWD}${SEPARATOR_3}${PROMT_INPUT}"
 
-	
-
 	## For terminal line coloring, leaving the rest standard
 	none="$(tput sgr0)"
 	trap 'echo -ne "${none}"' DEBUG
 }
-
-
-
 
 ################################################################################
 ##  MAIN                                                                      ##
@@ -465,25 +353,52 @@ PROMPT_COMMAND=bash_prompt_command
 bash_prompt
 unset bash_prompt
 
-alias ls='eza --icons --long --colour=always --binary --header'
-alias vim='nvim'
-alias vi='nvim'
-#alias grep='rg'
-#alias cat='bat'
-#alias htop='btm'
-# alias find='fd --color=always'
+# exports for pipx cargo gcc
+export PATH="$PATH:/home/archy/.local/bin"
+PATH=$PATH:~/.cargo/bin
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-# no lib's needed
+
+# good aliases
+alias vim=nvim
+alias vi=nvim
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
+alias ......='cd ../../../../..'
+alias btw=neofetch
+alias dir='dir --color=auto'
+alias vdir='vdir --color=auto'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias ll='ls -alF'
+alias la='ls -A'
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-# Startup
-PATH=$PATH:~/.cargo/bin
+# Conditional ls (stupidly nested)
+if [ -d "$HOME/.cargo/bin" ]; then
+    . "$HOME/.cargo/env"
+    alias ls='eza --icons --long --colour=always --binary --header'
+else
+    alias l='ls -CF'
+    if [ -x /usr/bin/dircolors ]; then
+        test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+        alias ls='ls --color=auto'
+    fi
+fi
+
+
+# Old:
+######
+    #alias grep='rg'
+    #alias cat='bat'
+    #alias htop='btm'
+    #alias find='fd --color=always'
+######    
 
 clear # Could cause issues if errors aren't reported
 neofetch
 
 ### EOF ###
-. "$HOME/.cargo/env"
