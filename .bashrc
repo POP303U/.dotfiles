@@ -1,9 +1,5 @@
-#!/usr/bin/env bash
-
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
-
-PS1='[\u@\h \W]\$ '
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -68,7 +64,6 @@ xterm*|rxvt*)
 *)
     ;;
 esac
-
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -240,6 +235,7 @@ bash_prompt() {
 	############################################################################
 	
 	## CONFIGURATION: ROSE-PINE
+	START=$BLACK; START_BG=$D_GRAY; TEXTEFFECT_S=$BOLD
 	FONT_COLOR_1=$WHITE; BACKGROUND_1=$BLACK; TEXTEFFECT_1=$BOLD
 	FONT_COLOR_2=$WHITE; BACKGROUND_2=$D_GRAY; TEXTEFFECT_2=$BOLD
 	FONT_COLOR_3=$BLACK; BACKGROUND_3=$L_CYAN; TEXTEFFECT_3=$BOLD
@@ -251,6 +247,10 @@ bash_prompt() {
 	############################################################################
 	
 	## CONVERT CODES: add offset
+    S_FC=$(($START+$COLOR))
+	S_BG=$(($START_BG+$BG))
+	S_FE=$(($TEXTEFFECT_S+$EFFECT))
+
 	FC1=$(($FONT_COLOR_1+$COLOR))
 	BG1=$(($BACKGROUND_1+$BG))
 	FE1=$(($TEXTEFFECT_1+$EFFECT))
@@ -268,16 +268,19 @@ bash_prompt() {
 	FE4=$(($TEXTEFFECT_4+$EFFECT))
 
 	## CALL FORMATING HELPER FUNCTION: effect + font color + BG color
+	local TEXT_FORMAT_S
 	local TEXT_FORMAT_1
 	local TEXT_FORMAT_2
 	local TEXT_FORMAT_3
 	local TEXT_FORMAT_4	
+	format_font TEXT_FORMAT_S $S_FC $S_BG1 $S_FE
 	format_font TEXT_FORMAT_1 $FE1 $FC1 $BG1
 	format_font TEXT_FORMAT_2 $FE2 $FC2 $BG2
 	format_font TEXT_FORMAT_3 $FC3 $FE3 $BG3
 	format_font TEXT_FORMAT_4 $FC4 $FE4 $BG4
 	
 	# GENERATE PROMT SECTIONS
+	local PROMT_START=$"$TEXT_FORMAT_S \u "
 	local PROMT_USER=$"$TEXT_FORMAT_1 \u "
 	local PROMT_HOST=$"$TEXT_FORMAT_2 \h "
 	local PROMT_PWD=$"$TEXT_FORMAT_3 \${NEW_PWD} "
@@ -290,6 +293,10 @@ bash_prompt() {
 	############################################################################
 	
 	## CONVERT CODES
+   
+	S_TSFC1=$(($BACKGROUND_2+$BG))
+	S_TSBG1=$(($BACKGROUND_1+$COLOR))
+
 	TSFC1=$(($BACKGROUND_1+$COLOR))
 	TSBG1=$(($BACKGROUND_2+$BG))
 	
@@ -298,20 +305,25 @@ bash_prompt() {
 	
 	TSFC3=$(($BACKGROUND_3+$COLOR))
 	TSBG3=$(($DEFAULT+$BG))
-	
+
 	## CALL FORMATING HELPER FUNCTION: effect + font color + BG color
+	local SEPARATOR_FORMAT_S
 	local SEPARATOR_FORMAT_1
 	local SEPARATOR_FORMAT_2
 	local SEPARATOR_FORMAT_3
+	format_font SEPARATOR_FORMAT_S $S_TSBG1 $S_TSFC1
 	format_font SEPARATOR_FORMAT_1 $TSFC1 $TSBG1
 	format_font SEPARATOR_FORMAT_2 $TSFC2 $TSBG2
 	format_font SEPARATOR_FORMAT_3 $TSFC3 $TSBG3
 	
-	# GENERATE SEPARATORS WITH FANCY TRIANGLE
-	local TRIANGLE=$'\ue0bc'	
-	local SEPARATOR_1=$SEPARATOR_FORMAT_1$TRIANGLE
-	local SEPARATOR_2=$SEPARATOR_FORMAT_2$TRIANGLE
-	local SEPARATOR_3=$SEPARATOR_FORMAT_3$TRIANGLE
+	# GENERATE SEPARATORS WITH FANCY SLANT
+	local SLANT=$'\ue0bc'	
+    local TRIANGLE=$'\ue0b0'
+
+	local START=$SEPARATOR_FORMAT_S$TRIANGLE
+	local SEPARATOR_1=$SEPARATOR_FORMAT_1$SLANT
+	local SEPARATOR_2=$SEPARATOR_FORMAT_2$SLANT
+	local SEPARATOR_3=$SEPARATOR_FORMAT_3$SLANT
 
 	############################################################################
 	## WINDOW TITLE                                                           ##
@@ -330,11 +342,14 @@ bash_prompt() {
 	## BASH PROMT                                                             ##
 	## Generate promt and remove format from the rest                         ##
 	############################################################################
-	PS1="$TITLEBAR\n${PROMT_USER}${SEPARATOR_1}${PROMT_HOST}${SEPARATOR_2}${PROMT_PWD}${SEPARATOR_3}${PROMT_INPUT}"
+    PS1="$TITLEBAR\n${PROMT_USER}${SEPARATOR_1}${PROMT_HOST}${SEPARATOR_2}${PROMT_PWD}${SEPARATOR_3}${PROMT_INPUT}"
 
-	## For terminal line coloring, leaving the rest standard
-	none="$(tput sgr0)"
-	trap 'echo -ne "${none}"' DEBUG
+    # Didn't work im dieing aaa
+    #${START}
+    
+    ## For terminal line coloring, leaving the rest standard
+    none="$(tput sgr0)"
+    trap 'echo -ne "${none}"' DEBUG
 }
 
 ################################################################################
@@ -354,8 +369,8 @@ bash_prompt
 unset bash_prompt
 
 # exports for pipx cargo gcc
-export PATH="$PATH:/home/archy/.local/bin"
 PATH=$PATH:~/.cargo/bin
+export PATH="$PATH:/home/archy/.local/bin"
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 
@@ -376,6 +391,7 @@ alias egrep='egrep --color=auto'
 alias ll='ls -alF'
 alias la='ls -A'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+alias bottles='flatpak override --user --filesystem="host" com.usebottles.bottles; nohup flatpak run com.usebottles.bottles&'
 
 # Conditional ls (stupidly nested)
 if [ -d "$HOME/.cargo/bin" ]; then
@@ -389,7 +405,6 @@ else
     fi
 fi
 
-
 # Old:
 ######
     #alias grep='rg'
@@ -400,5 +415,4 @@ fi
 
 clear # Could cause issues if errors aren't reported
 neofetch
-
 ### EOF ###
