@@ -392,6 +392,7 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias bottles='flatpak override --user --filesystem="host" com.usebottles.bottles; nohup flatpak run com.usebottles.bottles&'
+alias roblox='nohup flatpak run net.brinkervii.grapejuice app&'
 
 # Conditional ls (stupidly nested)
 if [ -d "$HOME/.cargo/bin" ]; then

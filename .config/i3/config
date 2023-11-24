@@ -90,7 +90,8 @@ assign [class="Chromium"] 2
 
 # (Games)
 assign [class="Lutris"] 3
-assign [class="Steam"] 3
+assign [class="Lutris"] 3
+assign [class="Roblox"] 3
 
 # (Chatting Services)
 assign [class="Discord"] 4
