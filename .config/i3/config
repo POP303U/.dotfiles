@@ -10,15 +10,13 @@
 
 # Knowing vim bindings is probably mandatory for this config lol
 
-# BASE PACKAGES: autotiling nitrogen picom maim xclip xdotool rofi kitty
-# RECOMMENDED PACKAGES: brave (rust toolchain)
-# NEEDED FONT: CaskaydiaCove Nerd Font
+# BASE PACKAGES: autotiling nitrogen picom maim xclip xdotool rofi kitty alsa-utils
 
 # ------------- #
 # ({VARIABLES}) #
 # ------------- #
 
-# Here you can set variables influencing audio steps, terminal, gap size etc..
+
 set $terminal "kitty" 
 # Set your browser for the shortcut
 set $browser "brave"
@@ -31,7 +29,6 @@ set $outer_gaps_size 1
 
 # ------------------------- #
 #                           #
-# CUSTOM CONFIGS START HERE #
 #                           #
 # ------------------------- #
 
@@ -45,7 +42,8 @@ font pango:CaskaydiaCove Nerd Font $font_size
 exec_always --no-startup-id picom --config ~/.config/picom/picom.conf
 exec_always --no-startup-id nitrogen --restore
 exec_always --no-startup-id autotiling
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+exec_always --no-startup-id cmus-discord-rpc
+# not needed polybar exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 bindsym $mod+d exec "rofi -modi drun,run -show drun"
 
@@ -63,10 +61,9 @@ bindsym $mod+Ctrl+Shift+h resize grow width 10 px or 10 ppt
 
 # Audio control in Pulseaudio (Pipewire has a Pulseaudio interface 'pipewire-pulseaudio'
 #                              This is needed for this to work)
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +$volume_steps% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -$volume_steps% && $refresh_i3status
-bindsym XF86AudioMute        exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute     exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q -D pulse sset Master 2%+ && pkill -RTMIN+10 i3blocks 
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q -D pulse sset Master 2%- && pkill -RTMIN+10 i3blocks
+bindsym XF86AudioMute        exec --no-startup-id amixer -q -D pulse sset Master toggle && pkill -RTMIN+10 i3blocks
 
 # Screenshots
 exec_always --no-startup-id mkdir ~/Screenshots
@@ -78,29 +75,6 @@ bindsym Shift+Print exec --no-startup-id maim --select "/home/$USER/Screenshots/
 bindsym $mod+Shift+d exec --no-startup-id rustup doc
 bindsym $mod+Shift+w exec --no-startup-id $browser
 
-# Assign apps to workspaces
-# (Terminals)
-assign [class="kitty"] 1
-assign [class="Alacritty"] 1
-
-# (Browsers)
-assign [class="Brave"] 2
-assign [class="Firefox"] 2
-assign [class="Chromium"] 2
-
-# (Games)
-assign [class="Lutris"] 3
-assign [class="Lutris"] 3
-assign [class="Roblox"] 3
-
-# (Chatting Services)
-assign [class="Discord"] 4
-assign [class="Vencord"] 4
-assign [class="Vesktop"] 4
-
-# (virtual machines)
-assign [class="virt-manager"] 5
-assign [class="Virt-manager"] 5
 #(rose: ea9a97)
 
 # Custom border colours (text is not neccessary)
@@ -108,13 +82,29 @@ assign [class="Virt-manager"] 5
 client.focused          #4c4f69 #4c4f69 #ffffff #f6c177 #4c4f69
 client.focused_inactive #ea9a97 #4c4f69 #ffffff #4c4f69 #4c4f69
 client.unfocused        #4c4f69 #000000 #ffffff #ea9a97 #4c4f69
-client.urgent           #4c4f69 #4c4f69 #ffffff #ea9a97 #179299
+client.urgent           #4c4f69 #4c4f69 #ffffff #f6c177 #4c4f69
 
 # Custom gaps + Borders 
 smart_borders on
 for_window [class="^.*"] border pixel 2
 gaps inner $inner_gaps_size
 gaps outer $outer_gaps_size
+
+bar {
+    status_command 2>/tmp/i3blocks.err /usr/bin/i3blocks -vvv -c ~/.config/i3blocks/i3blocks.conf | tee /tmp/i3blocks.out
+
+    position                top
+    tray_output             primary
+    separator_symbol        " "
+    workspace_buttons       yes
+    strip_workspace_numbers no
+
+    colors {
+        background  #1f1d2e
+        statusline  #dddddd
+        separator   #1f1d2e
+    }
+}
 
 # ----------------------- #
 #                         #
@@ -176,15 +166,38 @@ bindsym $mod+Shift+8 move container to workspace number 8
 bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 0
 
+
+# Assign apps to workspaces
+# (Terminals)
+assign [class="kitty"] 1
+assign [class="Alacritty"] 1
+
+# (Browsers)
+assign [class="Brave"] 2
+assign [class="Firefox"] 2
+assign [class="Chromium"] 2
+
+# (Games)
+assign [class="Lutris"] 3
+assign [class="Roblox"] 3
+assign [class="bottles"] 3
+
+# (Chatting Services)
+assign [class="Discord"] 4
+assign [class="Vencord"] 4
+assign [class="Vesktop"] 4
+
+# (virtual machines)
+assign [class="virt-manager"] 5 
+assign [class="Virt-manager"] 5
+
 # Reload config, Restart config, Logout
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 exec --no-startup-id $terminal
-
 # give me a terminal when i start pls (not when i reload tho)
-
 
 # ----------------------------------- #
 # DEPRECATED (Why would you use this) #
@@ -200,5 +213,27 @@ exec --no-startup-id $terminal
 #  toggle tiling / floating
 # bindsym $mod+Shift+space floating toggle
 
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
 # change focus between tiling / floating windows
-# bindsym $mod+space focus mode_toggle
+bindsym $mod+space focus mode_toggle
+
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym h resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
