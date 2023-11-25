@@ -370,6 +370,7 @@ unset bash_prompt
 
 # exports for pipx cargo gcc
 PATH=$PATH:~/.cargo/bin
+set $EDITOR=nvim
 export PATH="$PATH:/home/archy/.local/bin"
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
