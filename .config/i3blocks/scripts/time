@@ -1,2 +1,3 @@
 #!/bin/bash
-date +"%D %T"
+
+echo $(date +"%c" | awk -F ' ' 'BEGIN{OFS=FS} {$NF=""; print}')
