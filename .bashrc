@@ -1,25 +1,51 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
 HISTCONTROL=ignoreboth
-HISTSIZE=1000
-HISTFILESIZE=2000
-shopt -s checkwinsize
+
+# append to the history file, don't overwrite it
 shopt -s histappend
 
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# If set, the pattern "**" used in a pathname expansion context will
+# match all files and zero or more directories and subdirectories.
+#shopt -s globstar
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
+# set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
     xterm-color|*-256color) color_prompt=yes;;
 esac
 
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+#force_color_prompt=yes
+
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	    color_prompt=yes
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
     else
-	    color_prompt=no
+	color_prompt=
     fi
 fi
 
@@ -93,11 +119,17 @@ fi
 ##
 
 bash_prompt_command() {
+	# How many characters of the $PWD should be kept
 	local pwdmaxlen=30
+
+	# Indicate that there has been dir truncation
 	local trunc_symbol=".."
+
+	# Store local dir
 	local dir=${PWD##*/}
 
-	pwdmaxlen=$(( ( pwdmaxlen < ${#dir} ) ? ${#dir} : pwdmaxlen )) # Magic numbers
+	# Which length to use
+	pwdmaxlen=$(( ( pwdmaxlen < ${#dir} ) ? ${#dir} : pwdmaxlen ))
 
 	NEW_PWD=${PWD/#$HOME/\~}
 	
@@ -336,25 +368,25 @@ PROMPT_COMMAND=bash_prompt_command
 bash_prompt
 unset bash_prompt
 
-# # # # # # # # # #
-# CUSTOM SETTINGS #
-# # # # # # # # # #
-
 # exports for pipx cargo gcc
 export PATH=$PATH:~/.cargo/bin
-export VISUAL=nvim
 export EDITOR=nvim
+export VISUAL=nvim
 export PATH="$PATH:/home/archy/.local/bin"
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+export TERMINAL=/usr/bin/kitty
+
+#export PS1="\[\e]133;k;start_kitty\a\]\[\e]133;A\a\]\[\e]133;k;end_kitty\a\]\[\033]0;\u:${NEW_PWD}\007\]\n\[\e]133;k;start_secondary_kitty\a\]\[\e]133;A;k=s\a\]\[\e]133;k;end_secondary_kitty\a\]\[\033[0;1;97;40m\] \u \[\033[0;30;100m\]\[\033[0;1;97;100m\] \h \[\033[0;90;106m\]\[\033[0;30;1;106m\] ${NEW_PWD} \[\033[0;96;49m\]\[\033[1;38;5;15m\] \[\e]133;k;start_suffix_kitty\a\]\[\e]2;\w\a\]\[\e]133;k;end_suffix_kitty\a\]"
 
 # good aliases
-alias vim=nvim
-alias vi=nvim
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
 alias ......='cd ../../../../..'
+alias vim=nvim
+alias vi=nvim
+alias v=nvim
 alias btw=neofetch
 alias dir='dir --color=auto'
 alias vdir='vdir --color=auto'
@@ -364,32 +396,12 @@ alias egrep='egrep --color=auto'
 alias ll='ls -alF'
 alias la='ls -A'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-alias bottles='flatpak override --user --filesystem="host" com.usebottles.bottles; nohup flatpak run com.usebottles.bottles&'
+alias bottles='nohup flatpak run com.usebottles.bottles&'
+alias bottles-fix='flatpak override --user --filesystem="host" com.usebottles.bottles'
 alias roblox='nohup flatpak run net.brinkervii.grapejuice app&'
 
-lf() {
-    set -e
-
-    cleanup() {
-        exec 3>&-
-        rm "$FIFO_UEBERZUG"
-    }
-
-    if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-        lf "$@"
-    else
-        [ ! -d "$HOME/.cache/lf" ] && mkdir --parents "$HOME/.cache/lf"
-        export FIFO_UEBERZUG="$HOME/.cache/lf/ueberzug-$$"
-        mkfifo "$FIFO_UEBERZUG"
-        ueberzug layer -s <"$FIFO_UEBERZUG" -p json &
-        exec 3>"$FIFO_UEBERZUG"
-        trap cleanup EXIT
-        lf "$@" 3>&-
-    fi
-}
-
 # Conditional ls (stupidly nested)
-if [ -x "$HOME/.cargo/bin/eza" ]; then
+if [ -e "$HOME/.cargo/bin/eza" ]; then
     . "$HOME/.cargo/env"
     alias ls='eza --icons --long --colour=always --binary --header'
 else
@@ -399,6 +411,42 @@ else
         alias ls='ls --color=auto'
     fi
 fi
+
+ex ()
+{
+  if [ -f $1 ] ; then
+    case $1 in
+      *.tar.bz2)   tar xjf $1   ;;
+      *.tar.gz)    tar xzf $1   ;;
+      *.bz2)       bunzip2 $1   ;;
+      *.rar)       unrar x $1   ;;
+      *.gz)        gunzip $1    ;;
+      *.tar)       tar xf $1    ;;
+      *.tbz2)      tar xjf $1   ;;
+      *.tgz)       tar xzf $1   ;;
+      *.zip)       unzip $1     ;;
+      *.Z)         uncompress $1;;
+      *.7z)        7z x $1      ;;
+      *.deb)       ar x $1      ;;
+      *.tar.xz)    tar xf $1    ;;
+      *.tar.zst)   tar xf $1    ;;
+      *)           echo "'$1' cannot be extracted via ex()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
+# vim mode yay
+set -o vi
+
+# Old:
+######
+    #alias grep='rg'
+    #alias cat='bat'
+    #alias htop='btm'
+    #alias find='fd --color=always'
+######    
 
 clear # Could cause issues if errors aren't reported
 neofetch
