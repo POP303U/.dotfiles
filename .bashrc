@@ -370,7 +370,7 @@ unset bash_prompt
 
 # exports for pipx cargo gcc
 PATH=$PATH:~/.cargo/bin
-set $EDITOR=nvim
+export EDITOR=nvim
 export PATH="$PATH:/home/archy/.local/bin"
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
@@ -394,6 +394,27 @@ alias la='ls -A'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias bottles='flatpak override --user --filesystem="host" com.usebottles.bottles; nohup flatpak run com.usebottles.bottles&'
 alias roblox='nohup flatpak run net.brinkervii.grapejuice app&'
+
+lf() {
+    set -e
+
+    cleanup() {
+        exec 3>&-
+        rm "$FIFO_UEBERZUG"
+    }
+
+    if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+        lf "$@"
+    else
+        [ ! -d "$HOME/.cache/lf" ] && mkdir --parents "$HOME/.cache/lf"
+        export FIFO_UEBERZUG="$HOME/.cache/lf/ueberzug-$$"
+        mkfifo "$FIFO_UEBERZUG"
+        ueberzug layer -s <"$FIFO_UEBERZUG" -p json &
+        exec 3>"$FIFO_UEBERZUG"
+        trap cleanup EXIT
+        lf "$@" 3>&-
+    fi
+}
 
 # Conditional ls (stupidly nested)
 if [ -d "$HOME/.cargo/bin" ]; then
