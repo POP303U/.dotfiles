@@ -36,7 +36,7 @@ set $outer_gaps_size 1
 bindsym $mod+Return exec --no-startup-id $terminal
 
 # Custom window font
-font pango:CaskaydiaCove Nerd Font $font_size
+font pango:CaskaydiaCove Nerd Font, Italic  $font_size
 
 #Start all custom services (nitrogen, autotiling, picom, polybar):
 exec_always --no-startup-id picom --config ~/.config/picom/picom.conf
@@ -100,9 +100,27 @@ bar {
     strip_workspace_numbers no
 
     colors {
+        # light mode
+        # background  #fffaf3
+        # statusline  #dddddd
+        # separator   #fffaf3
+
+        # dark mode
         background  #1f1d2e
         statusline  #dddddd
-        separator   #1f1d2e
+        separator   #fffaf3
+
+        # light mode
+        # focused_workspace #CECECE #CECECE #000000
+        # active_workspace #333333 #333333 #888888
+        # inactive_workspace #CECECE #333333 #f1f1f1
+        # urgent_workspace #eb709b #eb709b #ffffff
+
+        # dark mode
+        focused_workspace #ea9a97 #ea9a97 #000000
+        active_workspace #1f1d2e #1f1d2e #333333
+        inactive_workspace #1f1d2e #1f1d2e #f1f1f1
+        urgent_workspace #eb709b #eb709b #ffffff
     }
 }
 
