@@ -1,0 +1,8 @@
+#!/usr/bin/bash
+PACKAGE_COUNT=$(checkupdates | wc -l)
+
+if [[ "${PACKAGE_COUNT}" == "0" ]]; then
+    echo "Clean  "
+else 
+  echo "${PACKAGE_COUNT}" 
+fi
