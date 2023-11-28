@@ -1,3 +1,13 @@
 #!/bin/bash
 
-nmcli | grep 'inet4' | awk '{print $2}' | head -1
+IP=$(nmcli | grep 'inet4' | awk '{print $2}' | head -1)
+CMD=$(nmcli | grep 'ip4 default' | xargs | awk '{ print $2 }')
+
+#if [[ "$CMD" == "" ]]; then
+    echo "${IP}" 
+#else 
+#    echo "Disconnected"
+#fi
+
+
+
