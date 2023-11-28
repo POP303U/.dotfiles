@@ -16,7 +16,6 @@
 # ({VARIABLES}) #
 # ------------- #
 
-
 set $terminal "kitty" 
 # Set your browser for the shortcut
 set $browser "brave"
@@ -43,9 +42,10 @@ exec_always --no-startup-id picom --config ~/.config/picom/picom.conf
 exec_always --no-startup-id nitrogen --restore
 exec_always --no-startup-id autotiling
 exec_always --no-startup-id cmus-discord-rpc
+exec_always --no-startup-id xmodmap ~/.Xmodmap
 # not needed polybar exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
-bindsym $mod+d exec "rofi -modi drun,run -show drun"
+bindsym $mod+d exec "rofi -modi drun,keys -show drun"
 
 # Resizing by 1
 bindsym $mod+Ctrl+l resize shrink width 1 px or 1 ppt
