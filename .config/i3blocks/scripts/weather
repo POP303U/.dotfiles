@@ -1,7 +1,7 @@
 #!/bin/bash
+
 # WEATHER_TEMP=$(curl 'https://wttr.in/?format=%t')
-# WEATHER_ICON=$(curl 'https://wttr.in/?format=%c')
+WEATHER_ICON=$(curl 'https://wttr.in/?format=%c')
 # WEATHER_STAT=$(curl 'https://wttr.in/?format=%c')
-echo "$(curl wttr.in/?format\="%t%20|%20%h%20|%20%P%20|%20%w")"
-
-
+# echo "$(curl wttr.in/?format\="%t%20|%20%h%20|%20%P%20|%20%w")"
+echo "$(WEATHER_ICON)$(curl wttr.in/?format\="%t%20|%20%h%20|%20%w")"
