@@ -360,6 +360,7 @@ unset bash_prompt
 
 # exports for pipx cargo gcc
 export PATH=$PATH:~/.cargo/bin
+export PATH=$PATH:~/.config/emacs/bin
 export EDITOR=nvim
 export VISUAL=nvim
 export PATH="$PATH:/home/archy/.local/bin"
