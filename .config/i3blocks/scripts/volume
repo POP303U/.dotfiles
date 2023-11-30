@@ -1,72 +1,4 @@
 #!/bin/bash
-<<<<<<< HEAD
-function vol() {
-    local RVOL=$(amixer sget Master | grep 'Right:' | awk -F'[][]' '{ print $2 }' | cut -f 1 -d '%' --output-delimiter='')
-    local LVOL=$(amixer sget Master | grep 'Left:' | awk -F'[][]' '{ print $2 }' | cut -f 1 -d '%' --output-delimiter='')
-    if [ "$RVOL" > "$LVOL" ]; then
-        echo $RVOL
-    else
-        echo $LVOL
-    fi
-}
-
-function icon() {
-    if [ "$MUTE" == "muted" ];   then
-        echo "܄"
-    elif [ "$VOL" -lt 26 ];   then
-        echo "܀"
-    elif [ "$VOL" -lt 51 ];   then
-        echo "܁"
-    elif [ "$VOL" -lt 81 ];   then
-        echo "܂"
-    else
-        echo "܃"
-    fi
-}
-
-function mute() {
-    local MUTEL=$(amixer sget Master | grep 'Left:' | awk -F'[][]' '{ print $4 }')
-    local MUTER=$(amixer sget Master | grep 'Right:' | awk -F'[][]' '{ print $4 }')
-    if [[ $MUTEL == off ]] && [[ $MUTER == off ]]; then
-        echo "muted"
-    else
-        echo "unmuted"
-    fi
-}
-function notify() {
-    if [ "$MUTE" == "muted" ];   then
-        echo "mute"
-    elif [ "$VOL" -lt 26 ];   then
-        echo "%$VOL"
-    elif [ "$VOL" -lt 51 ];   then
-        echo "%$VOL"
-    elif [ "$VOL" -lt 81 ];   then
-        echo "%$VOL"
-    else
-        echo "%$VOL"
-    fi
-}
-case $BLOCK_BUTTON in
-  1) deadoralive pavucontrol ;;
-  3) amixer -q -D pulse sset Master Playback toggle && FORMAT=1 ;;
-  4) amixer -q -D pulse sset Master Playback 5%+ unmute && FORMAT=1 ;;
-  5) amixer -q -D pulse sset Master Playback 5%- unmute && FORMAT=1 ;;
-esac
-
-MUTE=$(mute)
-VOL=$(vol)
-ICON=$(icon)
-NOTIFY=$(notify)
-
-if [ "$FORMAT" == 1 ]; then
-    echo "$ICON $NOTIFY"
-    FORMAT=0
-else
-    echo "$ICON"
-fi
-exit
-=======
-
 case $BLOCK_BUTTON in
     # Clicking will mute
     1) amixer -q sset Master Playback toggle && FORMAT=1 ;;
@@ -87,5 +19,3 @@ if [[ "${STATUS}" == "on" ]]; then
 else
     echo "muted"
 fi
-
->>>>>>> 08c8f5a (Fix: Volume now working (I swear if it breaks))
