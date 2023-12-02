@@ -362,6 +362,7 @@ unset bash_prompt
 export PATH=$PATH:~/.cargo/bin
 export PATH=$PATH:~/.config/emacs/bin
 export EDITOR=nvim
+export PROJECTS="/mnt/sdc1/Projects/"
 export VISUAL=nvim
 export PATH="$PATH:/home/archy/.local/bin"
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
@@ -390,6 +391,26 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 alias bottles='nohup flatpak run com.usebottles.bottles&'
 alias bottles-fix='flatpak override --user --filesystem="host" com.usebottles.bottles'
 alias roblox='nohup flatpak run net.brinkervii.grapejuice app&'
+
+# For editing configs
+alias v-i3='cd ~/.config/i3 && ${EDITOR} ~/.config/i3/config'
+alias v-i3blocks='cd ~/.config/i3blocks && ${EDITOR} ~/.config/i3blocks/i3blocks.conf'
+alias v-polybar='cd ~/.config/polybar && ${EDITOR} ~/.config/polybar/config.ini'
+alias v-picom='cd ~/.config/picom && ${EDITOR} ~/.config/picom/picom.conf'
+alias v-kitty='cd ~/.config/kitty && ${EDITOR} ~/.config/kitty/kitty.conf'
+alias v-alacritty='cd ~/.config/alacritty && ${EDITOR} ~/.config/alacritty/alacritty.yml'
+alias v-cava='cd ~/.config/cava && ${EDITOR} ~/.config/cava/config'
+alias v-gtk2='cd ~/.config/gtk-2.0 && ${EDITOR} ~/.config/gtk-2.0/gtkfilechooser.ini'
+alias v-gtk3='cd ~/.config/gtk-3.0 && ${EDITOR} ~/.config/gtk-3.0/settings.ini'
+alias v-lf='cd ~/.config/lf && ${EDITOR} ~/.config/lf/lfrc'
+alias v-nano='cd ~/.config/nano && ${EDITOR} ~/.config/nano/nanorc'
+alias v-neofetch='cd ~/.config/neofetch && ${EDITOR} ~/.config/neofetch/config.conf'
+alias v-nvim='cd ~/.config/nvim && ${EDITOR} ~/.config/nvim/init.lua'
+alias v-paru='cd ~/.config/paru && ${EDITOR} ~/.config/paru/paru.conf'
+alias v-rofi='cd ~/.config/rofi && ${EDITOR} ~/.config/rofi/config.rasi'
+alias v-bashrc='cd ~ && ${EDITOR} ~/.bashrc'
+alias g-projects='cd ~/personal/github' 
+alias v-projects='cd $PROJECTS && nvim'
 
 # Conditional ls (stupidly nested)
 if [ -e "$HOME/.cargo/bin/eza" ]; then
