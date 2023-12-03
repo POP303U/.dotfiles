@@ -16,7 +16,7 @@ Change directory into the `bootstrap` directory and run the setup.sh file with t
 
 ***Done!***
 
-**Current Setup!**
+## **Current Setup!**
 ![So_3__Dez_18_32_04_CET_2023_](https://github.com/POP303U/dotfiles/assets/115036828/12c188f3-74ac-48d4-b3c3-cf5a00e4edf6)
 
 **Troubleshooting**
