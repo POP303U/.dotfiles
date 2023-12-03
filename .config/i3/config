@@ -48,6 +48,9 @@ exec --no-startup-id $HOME/.config/polybar/launch.sh
 
 bindsym $mod+d exec "rofi -modi drun,run -show drun"
 
+bindsym $mod+c exec $HOME/.config/autoclicker/clicker_start
+bindsym $mod+v exec $HOME/.config/autoclicker/clicker_stop
+
 # Resizing by 1
 bindsym $mod+Ctrl+l resize shrink width 1 px or 1 ppt
 bindsym $mod+Ctrl+k resize grow height 1 px or 1 ppt
