@@ -1,7 +1,7 @@
 # dotfiles
 
 Personal i3wm config with i3blocks! 
-This repository is the continuation of [lightweight-i3-config](https:://github.com/POP303U/lightweight-i3-config)!
+This repository is the continuation of [lightweight-i3-config](https://github.com/POP303U/lightweight-i3-config)!
 
 This is an i3 config designed to be lightweight and efficient.
 The color scheme is based on Rose-Pine
