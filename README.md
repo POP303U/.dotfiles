@@ -3,29 +3,19 @@
 Personal i3wm config with i3blocks! 
 This repository is the continuation of [lightweight-i3-config](https:://github.com/POP303U/lightweight-i3-config)!
 
-![/home/pops/Screenshots/So_3__Dez_18_32_04_CET_2023_.png]()
-
-## Warning!
-This repo will be deprecated in favor of [nightfly-configs](https:://github.com/POP303U/nightfly-configs)!
-The code here will still be available but be archived, there are no breaking changes.
-## End of Warning 
-
 This is an i3 config designed to be lightweight and efficient.
-The color scheme is based on Catppuccin Mocha!
+The color scheme is based on Rose-Pine
 
 **Necessary packages / Sources**
-+ **Packages**: kitty nitrogen picom maim xclip xdotool rofi neofetch i3 i3blocks i3status
++ **Packages**: kitty nitrogen feh picom maim xclip xdotool rofi neofetch i3 i3blocks i3status
 + **Fonts**: CaskaydiaCove Nerd Font
-+ **Backgrounds**: [Github 1](https://github.com/D3Ext/aesthetic-wallpapers), [Github 2](https://github.com/linuxdotexe/nordic-wallpapers), [Github 3](https://github.com/dharmx/walls), [Wallpapercave](https://wallpapercave.com/catppuccin-wallpapers), [Catppuccin Discord](https://discord.com/servers/catppuccin-907385605422448742)
 
 **Setup**
 Change directory into the `bootstrap` directory and run the setup.sh file
 Done!
 
 **Current Setup!**
-![tor 1 jun 2023 17:06:40 CEST](https://github.com/POP303U/lightweight-i3-config/assets/115036828/b3c0f614-2ea4-4189-a1b9-78369320c6f6)
-
-**Possible Configurations**:
+![So_3__Dez_18_32_04_CET_2023_](https://github.com/POP303U/dotfiles/assets/115036828/12c188f3-74ac-48d4-b3c3-cf5a00e4edf6)
 
 **Troubleshooting**
 
