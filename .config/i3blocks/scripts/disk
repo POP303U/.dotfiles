@@ -1,5 +1,0 @@
-#!/bin/bash
-
-#DRIVE=$(df / | tail -1 | awk '{print $1}')
-#df --block-size=1024 -h / | awk '{print $4 "/" $2}'
-df --block-size=1024 / -h | awk '/[/]/ {print $4 "/" $2}'
