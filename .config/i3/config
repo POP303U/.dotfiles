@@ -47,6 +47,7 @@ exec --no-startup-id cmus-discord-rpc
 exec --no-startup-id $HOME/.config/polybar/launch.sh
 
 bindsym $mod+d exec "rofi -modi drun,run -show drun"
+bindsym $mod+p exec "rofi -show power-menu -modi power-menu:rofi-power-menu --symbols 'CaskaydiaCove Nerd Font' --confirm=reboot/shutdown"
 
 bindsym $mod+c exec $HOME/.config/autoclicker/clicker_start
 bindsym $mod+v exec $HOME/.config/autoclicker/clicker_stop
