@@ -1,9 +1,10 @@
 configuration {
   display-drun: "Applications:";
   display-window: "Windows:";
+  display-run: "Command:";
   drun-display-format: "{name}";
   font: "CaskaydiaCove Nerd Font 10";
-  modi: "window,run,drun,emoji,calc";
+  modi: "window,run,drun,emoji,calc,rofi-power-menu";
   show-icons: true;
   filebrowser {
       directories-first: true;
@@ -21,7 +22,6 @@ configuration {
   fg: #cdd6f4;
   fg-alt: #7f849c;
 
-  
   border: 0;
   margin: 0;
   padding: 1;
@@ -86,5 +86,5 @@ prompt {
 }
 
 element-icon {
-    size:             4 ch ;
+    size:             0 ch ;
 }
