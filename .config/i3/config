@@ -17,9 +17,7 @@
 # ------------- #
 
 set $terminal "kitty" 
-# Set your browser for the shortcut
 set $browser "brave"
-# Mod1 Being Alt and Mod4 Being Win
 set $mod Mod1
 set $volume_steps 5
 set $font_size 14
@@ -28,7 +26,6 @@ set $outer_gaps_size 1
 
 # ------------------------- #
 #                           #
-# CUSTOM CONFIGS START HERE #
 #                           #
 # ------------------------- #
 
@@ -38,19 +35,24 @@ bindsym $mod+Return exec --no-startup-id $terminal
 # Custom window font
 font pango:CaskaydiaCove Nerd Font, Italic  $font_size
 
-#Start all custom services defined in startup file (nitrogen, autotiling, picom, polybar):
-exec_always --no-startup-id picom --config ~/.config/picom/picom.conf
-exec_always --no-startup-id xmodmap ~/.Xmodmap
-exec --no-startup-id nitrogen --restore 
+#Start all custom services (nitrogen, autotiling, picom, polybar):
+exec --no-startup-id picom --config ~/.config/picom/picom.conf
+exec --no-startup-id nitrogen --restore
 exec --no-startup-id autotiling
 exec --no-startup-id cmus-discord-rpc
-exec --no-startup-id $HOME/.config/polybar/launch.sh
+exec --no-startup-id xmodmap ~/.Xmodmap
+# not needed polybar exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
+# rofi 
 bindsym $mod+d exec "rofi -modi drun,run -show drun"
-bindsym $mod+p exec "rofi -show power-menu -modi power-menu:rofi-power-menu --symbols 'CaskaydiaCove Nerd Font' --confirm=reboot/shutdown"
+bindsym $mod+p exec "rofi -show power-menu -modi power-menu:rofi-power-menu --symbols 'CaskaydiaCove Nerd Font'"
 
-bindsym $mod+c exec $HOME/.config/autoclicker/clicker_start
-bindsym $mod+v exec $HOME/.config/autoclicker/clicker_stop
+# autoclicker
+bindsym $mod+c exec --no-startup-id ~/.config/autoclicker/clicker_start
+bindsym $mod+v exec --no-startup-id ~/.config/autoclicker/clicker_stop
+
+# enable / disable bar
+bindsym $mod+m bar mode toggle
 
 # Resizing by 1
 bindsym $mod+Ctrl+l resize shrink width 1 px or 1 ppt
@@ -59,7 +61,7 @@ bindsym $mod+Ctrl+j resize shrink height 1 px or 1 ppt
 bindsym $mod+Ctrl+h resize grow width 1 px or 1 ppt
 
 # Resizing by 10
-bindsym $mod+Ctrl+Shift+l resize shrink width 10 px or 10 ppdefined in startup file t
+bindsym $mod+Ctrl+Shift+l resize shrink width 10 px or 10 ppt
 bindsym $mod+Ctrl+Shift+k resize grow height 10 px or 10 ppt
 bindsym $mod+Ctrl+Shift+j resize shrink height 10 px or 10 ppt 
 bindsym $mod+Ctrl+Shift+h resize grow width 10 px or 10 ppt
@@ -75,6 +77,7 @@ exec_always --no-startup-id mkdir ~/Screenshots
 bindsym Print exec --no-startup-id maim "/home/$USER/Screenshots/$(date | tr -c '[:alnum:]' '_').png"
 bindsym Ctrl+Print exec --no-startup-id maim --window $(xdotool getactivewindow) "/home/$USER/Screenshots/$(date | tr -c '[:alnum:]' '_').png"
 bindsym Shift+Print exec --no-startup-id maim --select "/home/$USER/Screenshots/$(date | tr -c '[:alnum:]' '_').png"
+
 
 # Apps ((nvm it work) why no work)
 bindsym $mod+Shift+d exec --no-startup-id rustup doc
@@ -111,9 +114,9 @@ bar {
         # separator   #fffaf3
 
         # dark mode
-         background  #1f1d2e
-         statusline  #dddddd
-         separator   #fffaf3
+        background  #1f1d2e
+        statusline  #dddddd
+        separator   #fffaf3
 
         # light mode
         # focused_workspace #CECECE #CECECE #000000
@@ -122,10 +125,10 @@ bar {
         # urgent_workspace #eb709b #eb709b #ffffff
 
         # dark mode
-         focused_workspace #ea9a97 #ea9a97 #000000
-         active_workspace #1f1d2e #1f1d2e #333333
-         inactive_workspace #1f1d2e #1f1d2e #f1f1f1
-         urgent_workspace #eb709b #eb709b #ffffff
+        focused_workspace #ea9a97 #ea9a97 #000000
+        active_workspace #1f1d2e #1f1d2e #333333
+        inactive_workspace #1f1d2e #1f1d2e #f1f1f1
+        urgent_workspace #eb709b #eb709b #ffffff
     }
 }
 
@@ -197,7 +200,7 @@ assign [class="Alacritty"] 1
 
 # (Browsers)
 assign [class="Brave"] 2
-assign [class="Firefox"] 2
+assign [class="firefox"] 2
 assign [class="Chromium"] 2
 
 # (Games)
