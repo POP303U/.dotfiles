@@ -383,6 +383,7 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 alias bottles='nohup flatpak run com.usebottles.bottles&'
 alias bottles-fix='flatpak override --user --filesystem="host" com.usebottles.bottles'
 alias roblox='nohup flatpak run net.brinkervii.grapejuice app&'
+alias debug-dunst='pkill -9 dunst && dunst &'
 
 # For editing configs
 alias v-i3='cd ~/.config/i3 && ${EDITOR} ~/.config/i3/config'
@@ -400,6 +401,7 @@ alias v-neofetch='cd ~/.config/neofetch && ${EDITOR} ~/.config/neofetch/config.c
 alias v-nvim='cd ~/.config/nvim && ${EDITOR} ~/.config/nvim/init.lua'
 alias v-paru='cd ~/.config/paru && ${EDITOR} ~/.config/paru/paru.conf'
 alias v-rofi='cd ~/.config/rofi && ${EDITOR} ~/.config/rofi/config.rasi'
+alias v-dunst='cd ~/.config/dunst && ${EDITOR} ~/.config/dunst/dunstrc'
 alias v-bashrc='cd ~ && ${EDITOR} ~/.bashrc'
 alias g-projects='cd ~/personal/github' 
 alias v-projects='cd $PROJECTS && nvim'
@@ -510,3 +512,9 @@ set -o vi
 clear # Could cause issues if errors aren't reported
 neofetch
 ### EOF ###
+
+# Enable ioBroker command auto-completion
+source ~/.iobroker/iobroker_completions
+
+# Forces npm to run as iobroker when inside the iobroker installation dir
+source ~/.iobroker/npm_command_fix
