@@ -38,9 +38,10 @@ font pango:CaskaydiaCove Nerd Font, Italic  $font_size
 #Start all custom services (nitrogen, autotiling, picom, polybar):
 exec --no-startup-id picom --config ~/.config/picom/picom.conf
 exec --no-startup-id nitrogen --restore
+exec --no-startup-id lxpolkit
 exec --no-startup-id autotiling
 exec --no-startup-id cmus-discord-rpc
-exec --no-startup-id xmodmap ~/.Xmodmap
+exec_always --no-startup-id xmodmap ~/.Xmodmap
 # not needed polybar exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # rofi 
@@ -224,34 +225,11 @@ bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -t warning -m 'You pressed 
 
 exec --no-startup-id $terminal
 # give me a terminal when i start pls (not when i reload tho)
-
-# ----------------------------------- #
-# DEPRECATED (Why would you use this) #
-# ----------------------------------- #
-
-# Set Background on boot (feh package is necessary)
-# exec_always --no-startup-id /usr/bin/feh --bg-scale ~/Pictures/wallhaven-6o2qjw.png
-# exec --no-startup-id compton
-
-# Compton is faster but nitrogen is more convenient (choose your tradeoff)
-# why did i compare compton with nitrogen bruh
-
-#  toggle tiling / floating
-# bindsym $mod+Shift+space floating toggle
-
-# toggle tiling / floating
-bindsym $mod+Shift+space floating toggle
-
+# toggle tiling / floating bindsym $mod+Shift+space floating toggle
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
 
 mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
-
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
         bindsym h resize shrink width 10 px or 10 ppt
         bindsym j resize grow height 10 px or 10 ppt
         bindsym k resize shrink height 10 px or 10 ppt
