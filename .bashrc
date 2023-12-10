@@ -39,22 +39,6 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[[01;32m\]\u@\h\[[00m\]:\[[01;34m\]\w\[[00m\]\$ '
-else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-fi
-unset color_prompt force_color_prompt
-
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\]$PS1"
-    ;;
-*)
-    ;;
-esac
-
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -361,14 +345,22 @@ unset bash_prompt
 # exports for pipx cargo gcc
 export PATH=$PATH:~/.cargo/bin
 export PATH=$PATH:~/.config/emacs/bin
-export EDITOR=nvim
-export PROJECTS="/mnt/sdc1/Projects/"
-export VISUAL=nvim
-export PATH="$PATH:/home/archy/.local/bin"
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+export PATH=$PATH:/home/archy/.local/bin
+export TERM_PROGRAM=tmux
 export TERMINAL=/usr/bin/kitty
-
-#export PS1="\[\e]133;k;start_kitty\a\]\[\e]133;A\a\]\[\e]133;k;end_kitty\a\]\[\033]0;\u:${NEW_PWD}\007\]\n\[\e]133;k;start_secondary_kitty\a\]\[\e]133;A;k=s\a\]\[\e]133;k;end_secondary_kitty\a\]\[\033[0;1;97;40m\] \u \[\033[0;30;100m\]\[\033[0;1;97;100m\] \h \[\033[0;90;106m\]\[\033[0;30;1;106m\] ${NEW_PWD} \[\033[0;96;49m\]\[\033[1;38;5;15m\] \[\e]133;k;start_suffix_kitty\a\]\[\e]2;\w\a\]\[\e]133;k;end_suffix_kitty\a\]"
+export EDITOR=nvim
+export VISUAL=nvim
+export PROJECTS="/mnt/sdc1/Projects/"
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+export blk='\[\033[01;30m\]'   # Black
+export red='\[\033[01;31m\]'   # Red
+export grn='\[\033[01;32m\]'   # Green
+export ylw='\[\033[01;33m\]'   # Yellow
+export blu='\[\033[01;34m\]'   # Blue
+export pur='\[\033[01;35m\]'   # Purple
+export cyn='\[\033[01;36m\]'   # Cyan
+export wht='\[\033[01;37m\]'   # White
+export clr='\[\033[00m\]'      # Reset
 
 # good aliases
 alias ..='cd ..'
@@ -424,28 +416,43 @@ else
     fi
 fi
 
-blk='\[\033[01;30m\]'   # Black
-red='\[\033[01;31m\]'   # Red
-grn='\[\033[01;32m\]'   # Green
-ylw='\[\033[01;33m\]'   # Yellow
-blu='\[\033[01;34m\]'   # Blue
-pur='\[\033[01;35m\]'   # Purple
-cyn='\[\033[01;36m\]'   # Cyan
-wht='\[\033[01;37m\]'   # White
-clr='\[\033[00m\]'      # Reset
+function git_branch () {
+    if [ -d .git ] ; then
+        printf "%s" "($(git branch 2> /dev/null | awk '/\*/{print $2}'))";
+    fi
+}
 
-#function git_branch() {
-#    if [ -d .git ] ; then
-#        printf "%s" "($(git branch 2> /dev/null | awk '/\*/{print $2}'))";
-#    fi
-#}
+function current_host () {
+    printf "%s" "$(uname -a | awk '{print $2}')"
+}
 
-# Set the prompt.
-#function bash_prompt(){
-#    PS1='${debian_chroot:+($debian_chroot)}'${blu}'$(git_branch)'${pur}' \W'${grn}' \$ '${clr}
-#}
+function current_user () {
+    printf "%s" "$(users | awk '{print $1}')"
+}
 
-#bash_prompt
+function current_path () {
+    CUR_PWD="${PWD/#$HOME/\~}"
+
+    #TODO truncate dirs when length greater than 30
+    
+    if [ "${#CUR_PWD}" -gt "30" ]; then
+    	printf "%s" "${PWD/#$HOME/\~}"
+    else
+    	printf "%s" "${PWD/#$HOME/\~}"
+    fi
+
+}
+
+
+function simple_but_functional_bash_prompt () {
+	PS1=''${blu}'$(git_branch)'${pur}''${grn}' $(current_host)'${blu}' | '${pur}'$(current_user) '${blu}'|'${ylw}' $(current_path)'${grn}' \$ '${clr} 
+}
+
+newline_opt='\n'
+simple_but_functional_bash_prompt
+
+#export PS1="\[\e]133;k;start_kitty\a\]\[\e]133;A\a\]\[\e]133;k;end_kitty\a\]\[\033]0;\u:${NEW_PWD}\007\]\n\[\e]133;k;start_secondary_kitty\a\]\[\e]133;A;k=s\a\]\[\e]133;k;end_secondary_kitty\a\]\[\033[0;1;97;40m\] \u \[\033[0;30;100m\]\[\033[0;1;97;100m\] \h \[\033[0;90;106m\]\[\033[0;30;1;106m\] ${NEW_PWD} \[\033[0;96;49m\]\[\033[1;38;5;15m\] \[\e]133;k;start_suffix_kitty\a\]\[\e]2;\w\a\]\[\e]133;k;end_suffix_kitty\a\]"
+
 
 hg() {
     history | grep "$1";
@@ -480,6 +487,15 @@ ex ()
   fi
 }
 
+pac ()
+{
+    if [ -f $1 ] ; then
+        case $1 in 
+            "install")  doas pacman -S $2 ;;
+            *)                            ;;    
+        esac
+    fi
+}
 # vim mode yay
 set -o vi
 
