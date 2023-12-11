@@ -36,12 +36,12 @@ bindsym $mod+Return exec --no-startup-id $terminal
 font pango:CaskaydiaCove Nerd Font, Italic  $font_size
 
 #Start all custom services (nitrogen, autotiling, picom, polybar):
-exec --no-startup-id picom --config ~/.config/picom/picom.conf
 exec --no-startup-id nitrogen --restore
 exec --no-startup-id lxpolkit
-exec --no-startup-id dunst
-exec --no-startup-id autotiling
+exec_always --no-startup-id dunst
 exec --no-startup-id cmus-discord-rpc
+exec_always --no-startup-id picom --config ~/.config/picom/picom.conf
+exec_always --no-startup-id autotiling
 exec_always --no-startup-id xmodmap ~/.Xmodmap
 # not needed polybar exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
@@ -96,7 +96,7 @@ client.urgent           #4c4f69 #4c4f69 #ffffff #f6c177 #4c4f69
 
 # Custom gaps + Borders 
 smart_borders on
-for_window [class="^.*"] border pixel 2
+for_window [class="^.*"] border pixel 0
 gaps inner $inner_gaps_size
 gaps outer $outer_gaps_size
 
@@ -229,12 +229,19 @@ exec --no-startup-id $terminal
 # toggle tiling / floating bindsym $mod+Shift+space floating toggle
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
 
 mode "resize" {
         bindsym h resize shrink width 10 px or 10 ppt
         bindsym j resize grow height 10 px or 10 ppt
         bindsym k resize shrink height 10 px or 10 ppt
         bindsym l resize grow width 10 px or 10 ppt
+
+        bindsym Ctrl+h resize shrink width 30 px or 30 ppt
+        bindsym Ctrl+j resize grow height 30 px or 30 ppt
+        bindsym Ctrl+k resize shrink height 30 px or 30 ppt
+        bindsym Ctrl+l resize grow width 30 px or 30 ppt
 
         # back to normal: Enter or Escape
         bindsym Return mode "default"
