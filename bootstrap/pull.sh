@@ -1,5 +1,5 @@
-rm -rf ../.config
-mkdir ../.config
+rm -rvf ../.config
+mkdir -v ../.config
     
 cp -rv ~/.config/autoclicker    ../.config
 cp -rv ~/.config/alacritty      ../.config
