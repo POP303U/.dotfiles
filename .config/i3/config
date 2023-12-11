@@ -209,6 +209,8 @@ assign [class="Chromium"] 2
 assign [class="Lutris"] 3
 assign [class="Roblox"] 3
 assign [class="bottles"] 3
+assign [class="robloxplayerbeta.exe"] 3
+assign [class="robloxplayerlauncher.exe"] 3
 
 # (Chatting Services)
 assign [class="Discord"] 4
