@@ -60,7 +60,7 @@ fi
 ##	  A small helper function to generate color formating codes from simple
 ##	  number codes (defined below as local variables for convenience).
 ##
-##	* bash_prompt()
+##	* fancy_bash_prompt()
 ##	  This function colorizes the bash promt. The exact color scheme can be
 ##	  configured here. The structure of the function is as follows:
 ##		1. A. Definition of available colors for 16 bits.
@@ -145,7 +145,7 @@ format_font()
 ##
 ## COLORIZE BASH PROMT
 ##
-bash_prompt() {
+fancy_bash_prompt() {
 
 	############################################################################
 	## COLOR CODES                                                            ##
@@ -339,8 +339,6 @@ PROMPT_COMMAND=bash_prompt_command
 ##	Call bash_promnt only once, then unset it (not needed any more)
 ##	It will set $PS1 with colors and relative to $NEW_PWD, 
 ##	which gets updated by $PROMT_COMMAND on behalf of the terminal
-bash_prompt
-unset bash_prompt
 
 # exports for pipx cargo gcc
 export PATH=$PATH:~/.cargo/bin
@@ -383,6 +381,7 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 alias bottles='nohup flatpak run com.usebottles.bottles&'
 alias bottles-fix='flatpak override --user --filesystem="host" com.usebottles.bottles'
 alias roblox='nohup flatpak run net.brinkervii.grapejuice app&'
+alias fix-roblox='pkill -9 Roblox'
 alias debug-dunst='pkill -9 dunst && dunst &'
 
 # For editing configs
@@ -403,6 +402,7 @@ alias v-paru='cd ~/.config/paru && ${EDITOR} ~/.config/paru/paru.conf'
 alias v-rofi='cd ~/.config/rofi && ${EDITOR} ~/.config/rofi/config.rasi'
 alias v-dunst='cd ~/.config/dunst && ${EDITOR} ~/.config/dunst/dunstrc'
 alias v-bashrc='cd ~ && ${EDITOR} ~/.bashrc'
+alias v-emacs='cd ~ && ${EDITOR} ~/.emacs'
 alias g-projects='cd ~/personal/github' 
 alias v-projects='cd $PROJECTS && nvim'
 
@@ -418,10 +418,21 @@ else
     fi
 fi
 
-function git_branch () {
+################################
+#
+# Functions
+#
+################################
+
+function current_git () {
     if [ -d .git ] ; then
         printf "%s" "($(git branch 2> /dev/null | awk '/\*/{print $2}'))";
+        printf "%s" " "
     fi
+}
+
+function current_kernel () {
+    printf "%s" "$(uname -r)"
 }
 
 function current_host () {
@@ -434,26 +445,81 @@ function current_user () {
 
 function current_path () {
     CUR_PWD="${PWD/#$HOME/\~}"
-
-    #TODO truncate dirs when length greater than 30
     
     if [ "${#CUR_PWD}" -gt "30" ]; then
-    	printf "%s" "${PWD/#$HOME/\~}"
+    	#printf "%s" "${CUR_PWD:0:30-3}..."
+        printf "%s" "...${CUR_PWD: -30-3}"
     else
     	printf "%s" "${PWD/#$HOME/\~}"
     fi
-
 }
 
-
-function simple_but_functional_bash_prompt () {
-	PS1=''${blu}'$(git_branch)'${pur}''${grn}' $(current_host)'${blu}' | '${pur}'$(current_user) '${blu}'|'${ylw}' $(current_path)'${grn}' \$ '${clr} 
+function current_time () {
+    printf "%s" "$(date +%r | xargs)"    
 }
 
-newline_opt='\n'
-simple_but_functional_bash_prompt
+################################
+#
+# Prompts
+#
+################################
 
-#export PS1="\[\e]133;k;start_kitty\a\]\[\e]133;A\a\]\[\e]133;k;end_kitty\a\]\[\033]0;\u:${NEW_PWD}\007\]\n\[\e]133;k;start_secondary_kitty\a\]\[\e]133;A;k=s\a\]\[\e]133;k;end_secondary_kitty\a\]\[\033[0;1;97;40m\] \u \[\033[0;30;100m\]\[\033[0;1;97;100m\] \h \[\033[0;90;106m\]\[\033[0;30;1;106m\] ${NEW_PWD} \[\033[0;96;49m\]\[\033[1;38;5;15m\] \[\e]133;k;start_suffix_kitty\a\]\[\e]2;\w\a\]\[\e]133;k;end_suffix_kitty\a\]"
+### PS1
+
+function simple_and_functional() {
+	PS1=''${blu}'$(current_git)'${pur}''${grn}'$(current_host)'${blu}' | '${pur}'$(current_user) '${blu}'|'${ylw}' $(current_path)'${grn}' \$ '${clr} 
+}
+
+function artix_iso() {
+	PS1=''${grn}'$(current_host)'${clr}':'${red}'['${blu}'$(current_user)'${red}']'${clr}':'${pur}'$(current_path)'${ylw}' \$ '${clr} 
+}
+
+function arch_iso() {
+    PS1=''${red}'$(current_user)'${clr}'@$(current_host) $(current_path) # '
+}
+
+function gentoo_iso() {
+    PS1=''${grn}'$(current_user)@$(current_host) '${blu}'$(current_path) '${clr}'% '
+}
+
+function general_iso() {
+    PS1=''${grn}'$(current_user)@$(current_host) '${blu}'$(current_path) \$'${clr}' '
+}
+
+function useful_shell() {
+    PS1='\n'${red}'╔('${grn}'$(current_host)'${red}')'═'('${blu}'$(current_user)'${red}')'═'('${cyn}'$(current_kernel)'${red}')'═'('${pur}'$(current_time)'${red}')\n╚'${red}'('${ylw}'$(current_path)'${red}')'${blu}' => '${clr}''
+}
+
+function default() {
+    PS1='[\u@\h \W]\$'
+}
+
+### PS2
+
+function nice_arrow() {
+    PS2=''${blu}'=> '${clr}''
+}
+    
+################################
+#
+# Select your Prompt!
+#
+################################
+# Uncomment the prompt you want to select it
+# Customize the arrow for a command spanning multiple lines
+
+# PS1 =>
+#simple_and_functional  # simple prompt with all information necessary
+#fancy_bash_prompt      # fancy bash prompt 
+useful_shell           # two line bash prompt with much information
+#arch_iso               # prompt based on artix live iso
+#artix_iso              # prompt based on artix live iso
+#gentoo_iso             # prompt based on gentoo live iso
+#general_iso            # prompt based on mostly all linux distros defaults
+#default                # default bash prompt
+
+# PS2 =>
+nice_arrow             # simple blue arrow 
 
 
 hg() {
@@ -512,9 +578,3 @@ set -o vi
 clear # Could cause issues if errors aren't reported
 neofetch
 ### EOF ###
-
-# Enable ioBroker command auto-completion
-source ~/.iobroker/iobroker_completions
-
-# Forces npm to run as iobroker when inside the iobroker installation dir
-source ~/.iobroker/npm_command_fix
