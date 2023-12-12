@@ -402,7 +402,7 @@ alias v-paru='cd ~/.config/paru && ${EDITOR} ~/.config/paru/paru.conf'
 alias v-rofi='cd ~/.config/rofi && ${EDITOR} ~/.config/rofi/config.rasi'
 alias v-dunst='cd ~/.config/dunst && ${EDITOR} ~/.config/dunst/dunstrc'
 alias v-bashrc='cd ~ && ${EDITOR} ~/.bashrc'
-alias v-emacs='cd ~ && ${EDITOR} ~/.emacs'
+alias v-emacs='cd ~/.config/emacs && ${EDITOR} ~/config.org'
 alias g-projects='cd ~/personal/github' 
 alias v-projects='cd $PROJECTS && nvim'
 
@@ -488,6 +488,9 @@ function general_iso() {
 
 function useful_shell() {
     PS1='\n'${red}'╔('${grn}'$(current_host)'${red}')'═'('${blu}'$(current_user)'${red}')'═'('${cyn}'$(current_kernel)'${red}')'═'('${pur}'$(current_time)'${red}')\n╚'${red}'('${ylw}'$(current_path)'${red}')'${blu}' => '${clr}''
+}
+function useful_shell() {
+    PS1=''${grn}'$(current_git)'${blu}'  '${clr}'$(current_path) '${blu}' '${clr}''
 }
 
 function default() {
@@ -576,5 +579,15 @@ set -o vi
 ######    
 
 clear # Could cause issues if errors aren't reported
-neofetch
+
+# Fetching scripts
+
+#neofetch
+#pfetch
+#screenfetch
+#fastfetch
+pokemon-colorscripts --no-title -r 4
+
 ### EOF ###
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
