@@ -489,8 +489,13 @@ function general_iso() {
 function useful_shell() {
     PS1='\n'${red}'╔('${grn}'$(current_host)'${red}')'═'('${blu}'$(current_user)'${red}')'═'('${cyn}'$(current_kernel)'${red}')'═'('${pur}'$(current_time)'${red}')\n╚'${red}'('${ylw}'$(current_path)'${red}')'${blu}' => '${clr}''
 }
-function useful_shell() {
+
+function nice_shell_artix() {
     PS1=''${grn}'$(current_git)'${blu}'  '${clr}'$(current_path) '${blu}' '${clr}''
+}
+
+function nice_shell_void() {
+    PS1=''${blu}'$(current_git)'${grn}'  '${clr}'$(current_path) '${grn}' '${clr}''
 }
 
 function default() {
@@ -502,7 +507,23 @@ function default() {
 function nice_arrow() {
     PS2=''${blu}'=> '${clr}''
 }
-    
+
+function small_arrow() {
+    PS2=''${blu}'-> '${clr}''
+}
+
+function default() {
+    PS2=''${clr}'> '
+}   
+
+function pretty_angle() {
+    PS2=''${pur}' '${clr}''
+}   
+
+function pretty_dollar() {
+    PS2=''${pur}': '${clr}''
+}   
+
 ################################
 #
 # Select your Prompt!
@@ -514,7 +535,9 @@ function nice_arrow() {
 # PS1 =>
 #simple_and_functional  # simple prompt with all information necessary
 #fancy_bash_prompt      # fancy bash prompt 
-useful_shell           # two line bash prompt with much information
+#useful_shell           # two line bash prompt with much information
+nice_shell_artix       # simple shell i use (artix)
+#nice_shell_void        # simple shell i use (void)
 #arch_iso               # prompt based on artix live iso
 #artix_iso              # prompt based on artix live iso
 #gentoo_iso             # prompt based on gentoo live iso
@@ -522,7 +545,11 @@ useful_shell           # two line bash prompt with much information
 #default                # default bash prompt
 
 # PS2 =>
-nice_arrow             # simple blue arrow 
+#fat_arrow             # simple fat blue arrow 
+#small_arrow           # simple small blue arrow 
+#pretty_angle          # angle brackets like 'nice_shell_artix' prompt         
+pretty_dollar         # dollar prompt but pretty
+#default               # default arrow
 
 
 hg() {
@@ -567,16 +594,9 @@ pac ()
         esac
     fi
 }
+
 # vim mode yay
 set -o vi
-
-# Old:
-######
-    #alias grep='rg'
-    #alias cat='bat'
-    #alias htop='btm'
-    #alias find='fd --color=always'
-######    
 
 clear # Could cause issues if errors aren't reported
 
@@ -588,6 +608,6 @@ clear # Could cause issues if errors aren't reported
 #fastfetch
 pokemon-colorscripts --no-title -r 4
 
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 ### EOF ###
 
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
