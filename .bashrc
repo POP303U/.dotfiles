@@ -341,6 +341,9 @@ PROMPT_COMMAND=bash_prompt_command
 ##	which gets updated by $PROMT_COMMAND on behalf of the terminal
 
 # exports for pipx cargo gcc
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+source "$HOME/.cargo/env"
+
 export PATH=$PATH:~/.cargo/bin
 export PATH=$PATH:~/.config/emacs/bin
 export PATH=$PATH:/home/archy/.local/bin
@@ -350,6 +353,7 @@ export EDITOR=nvim
 export VISUAL=nvim
 export PROJECTS="/mnt/sdc1/Projects/"
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
 export blk='\[\033[01;30m\]'   # Black
 export red='\[\033[01;31m\]'   # Red
 export grn='\[\033[01;32m\]'   # Green
@@ -403,19 +407,21 @@ alias v-rofi='cd ~/.config/rofi && ${EDITOR} ~/.config/rofi/config.rasi'
 alias v-dunst='cd ~/.config/dunst && ${EDITOR} ~/.config/dunst/dunstrc'
 alias v-bashrc='cd ~ && ${EDITOR} ~/.bashrc'
 alias v-emacs='cd ~/.config/emacs && ${EDITOR} ~/config.org'
+alias v-hyprland='cd ~/.config/hypr && ${EDITOR} ~/.config/hypr/hyprland.conf'
+alias v-hyprland-binds='cd ~/.config/emacs && ${EDITOR} ~/config.org'
+alias v-waybar='cd ~/.config/waybar && ${EDITOR} ~/.config/waybar/config.jsonc'
+
 alias g-projects='cd ~/personal/github' 
 alias v-projects='cd $PROJECTS && nvim'
 
-# Conditional ls (stupidly nested)
+# Conditional ls ((stupidly nested) not anymore!)
 if [ -e "$HOME/.cargo/bin/eza" ]; then
-    . "$HOME/.cargo/env"
-    alias ls='eza --icons --long --colour=always --binary --header'
+    alias ls='eza --icons --colour=always --binary --header'
+    alias la='eza --all --icons --long --colour=always --binary --header'
+    alias ll='eza --icons --long --colour=always --binary --header'
 else
-    alias l='ls -CF'
-    if [ -x /usr/bin/dircolors ]; then
-        test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-        alias ls='ls --color=auto'
-    fi
+    alias ll='ls -l'
+    alias la='ls -la'
 fi
 
 ################################
@@ -606,8 +612,7 @@ clear # Could cause issues if errors aren't reported
 #pfetch
 #screenfetch
 #fastfetch
-pokemon-colorscripts --no-title -r 4
+pokemon-colorscripts --no-title -r 
 
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 ### EOF ###
 
