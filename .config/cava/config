@@ -177,7 +177,6 @@ fragment_shader = northern_lights.frag
 ; foreground = '#c4a7e7'
 
 gradient = 1
-gradient_count = 6
 
 ; #        # ;
 ; # THEMES # ;
@@ -185,6 +184,23 @@ gradient_count = 6
 
 # TO SET A THEME CHANGE THE ORDER
 # THE BOTTOM THEME IS THE ONE BEING LOADED
+
+# OVERDRIVE
+gradient_color_1 = '#31748f'
+gradient_color_2 = '#3e8fb0'
+gradient_color_3 = '#9ccfd8'
+gradient_color_4 = '#ebbcba'
+gradient_color_5 = '#ea9a97'
+gradient_color_6 = '#eb6f92'
+
+# sweetpastel (https://github.com/sweetpastel/cava)
+gradient_color_1 = '#FFDEDE'
+gradient_color_2 = '#A3CBE7'
+gradient_color_3 = '#C9D4FF'
+gradient_color_4 = '#CEACE8'
+gradient_color_5 = '#ECE3B1'
+gradient_color_6 = '#B4E3AD'
+gradient_color_7 = '#E5A3A1'
 
 # OVERDRIVE INVERSE
 gradient_color_6 = '#31748f'
@@ -194,13 +210,15 @@ gradient_color_3 = '#ebbcba'
 gradient_color_2 = '#ea9a97'
 gradient_color_1 = '#eb6f92'
 
-# OVERDRIVE
-gradient_color_1 = '#31748f'
-gradient_color_2 = '#3e8fb0'
-gradient_color_3 = '#9ccfd8'
-gradient_color_4 = '#ebbcba'
-gradient_color_5 = '#ea9a97'
-gradient_color_6 = '#eb6f92'
+# catppuccin mocha (https://github.com/catppuccin/cava)
+gradient_color_1 = '#94e2d5'
+gradient_color_2 = '#89dceb'
+gradient_color_3 = '#74c7ec'
+gradient_color_4 = '#89b4fa'
+gradient_color_5 = '#cba6f7'
+gradient_color_6 = '#f5c2e7'
+gradient_color_7 = '#eba0ac'
+gradient_color_8 = '#f38ba8'
 
 [smoothing]
 
@@ -211,7 +229,7 @@ gradient_color_6 = '#eb6f92'
 # Noise reduction, int 0 - 100. default 77
 # the raw visualization is very noisy, this factor adjusts the integral and gravity filters to keep the signal smooth
 # 100 will be very slow and smooth, 0 will be fast but noisy.
-noise_reduction = 144   
+noise_reduction = 100   
 
 [eq]
 
