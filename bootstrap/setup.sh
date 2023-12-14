@@ -1,4 +1,6 @@
 cp -rv ../.config/autoclicker   ~/.config
+cp -rv ../.config/hypr          ~/.config
+cp -rv ../.config/waybar        ~/.config
 cp -rv ../.config/alacritty     ~/.config
 cp -rv ../.config/i3blocks      ~/.config
 cp -rv ../.config/polybar       ~/.config
