@@ -387,6 +387,7 @@ alias bottles-fix='flatpak override --user --filesystem="host" com.usebottles.bo
 alias roblox='nohup flatpak run net.brinkervii.grapejuice app&'
 alias fix-roblox='pkill -9 Roblox'
 alias debug-dunst='pkill -9 dunst && dunst &'
+alias keysoup='sudo systemctl restart keyd && sudo systemctl enable keyd && sudo systemctl start keyd'    
 
 # For editing configs
 alias v-i3='cd ~/.config/i3 && ${EDITOR} ~/.config/i3/config'
@@ -406,11 +407,12 @@ alias v-paru='cd ~/.config/paru && ${EDITOR} ~/.config/paru/paru.conf'
 alias v-rofi='cd ~/.config/rofi && ${EDITOR} ~/.config/rofi/config.rasi'
 alias v-dunst='cd ~/.config/dunst && ${EDITOR} ~/.config/dunst/dunstrc'
 alias v-bashrc='cd ~ && ${EDITOR} ~/.bashrc'
-alias v-emacs='cd ~/.config/emacs && ${EDITOR} ~/config.org'
+alias v-emacs='cd ~/.config/emacs && ${EDITOR} ~/.config/emacs/config.org'
 alias v-hyprland='cd ~/.config/hypr && ${EDITOR} ~/.config/hypr/hyprland.conf'
 alias v-hyprland-binds='cd ~/.config/emacs && ${EDITOR} ~/config.org'
 alias v-waybar='cd ~/.config/waybar && ${EDITOR} ~/.config/waybar/config.jsonc'
-
+alias v-autoclicker='cd ~/.config/autoclicker && ${EDITOR} ~/.config/autoclicker/clicker_start'
+alias dv-keyd='cd /etc/keyd/ && sudo ${EDITOR} /etc/keyd/default.conf'
 alias g-projects='cd ~/personal/github' 
 alias v-projects='cd $PROJECTS && nvim'
 
