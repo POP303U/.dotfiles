@@ -408,10 +408,11 @@ alias v-rofi='cd ~/.config/rofi && ${EDITOR} ~/.config/rofi/config.rasi'
 alias v-dunst='cd ~/.config/dunst && ${EDITOR} ~/.config/dunst/dunstrc'
 alias v-bashrc='cd ~ && ${EDITOR} ~/.bashrc'
 alias v-emacs='cd ~/.config/emacs && ${EDITOR} ~/.config/emacs/config.org'
-alias v-hyprland='cd ~/.config/hypr && ${EDITOR} ~/.config/hypr/hyprland.conf'
-alias v-hyprland-binds='cd ~/.config/emacs && ${EDITOR} ~/config.org'
+alias v-hypr='cd ~/.config/hypr && ${EDITOR} ~/.config/hypr/hyprland.conf'
+alias v-hypr-binds='cd ~/.config/emacs && ${EDITOR} ~/config.org'
 alias v-waybar='cd ~/.config/waybar && ${EDITOR} ~/.config/waybar/config.jsonc'
 alias v-autoclicker='cd ~/.config/autoclicker && ${EDITOR} ~/.config/autoclicker/clicker_start'
+alias v-swww='cd ~/.config/swww/scripts && ${EDITOR} ~/.config/swww/scripts/change_wallpaper'
 alias dv-keyd='cd /etc/keyd/ && sudo ${EDITOR} /etc/keyd/default.conf'
 alias g-projects='cd ~/personal/github' 
 alias v-projects='cd $PROJECTS && nvim'
@@ -570,39 +571,104 @@ bf () {
 
 ex ()
 {
-  if [ -f $1 ] ; then
-    case $1 in
-      *.tar.bz2)   tar xjf $1   ;;
-      *.tar.gz)    tar xzf $1   ;;
-      *.bz2)       bunzip2 $1   ;;
-      *.rar)       unrar x $1   ;;
-      *.gz)        gunzip $1    ;;
-      *.tar)       tar xf $1    ;;
-      *.tbz2)      tar xjf $1   ;;
-      *.tgz)       tar xzf $1   ;;
-      *.zip)       unzip $1     ;;
-      *.Z)         uncompress $1;;
-      *.7z)        7z x $1      ;;
-      *.deb)       ar x $1      ;;
-      *.tar.xz)    tar xf $1    ;;
-      *.tar.zst)   tar xf $1    ;;
-      *)           echo "'$1' cannot be extracted via ex()" ;;
-    esac
-  else
-    echo "'$1' is not a valid file"
-  fi
-}
-
-pac ()
-{
     if [ -f $1 ] ; then
-        case $1 in 
-            "install")  doas pacman -S $2 ;;
-            *)                            ;;    
+        case $1 in
+            *.tar.bz2)   tar xjf $1   ;;
+            *.tar.gz)    tar xzf $1   ;;
+            *.bz2)       bunzip2 $1   ;;
+            *.rar)       unrar x $1   ;;
+            *.gz)        gunzip $1    ;;
+            *.tar)       tar xf $1    ;;
+            *.tbz2)      tar xjf $1   ;;
+            *.tgz)       tar xzf $1   ;;
+            *.zip)       unzip $1     ;;
+            *.Z)         uncompress $1;;
+            *.7z)        7z x $1      ;;
+            *.deb)       ar x $1      ;;
+            *.tar.xz)    tar xf $1    ;;
+            *.tar.zst)   tar xf $1    ;;
+            *)           echo "'$1' cannot be extracted via ex()" ;;
         esac
+    else
+        echo "'$1' is not a valid file"
     fi
 }
 
+plihac ()
+{
+
+    packages=()
+
+    # Iterate over the remaining arguments (package names)
+    while [ "$#" -gt 0 ]; do
+        # Add the current argument (package name) to the array
+        packages+=("$1")
+
+            # Move to the next argument
+            shift
+    done
+
+    case $1 in
+        -u)   sudo pacman -Syu                ;;
+        -s)   sudo pacman -Syy                ;;
+        -i)   sudo pacman -S   ${packages[@]} ;;
+        -r)   sudo pacman -R   ${packages[@]} ;;
+        -q)   sudo pacman -Qs  ${packages[@]} ;;
+        -h)   echo "usage:  pac <operation> [package/...]
+operations:
+    pac { -u (system upgrade) }
+    pac { -i (install package) } <package(s)>
+    pac {-h --help}
+    pac {-V --version}
+    pac {-D --database} <options> <package(s)>
+    pac {-F --files}    [options] [file(s)]
+    pac {-Q --query}    [options] [package(s)]
+    pac {-R --remove}   [options] <package(s)>
+    pac {-S --sync}     [options] [package(s)]
+    pac {-U --upgrade}  [options] <file(s)>" 
+    esac
+
+}
+
+pac() {
+    # Check if the first argument is -i
+    case $1 in
+        -i|--install) shift
+            if [ "$#" -gt 0 ]; then
+                # Install the packages using pacman
+                sudo pacman -S "$@"
+            else
+                echo "No packages specified for installation."
+            fi ;;
+        -r|--remove) shift
+            if [ "$#" -gt 0 ]; then
+                # Install the packages using pacman
+                sudo pacman -Rn "$@"
+            else
+                echo "No packages specified for removal."
+            fi ;;
+        -q|--query) shift
+            if [ "$#" -gt 0 ]; then
+                # Install the packages using pacman
+                sudo pacman -Qs "$@"
+            else
+                echo "No packages specified for search."
+            fi ;;
+        -u|--upgrade) shift
+                sudo pacman -Syu "$@" ;;
+        -s|--sync) shift
+                sudo pacman -S "$@" ;;
+
+         *) echo "Usage: pac <operation> [...]
+operations:
+    pac { -i --install } <packages(s)>
+    pac { -r --remove  } <packages(s)>
+    pac { -q --query   } <packages(s)>
+    pac { -u --upgrade } Perform a full system upgrade
+    pac { -s --sync    } Sync all packages with the repository
+    pac { -h --help    } Display this help message";;
+     esac
+}
 # vim mode yay
 set -o vi
 
