@@ -13,13 +13,13 @@ GIT_EXISTS=/sbin/git
 
 if [[ -f $PARU_EXISTS || -f $YAY_EXISTS ]]; then
     if [ -f "$PARU_EXISTS" ]; then 
-        AUR_HELPER=yay
+        AUR_HELPER=paru
         echo -e "Paru was detected, using Paru..."
         $AUR_HELPER -Suy --noconfirm
     fi
 
     if [ -f "$YAY_EXISTS" ]; then
-        AUR_HELPER=paru
+        AUR_HELPER=yay
         echo -e "Paru was detected, using Paru..."
         $AUR_HELPER -Suy --noconfirm
     fi
