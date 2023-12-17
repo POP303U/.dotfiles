@@ -89,14 +89,13 @@ bindsym $mod+Shift+w exec --no-startup-id $browser
 
 # Custom border colours (text is not neccessary)
 # class                 border  backgr. (     ) indica. child_border
-client.focused          #4c4f69 #4c4f69 #ffffff #f6c177 #4c4f69
-client.focused_inactive #ea9a97 #4c4f69 #ffffff #4c4f69 #4c4f69
-client.unfocused        #4c4f69 #000000 #ffffff #ea9a97 #4c4f69
-client.urgent           #4c4f69 #4c4f69 #ffffff #f6c177 #4c4f69
+client.focused          #31748f #4c4f69 #ffffff #31748f #31748f
+client.focused_inactive #9ccfd8 #4c4f69 #ffffff #9ccfd8 #9ccfd8
+client.unfocused        #4c4f69 #000000 #ffffff #9ccfd8 #9ccfd8
+client.urgent           #ebbcba #4c4f69 #ffffff #ebbcba #ebbcba
 
 # Custom gaps + Borders 
-smart_borders on
-for_window [class="^.*"] border pixel 0
+for_window [class="^.*"] border pixel 2
 gaps inner $inner_gaps_size
 gaps outer $outer_gaps_size
 
