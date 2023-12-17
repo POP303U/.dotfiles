@@ -1,0 +1,119 @@
+#!/bin/sh
+
+echo -e "#-------------------#"
+echo -e "# Easy i3 installer #"
+echo -e "#-------------------#"
+echo -e "This Script installs my i3 configuration starting from a minimal arch install"
+echo -e "It will install all dependencies if they are missing!"
+echo -e "#-------------------#"
+
+PARU_EXISTS=/sbin/paru
+YAY_EXISTS=/sbin/yay
+GIT_EXISTS=/sbin/git
+
+if [[ -f $PARU_EXISTS || -f $YAY_EXISTS ]]; then
+    if [ -f "$PARU_EXISTS" ]; then 
+        AUR_HELPER=yay
+        echo -e "Paru was detected, using Paru..."
+        $AUR_HELPER -Suy
+    fi
+
+    if [ -f "$YAY_EXISTS" ]; then
+        AUR_HELPER=paru
+        echo -e "Paru was detected, using Paru..."
+        $AUR_HELPER -Suy
+    fi
+else
+    # kinda unnecessary because you need git to even get this install bruh
+    if [ ! -f "$GIT_EXISTS" ]; then
+        sudo pacman -S git
+    fi
+
+    echo -e "An AUR Helper is needed for this to work, which one you like to install? (1,2): "
+    echo -e "1. Yay"
+    echo -e "2. Paru"
+    read -n1 -rep "$: " AUR_HELPER
+
+    if [[ $AUR_HELPER == "1" || $AUR_HELPER == "2" ]]; then
+        # install paru
+        if [ $AUR_HELPER == "1" ]; then
+            sudo pacman -S --needed base-devel
+            git clone https://aur.archlinux.org/yay.git
+            cd yay
+            makepkg -si
+            cd ..
+            rm -rf yay
+            AUR_HELPER=yay
+        fi
+
+        if [ $AUR_HELPER == "2" ]; then
+           sudo pacman -S --needed base-devel
+           git clone https://aur.archlinux.org/paru.git
+           cd paru
+           makepkg -si
+           cd ..
+           rm -rf paru
+           AUR_HELPER=paru
+       fi
+    else 
+        echo -e "An AUR Helper is needed for this script, exiting..."
+        exit 0
+    fi
+fi
+
+### Disable wifi powersave mode ###
+read -n1 -rep 'Would you like to disable wifi powersave? (y,n): ' WIFI
+if [[ $WIFI == "Y" || $WIFI == "y" ]]; then
+    LOC="/etc/NetworkManager/conf.d/wifi-powersave.conf"
+    echo -e "The following has been added to $LOC.\n"
+    echo -e "[connection]\nwifi.powersave = 2" | sudo tee -a $LOC
+    echo -e "\n"
+    echo -e "Restarting NetworkManager service...\n"
+    sudo systemctl restart NetworkManager
+    sleep 3
+fi
+
+read -n1 -rep 'Would you like to install the packages? (y,n): ' INST
+### Install all of the above pacakges ####
+if [[ $INST == "Y" || $INST == "y" ]]; then
+    $AUR_HELPER -S --noconfirm xorg xorg-xinit i3 \
+    nitrogen rofi thunar kitty dunst neovim curl wget picom polybar \
+\
+    ttf-jetbrains-mono-nerd ttf-cascadia-code-nerd noto-fonts-emoji \
+    lxpolkit lxappearance xfce4-settings \
+    pamixer \
+\
+    networkmanager network-manager-applet \
+    bluez bluez-utils 
+
+    # Start the bluetooth service
+    echo -e "Starting the Bluetooth Service...\n"
+    sudo systemctl enable --now bluetooth.service
+    sleep 2
+fi      
+
+### Copy Config Files ###
+read -n1 -rep 'Would you like to copy config files? (y,n): ' CFG
+if [[ $CFG == "Y" || $CFG == "y" ]]; then
+    echo -e "Copying config files...\n"
+    cp -rv ../.config/autoclicker   ~/.config
+    cp -rv ../.config/alacritty     ~/.config
+    cp -rv ../.config/i3blocks      ~/.config
+    cp -rv ../.config/neofetch      ~/.config
+    cp -rv ../.config/polybar       ~/.config
+    cp -rv ../.config/dunst         ~/.config
+    cp -rv ../.config/kitty         ~/.config
+    cp -rv ../.config/picom         ~/.config
+    cp -rv ../.config/rofi          ~/.config
+    cp -rv ../.config/cava          ~/.config
+    cp -rv ../.config/i3            ~/.config
+    cp -rv ../.tmux.conf            ~
+    cp -rv ../.bashrc               ~
+    cp -rv ../.Xmodmap              ~
+    cp -rv ../.xinitrc              ~
+
+    # Set some files as exacutable 
+    chmod +x ~/.config/i3blocks/scripts *
+fi
+
+echo -e "\n"
