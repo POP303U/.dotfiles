@@ -118,7 +118,8 @@ if [[ $TOOLS == "Y" || $TOOLS == "y" ]]; then
     exfat-utils fuse-exfat ntfs-3g \
     flac jasper aria2 less \
     neofetch htop curl wget jp2a \
-    cmatrix neofetch pfetch fastfetch uwufetch hollywood
+    cmatrix neofetch pfetch fastfetch uwufetch hollywood \
+    vi vim micro nano pico helix kakoune
 fi
 
 ### Copy Config Files ###
