@@ -594,42 +594,6 @@ ex ()
     fi
 }
 
-plihac ()
-{
-
-    packages=()
-
-    # Iterate over the remaining arguments (package names)
-    while [ "$#" -gt 0 ]; do
-        # Add the current argument (package name) to the array
-        packages+=("$1")
-
-            # Move to the next argument
-            shift
-    done
-
-    case $1 in
-        -u)   sudo pacman -Syu                ;;
-        -s)   sudo pacman -Syy                ;;
-        -i)   sudo pacman -S   ${packages[@]} ;;
-        -r)   sudo pacman -R   ${packages[@]} ;;
-        -q)   sudo pacman -Qs  ${packages[@]} ;;
-        -h)   echo "usage:  pac <operation> [package/...]
-operations:
-    pac { -u (system upgrade) }
-    pac { -i (install package) } <package(s)>
-    pac {-h --help}
-    pac {-V --version}
-    pac {-D --database} <options> <package(s)>
-    pac {-F --files}    [options] [file(s)]
-    pac {-Q --query}    [options] [package(s)]
-    pac {-R --remove}   [options] <package(s)>
-    pac {-S --sync}     [options] [package(s)]
-    pac {-U --upgrade}  [options] <file(s)>" 
-    esac
-
-}
-
 pac() {
     # Check if the first argument is -i
     case $1 in
