@@ -65,7 +65,7 @@ read -n1 -rep 'Would you like to install the packages? (y,n): ' INST
 ### Install all of the above pacakges ####
 if [[ $INST == "Y" || $INST == "y" ]]; then
     $AUR_HELPER -S --noconfirm xorg xorg-xinit i3 \
-    nitrogen rofi thunar kitty dunst curl wget picom polybar pokemon-colorscripts \
+    nitrogen rofi thunar kitty alacritty dunst curl wget picom polybar pokemon-colorscripts-git \
 \
     ttf-jetbrains-mono-nerd ttf-cascadia-code-nerd noto-fonts-emoji \
     lxpolkit lxappearance xfce4-settings \
@@ -76,8 +76,7 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
 
     # Start the bluetooth service
     echo -e "Starting the Bluetooth Service...\n"
-    sudo systemctl enable --now bluetooth.service
-    sleep 2
+    sudo systemctl enable --now bluetooth.service sleep 2
 fi      
 
 ### Install my neovim configuration ###
@@ -111,7 +110,7 @@ if [[ $OPENDOAS == "Y" || $OPENDOAS == "y" ]]; then
 fi
 
 ### Install Usefull tools ###
-read -n1 -rep 'Would you like to install useful tools? (ntfs-3g, exfat-utils,' TOOLS
+read -n1 -rep 'Would you like to install utilities? (ntfs-3g, exfat-utils), (y,n)' TOOLS
 if [[ $TOOLS == "Y" || $TOOLS == "y" ]]; then 
     $AUR_HELPER -S --noconfirm \
     p7zip unrar tar rsync github-cli git \
@@ -126,6 +125,14 @@ if [[ $TOOLS == "Y" || $TOOLS == "y" ]]; then
     cmatrix hollywood \
     neofetch pfetch fastfetch uwufetch cpufetch  \
     vi vim micro nano pico helix kakoune
+fi
+
+read -n1 -rep 'Would you like to install Browser, Gaming etc... (y,n)' GENERICS
+if [[ $GENERICS == "Y" || $GENERICS == "y" ]]; then 
+    $AUR_HELPER -S --noconfirm \
+    brave-bin grapejuice steam emacs \
+    bottles vencord-desktop-bin lutris \
+    thunar pavucontrol filezilla
 fi
 
 ### Copy Config Files ###
