@@ -80,6 +80,7 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
     sleep 2
 fi      
 
+### Install my neovim configuration ###
 read -n1 -rep 'Would you like to install my base neovim configuration? (y,n): ' NEOVIM
 if [[ $NEOVIM == "Y" || $NEOVIM == "y" ]]; then
     $AUR_HELPER -S --noconfirm neovim
@@ -99,6 +100,25 @@ if [[ $WIFI == "Y" || $WIFI == "y" ]]; then
     echo -e "Restarting NetworkManager service...\n"
     sudo systemctl restart NetworkManager
     sleep 3
+fi
+
+### Install Opendoas ###
+read -n1 -rep 'Would you like to install opendoas? (y,n): ' OPENDOAS 
+if [[ $OPENDOAS == "Y" || $OPENDOAS == "y" ]]; then
+    sudo pacman -S opendoas
+    sudo chown -c root:root /etc/doas.conf
+    sudo chmod -c 0400 /etc/doas.conf
+fi
+
+### Install Usefull tools ###
+read -n1 -rep 'Would you like to install useful tools? (ntfs-3g, exfat-utils,' TOOLS
+if [[ $TOOLS == "Y" || $TOOLS == "y" ]]; then 
+    $AUR_HELPER -S --noconfirm \
+    p7zip unrar tar rsync github-cli git \
+    exfat-utils fuse-exfat ntfs-3g \
+    flac jasper aria2 less \
+    neofetch htop curl wget jp2a \
+    cmatrix neofetch pfetch fastfetch uwufetch hollywood
 fi
 
 ### Copy Config Files ###
