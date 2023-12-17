@@ -77,7 +77,7 @@ read -n1 -rep 'Would you like to install the packages? (y,n): ' INST
 ### Install all of the above pacakges ####
 if [[ $INST == "Y" || $INST == "y" ]]; then
     $AUR_HELPER -S --noconfirm xorg xorg-xinit i3 \
-    nitrogen rofi thunar kitty dunst neovim curl wget picom polybar \
+    nitrogen rofi thunar kitty dunst neovim curl wget picom polybar pokemon-colorscripts \
 \
     ttf-jetbrains-mono-nerd ttf-cascadia-code-nerd noto-fonts-emoji \
     lxpolkit lxappearance xfce4-settings \
