@@ -61,23 +61,11 @@ else
     fi
 fi
 
-### Disable wifi powersave mode ###
-read -n1 -rep 'Would you like to disable wifi powersave? (y,n): ' WIFI
-if [[ $WIFI == "Y" || $WIFI == "y" ]]; then
-    LOC="/etc/NetworkManager/conf.d/wifi-powersave.conf"
-    echo -e "The following has been added to $LOC.\n"
-    echo -e "[connection]\nwifi.powersave = 2" | sudo tee -a $LOC
-    echo -e "\n"
-    echo -e "Restarting NetworkManager service...\n"
-    sudo systemctl restart NetworkManager
-    sleep 3
-fi
-
 read -n1 -rep 'Would you like to install the packages? (y,n): ' INST
 ### Install all of the above pacakges ####
 if [[ $INST == "Y" || $INST == "y" ]]; then
     $AUR_HELPER -S --noconfirm xorg xorg-xinit i3 \
-    nitrogen rofi thunar kitty dunst neovim curl wget picom polybar pokemon-colorscripts \
+    nitrogen rofi thunar kitty dunst curl wget picom polybar pokemon-colorscripts \
 \
     ttf-jetbrains-mono-nerd ttf-cascadia-code-nerd noto-fonts-emoji \
     lxpolkit lxappearance xfce4-settings \
@@ -92,9 +80,30 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
     sleep 2
 fi      
 
+read -n1 -rep 'Would you like to install my base neovim configuration? (y,n): ' NEOVIM
+if [[ $NEOVIM == "Y" || $NEOVIM == "y" ]]; then
+    $AUR_HELPER -S --noconfirm neovim
+    rm -rf ~/.config/nvim && rm -rf ~/.local/share/nvim
+    git clone https://github.com/POP303U/kickstart-nvim \
+        ~/.config/nvim \
+        --depth 1
+fi
+
+### Disable wifi powersave mode ###
+read -n1 -rep 'Would you like to disable wifi powersave? (y,n): ' WIFI
+if [[ $WIFI == "Y" || $WIFI == "y" ]]; then
+    LOC="/etc/NetworkManager/conf.d/wifi-powersave.conf"
+    echo -e "The following has been added to $LOC.\n"
+    echo -e "[connection]\nwifi.powersave = 2" | sudo tee -a $LOC
+    echo -e "\n"
+    echo -e "Restarting NetworkManager service...\n"
+    sudo systemctl restart NetworkManager
+    sleep 3
+fi
+
 ### Copy Config Files ###
-read -n1 -rep 'Would you like to copy config files? (y,n): ' CFG
-if [[ $CFG == "Y" || $CFG == "y" ]]; then
+read -n1 -rep 'Would you like to copy config files? (y,n): ' CONFIG
+if [[ $CONFIG == "Y" || $CONFIG == "y" ]]; then
     echo -e "Copying config files...\n"
     cp -rv ../.config/autoclicker   ~/.config
     cp -rv ../.config/alacritty     ~/.config
