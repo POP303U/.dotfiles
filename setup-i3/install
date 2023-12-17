@@ -68,12 +68,12 @@ fi
 read -n1 -rep 'Would you like to install the packages? (y,n): ' INST
 ### Install all of the above pacakges ####
 if [[ $INST == "Y" || $INST == "y" ]]; then
-    $AUR_HELPER -S --noconfirm xorg xorg-xinit i3 \
+    $AUR_HELPER -S --noconfirm xorg xorg-xinit i3 xdotool maim xclip \
     nitrogen rofi thunar kitty alacritty dunst curl wget picom polybar pokemon-colorscripts-git \
 \
     ttf-jetbrains-mono-nerd ttf-cascadia-code-nerd noto-fonts-emoji \
     lxpolkit lxappearance xfce4-settings \
-    pamixer \
+    pamixer alsa-utils\
 \
     networkmanager network-manager-applet \
     bluez bluez-utils 
@@ -108,9 +108,13 @@ fi
 ### Install Opendoas ###
 read -n1 -rep 'Would you like to install opendoas? (y,n): ' OPENDOAS 
 if [[ $OPENDOAS == "Y" || $OPENDOAS == "y" ]]; then
-    sudo pacman -S opendoas
+    sudo pacman -S opendoas --noconfirm
     sudo chown -c root:root /etc/doas.conf
     sudo chmod -c 0400 /etc/doas.conf
+    sudo rm -f /etc/doas.conf
+    echo "permit :wheel 
+permit nopass '$(whoami)'
+    " | sudo tee -a /etc/doas.conf > /dev/null
 fi
 
 ### Install Usefull tools ###
