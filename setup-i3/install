@@ -115,10 +115,16 @@ read -n1 -rep 'Would you like to install useful tools? (ntfs-3g, exfat-utils,' T
 if [[ $TOOLS == "Y" || $TOOLS == "y" ]]; then 
     $AUR_HELPER -S --noconfirm \
     p7zip unrar tar rsync github-cli git \
-    exfat-utils fuse-exfat ntfs-3g \
+    \
+    exfat-utils fuse-exfat \
+    ntfs-3g \
+    xfsprogs xfsdump \
+    \
     flac jasper aria2 less \
     neofetch htop curl wget jp2a \
-    cmatrix neofetch pfetch fastfetch uwufetch hollywood \
+    \
+    cmatrix hollywood \
+    neofetch pfetch fastfetch uwufetch cpufetch  \
     vi vim micro nano pico helix kakoune
 fi
 
