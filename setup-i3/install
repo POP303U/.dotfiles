@@ -15,18 +15,18 @@ if [[ -f $PARU_EXISTS || -f $YAY_EXISTS ]]; then
     if [ -f "$PARU_EXISTS" ]; then 
         AUR_HELPER=yay
         echo -e "Paru was detected, using Paru..."
-        $AUR_HELPER -Suy
+        $AUR_HELPER -Suy --noconfirm
     fi
 
     if [ -f "$YAY_EXISTS" ]; then
         AUR_HELPER=paru
         echo -e "Paru was detected, using Paru..."
-        $AUR_HELPER -Suy
+        $AUR_HELPER -Suy --noconfirm
     fi
 else
     # kinda unnecessary because you need git to even get this install bruh
     if [ ! -f "$GIT_EXISTS" ]; then
-        sudo pacman -S git
+        sudo pacman -S git --noconfirm
     fi
 
     echo -e "An AUR Helper is needed for this to work, which one you like to install? (1,2): "
@@ -37,7 +37,7 @@ else
     if [[ $AUR_HELPER == "1" || $AUR_HELPER == "2" ]]; then
         # install paru
         if [ $AUR_HELPER == "1" ]; then
-            sudo pacman -S --needed base-devel
+            sudo pacman -S --needed base-devel --noconfirm
             git clone https://aur.archlinux.org/yay.git
             cd yay
             makepkg -si
@@ -47,7 +47,7 @@ else
         fi
 
         if [ $AUR_HELPER == "2" ]; then
-           sudo pacman -S --needed base-devel
+           sudo pacman -S --needed base-devel --noconfirm
            git clone https://aur.archlinux.org/paru.git
            cd paru
            makepkg -si
