@@ -11,6 +11,10 @@ PARU_EXISTS=/sbin/paru
 YAY_EXISTS=/sbin/yay
 GIT_EXISTS=/sbin/git
 
+# initialize [multilib] if not enables
+echo -e "Enabling [multilib]"
+sudo sed -i '/#\[multilib\]/,/#Include = \/etc\/pacman\.d\/mirrorlist/c\[multilib]\nInclude = /etc/pacman.d/mirrorlist' /etc/pacman.conf
+
 if [[ -f $PARU_EXISTS || -f $YAY_EXISTS ]]; then
     if [ -f "$PARU_EXISTS" ]; then 
         AUR_HELPER=paru
