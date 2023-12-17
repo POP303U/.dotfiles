@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-my $formatted_date = `date +"%c" | awk -F ' ' 'BEGIN{OFS=FS} {\$NF=\"\"; print}'`;
+my $date = `date +%T`;
 
-print "$formatted_date\n";
+print "$date";
 
