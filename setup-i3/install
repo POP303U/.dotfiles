@@ -1,101 +1,126 @@
 #!/bin/sh
 
-echo -e "#-------------------#"
-echo -e "# Easy i3 installer #"
-echo -e "#-------------------#"
-echo -e "This Script installs my i3 configuration starting from a minimal arch install"
-echo -e "It will install all dependencies if they are missing!"
-echo -e "#-------------------#"
+if [ $1 == "list-packages" ]; then
+    echo -e "\nBase: xorg xorg-xinit i3 
+-   xdotool maim xclip
+-   nitrogen rofi thunar kitty
+-   alacritty dunst curl wget
+-   picom polybar pokemon-colorscripts-git
+-   ttf-jetbrains-mono-nerd ttf-cascadia-code-nerd
+-   noto-fonts-emoji
+-   lxpolkit lxappearance xfce4-settings
+-   pamixer alsa-utils
+-   networkmanager network-manager-applet
+-   bluez bluez-utils 
+#
+"
+    echo -e "\nMinimal: 
+-   neovim p7zip unrar 
+-   tar rsync github-cli git 
+-   exfat-utils fuse-exfat 
+-   ntfs-3g 
+-   xfsprogs xfsdump 
+-   flac jasper aria2 less 
+-   neofetch htop curl wget jp2a 
+-   cmatrix hollywood 
+-   neofetch pfetch fastfetch uwufetch cpufetch 
+-   vi vim micro nano pico helix kakoune
+-   opendoas
+#
+"
+    echo -e "\nExtended: 
+-   brave-bin emacs
+-   vencord-desktop-bin
+-   thunar pavucontrol filezilla
+-   libreoffice-fresh
+#
+"
 
-PARU_EXISTS=/sbin/paru
-YAY_EXISTS=/sbin/yay
-GIT_EXISTS=/sbin/git
+    echo -e "\Gaming: 
+    gaming is unimplemented yet
+#
+"
+    exit 0
+fi
+install_aur_helper() {
+    STAGE=0
+    PARU_EXISTS=/sbin/paru
+    YAY_EXISTS=/sbin/yay
+    GIT_EXISTS=/sbin/git
 
-# initialize [multilib] if not enables
-echo -e "Enabling [multilib]"
-sudo sed -i '/#\[multilib\]/,/#Include = \/etc\/pacman\.d\/mirrorlist/c\[multilib]\nInclude = /etc/pacman.d/mirrorlist' /etc/pacman.conf
+    # initialize [multilib] if not enables
+    echo -e "Enabling [multilib]"
+    sudo sed -i '/#\[multilib\]/,/#Include = \/etc\/pacman\.d\/mirrorlist/c\[multilib]\nInclude = /etc/pacman.d/mirrorlist' /etc/pacman.conf
 
-if [[ -f $PARU_EXISTS || -f $YAY_EXISTS ]]; then
-    if [ -f "$PARU_EXISTS" ]; then 
-        AUR_HELPER=paru
-        echo -e "Paru was detected, using Paru..."
-        $AUR_HELPER -Suy --noconfirm
-    fi
-
-    if [ -f "$YAY_EXISTS" ]; then
-        AUR_HELPER=yay
-        echo -e "Paru was detected, using Paru..."
-        $AUR_HELPER -Suy --noconfirm
-    fi
-else
-    # kinda unnecessary because you need git to even get this install bruh
-    if [ ! -f "$GIT_EXISTS" ]; then
-        sudo pacman -S git --noconfirm
-    fi
-
-    echo -e "An AUR Helper is needed for this to work, which one you like to install? (1,2): "
-    echo -e "1. Yay"
-    echo -e "2. Paru"
-    read -n1 -rep "$: " AUR_HELPER
-
-    if [[ $AUR_HELPER == "1" || $AUR_HELPER == "2" ]]; then
-        # install paru
-        if [ $AUR_HELPER == "1" ]; then
-            sudo pacman -S --needed base-devel --noconfirm
-            git clone https://aur.archlinux.org/yay.git
-            cd yay
-            makepkg -si --noconfirm
-            cd ..
-            rm -rf yay
-            AUR_HELPER=yay
+    if [[ -f $PARU_EXISTS || -f $YAY_EXISTS ]]; then
+        if [ -f "$PARU_EXISTS" ]; then 
+            AUR_HELPER=paru
+            echo -e "Paru was detected, using Paru..."
+            $AUR_HELPER -Suy --noconfirm
         fi
 
-        if [ $AUR_HELPER == "2" ]; then
-           sudo pacman -S --needed base-devel --noconfirm
-           git clone https://aur.archlinux.org/paru.git
-           cd paru
-           makepkg -si --noconfirm
-           cd ..
-           rm -rf paru
-           AUR_HELPER=paru
-       fi
-    else 
-        echo -e "An AUR Helper is needed for this script, exiting..."
-        exit 0
-    fi
-fi
+        if [ -f "$YAY_EXISTS" ]; then
+            AUR_HELPER=yay
+            echo -e "Paru was detected, using Paru..."
+            $AUR_HELPER -Suy --noconfirm
+        fi
+    else
+        # kinda unnecessary because you need git to even get this install bruh
+        if [ ! -f "$GIT_EXISTS" ]; then
+            sudo pacman -S git --noconfirm
+        fi
 
-read -n1 -rep 'Would you like to install the packages? (y,n): ' INST
-### Install all of the above pacakges ####
-if [[ $INST == "Y" || $INST == "y" ]]; then
+        echo -e "An AUR Helper is needed for this to work, which one you like to install? (1,2): "
+        echo -e "1. Yay"
+        echo -e "2. Paru"
+        read -n1 -rep "$: " AUR_HELPER
+
+        if [[ $AUR_HELPER == "1" || $AUR_HELPER == "2" ]]; then
+            # install paru
+            if [ $AUR_HELPER == "1" ]; then
+                sudo pacman -S --needed base-devel --noconfirm
+                git clone https://aur.archlinux.org/yay.git
+                cd yay
+                makepkg -si --noconfirm
+                cd ..
+                rm -rf yay
+                AUR_HELPER=yay
+            fi
+
+            if [ $AUR_HELPER == "2" ]; then
+                sudo pacman -S --needed base-devel --noconfirm
+                git clone https://aur.archlinux.org/paru.git
+                cd paru
+                makepkg -si --noconfirm
+                cd ..
+                rm -rf paru
+                AUR_HELPER=paru
+            fi
+        else 
+            echo -e "An AUR Helper is needed for this script, exiting..."
+            exit 0
+        fi
+    fi
+}
+
+stage_1() {
+    echo -e "Executing Stage 1"
+
+    echo -e 'Installing Needed dependencies...'
     $AUR_HELPER -S --noconfirm xorg xorg-xinit i3 xdotool maim xclip \
-    nitrogen rofi thunar kitty alacritty dunst curl wget picom polybar pokemon-colorscripts-git \
-\
-    ttf-jetbrains-mono-nerd ttf-cascadia-code-nerd noto-fonts-emoji \
-    lxpolkit lxappearance xfce4-settings \
-    pamixer alsa-utils\
-\
-    networkmanager network-manager-applet \
-    bluez bluez-utils 
+        nitrogen rofi thunar kitty alacritty dunst curl wget picom polybar pokemon-colorscripts-git \
+        ttf-jetbrains-mono-nerd ttf-cascadia-code-nerd noto-fonts-emoji \
+        lxpolkit lxappearance xfce4-settings \
+        pamixer alsa-utils \
+        networkmanager network-manager-applet \
+        bluez bluez-utils 
 
     # Start the bluetooth service
-    echo -e "Starting the Bluetooth Service...\n"
+    echo -e "Starting the Bluetooth Service..."
     sudo systemctl enable --now bluetooth.service sleep 2
-fi      
 
-### Install my neovim configuration ###
-read -n1 -rep 'Would you like to install my base neovim configuration? (y,n): ' NEOVIM
-if [[ $NEOVIM == "Y" || $NEOVIM == "y" ]]; then
-    $AUR_HELPER -S --noconfirm neovim
-    rm -rf ~/.config/nvim && rm -rf ~/.local/share/nvim
-    git clone https://github.com/POP303U/kickstart-nvim \
-        ~/.config/nvim \
-        --depth 1
-fi
-
-### Disable wifi powersave mode ###
-read -n1 -rep 'Would you like to disable wifi powersave? (y,n): ' WIFI
-if [[ $WIFI == "Y" || $WIFI == "y" ]]; then
+    ### Disable wifi powersave mode ###
+    echo 'Disabling wifi powersave...' 
     LOC="/etc/NetworkManager/conf.d/wifi-powersave.conf"
     echo -e "The following has been added to $LOC.\n"
     echo -e "[connection]\nwifi.powersave = 2" | sudo tee -a $LOC
@@ -103,50 +128,8 @@ if [[ $WIFI == "Y" || $WIFI == "y" ]]; then
     echo -e "Restarting NetworkManager service...\n"
     sudo systemctl restart NetworkManager
     sleep 3
-fi
 
-### Install Opendoas ###
-read -n1 -rep 'Would you like to install opendoas? (y,n): ' OPENDOAS 
-if [[ $OPENDOAS == "Y" || $OPENDOAS == "y" ]]; then
-    sudo pacman -S opendoas --noconfirm
-    sudo chown -c root:root /etc/doas.conf
-    sudo chmod -c 0400 /etc/doas.conf
-    sudo rm -f /etc/doas.conf
-    echo "permit :wheel 
-permit nopass '$(whoami)'
-    " | sudo tee -a /etc/doas.conf > /dev/null
-fi
-
-### Install Usefull tools ###
-read -n1 -rep 'Would you like to install utilities? (ntfs-3g, exfat-utils), (y,n)' TOOLS
-if [[ $TOOLS == "Y" || $TOOLS == "y" ]]; then 
-    $AUR_HELPER -S --noconfirm \
-    p7zip unrar tar rsync github-cli git \
-    \
-    exfat-utils fuse-exfat \
-    ntfs-3g \
-    xfsprogs xfsdump \
-    \
-    flac jasper aria2 less \
-    neofetch htop curl wget jp2a \
-    \
-    cmatrix hollywood \
-    neofetch pfetch fastfetch uwufetch cpufetch  \
-    vi vim micro nano pico helix kakoune
-fi
-
-read -n1 -rep 'Would you like to install Browser, Gaming etc... (y,n)' GENERICS
-if [[ $GENERICS == "Y" || $GENERICS == "y" ]]; then 
-    $AUR_HELPER -S --noconfirm \
-    brave-bin grapejuice steam emacs \
-    bottles vencord-desktop-bin lutris \
-    thunar pavucontrol filezilla
-fi
-
-### Copy Config Files ###
-read -n1 -rep 'Would you like to copy config files? (y,n): ' CONFIG
-if [[ $CONFIG == "Y" || $CONFIG == "y" ]]; then
-    echo -e "Copying config files...\n"
+    echo -e "Copying config files..."
     cp -rv ../.config/autoclicker   ~/.config
     cp -rv ../.config/alacritty     ~/.config
     cp -rv ../.config/i3blocks      ~/.config
@@ -165,6 +148,100 @@ if [[ $CONFIG == "Y" || $CONFIG == "y" ]]; then
 
     # Set some files as exacutable 
     chmod +x ~/.config/i3blocks/scripts *
-fi
 
-echo -e "\n"
+    if [ $STAGE -gt 1 ]; then 
+        echo -e "Entering stage 2"
+        stage_2
+    fi
+}
+
+stage_2() {
+    echo -e "Executing Stage 2"
+
+    ### Install my neovim configuration ###
+    echo -e 'Installing my Neovim configuration...'
+    $AUR_HELPER -S --noconfirm neovim
+    rm -rf ~/.config/nvim && rm -rf ~/.local/share/nvim
+    git clone https://github.com/POP303U/kickstart-nvim \
+        ~/.config/nvim \
+        --depth 1
+
+    echo -e 'Installing useful utilities...'
+    ### install useful tools ###
+    $AUR_HELPER -S --noconfirm \
+        p7zip unrar tar rsync github-cli git \
+        \
+        exfat-utils fuse-exfat \
+        ntfs-3g \
+        xfsprogs xfsdump \
+        \
+        flac jasper aria2 less \
+        neofetch htop curl wget jp2a \
+        \
+        cmatrix hollywood \
+        neofetch pfetch fastfetch uwufetch cpufetch  \
+        vi vim micro nano pico helix kakoune
+
+    ### Install Opendoas ###
+    echo -e 'Installing opendoas...'
+    sudo pacman -S opendoas --noconfirm
+    sudo chown -c root:root /etc/doas.conf
+    sudo chmod -c 0400 /etc/doas.conf
+    sudo rm -f /etc/doas.conf
+    echo "permit :wheel 
+    permit nopass '$(whoami)'
+    " | sudo tee -a /etc/doas.conf > /dev/null
+
+    if [ $STAGE -gt 2 ]; then 
+        echo -e "Entering stage 3"
+        stage_3
+    fi
+}
+
+stage_3() {
+    echo -e "Executing Stage 3"
+    echo -e 'Installing Browsers and Multimedia...' GENERICS
+
+    ### Installing useful tools
+    $AUR_HELPER -S --noconfirm \
+        brave-bin emacs \
+        vencord-desktop-bin \
+        thunar pavucontrol filezilla \
+        libreoffice-fresh
+
+    if [ $STAGE -gt 3 ]; then 
+        echo -e "Entering stage 4"
+        stage_4
+    fi
+}
+
+stage_4() {
+    echo -e "Executing Stage 4"
+    echo -e "todo! Not yet implemented"
+    echo -e "Packages to be installed when finished: grapejuice steam bottles lutris"
+    exit 0
+}
+
+echo -e "#-------------------#"
+echo -e "# Easy i3 installer #"
+echo -e "#-------------------#--------------------------------------------------------------------------------------#"
+echo -e "This Script installs my i3 configuration starting from a minimal arch install"
+echo -e "It will install all dependencies if they are missing!"
+echo -e "#----------------------------------------------------------------------------------------------------------#"
+echo -e "Run the script with 'packages' as its first argument for more information of"
+echo -e "which packages are installed in what stage!"
+echo -e "#----------------------------------------------------------------------------------------------------------#"
+echo -e "Choose type of installation: "
+echo -e "1. Base (this configuration without extra packages)"
+echo -e "2. Minimal (...+ tools, (nvim, helix, jp2a, wget/curl, kakoune, fastfetch, xfs/exfat/ntfs support)...)"
+echo -e "3. Extended (...+ browsers, pavucontrol (audio management), filezilla, brave, thunar, grapejuice (roblox)...)"
+echo -e "4. Gaming (...+ steam, wine, proton, soda, bottles...)"
+echo -e "#----------------------------------------------------------------------------------------------------------#"
+read -n1 -rep "$: " STAGE
+
+if [[ $STAGE -lt 1 || $STAGE -gt 4 ]]; then 
+    echo -e "Choose a valid option"
+else 
+    install_aur_helper 
+    stage_1
+fi
