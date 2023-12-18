@@ -238,7 +238,7 @@ echo -e "#-------------------#--------------------------------------------------
 echo -e "This Script installs my i3 configuration starting from a minimal arch install"
 echo -e "It will install all dependencies if they are missing!"
 echo -e "#----------------------------------------------------------------------------------------------------------#"
-echo -e "Run the script with 'packages' as its first argument for more information of"
+echo -e "Run the script with 'list-packages' as its first argument for more information of"
 echo -e "which packages are installed in what stage!"
 echo -e "#----------------------------------------------------------------------------------------------------------#"
 echo -e "Choose type of installation: "
