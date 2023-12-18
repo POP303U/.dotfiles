@@ -387,6 +387,7 @@ alias bottles-fix='flatpak override --user --filesystem="host" com.usebottles.bo
 alias roblox='nohup flatpak run net.brinkervii.grapejuice app&'
 alias fix-roblox='pkill -9 Roblox'
 alias debug-dunst='pkill -9 dunst && dunst &'
+alias sudo='doas'
 alias keysoup='sudo systemctl restart keyd && sudo systemctl enable keyd && sudo systemctl start keyd'    
 
 # For editing configs
@@ -413,7 +414,8 @@ alias v-hypr-binds='cd ~/.config/emacs && ${EDITOR} ~/config.org'
 alias v-waybar='cd ~/.config/waybar && ${EDITOR} ~/.config/waybar/config.jsonc'
 alias v-autoclicker='cd ~/.config/autoclicker && ${EDITOR} ~/.config/autoclicker/clicker_start'
 alias v-swww='cd ~/.config/swww/scripts && ${EDITOR} ~/.config/swww/scripts/change_wallpaper'
-alias dv-keyd='cd /etc/keyd/ && sudo ${EDITOR} /etc/keyd/default.conf'
+alias dv-keyd='cd /etc/keyd/ && doas ${EDITOR} /etc/keyd/default.conf'
+alias dv-tty='cd /etc/ && doas ${EDITOR} /etc/issue'
 alias g-projects='cd ~/personal/github' 
 alias v-projects='cd $PROJECTS && nvim'
 
