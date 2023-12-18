@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ $1 == "list-packages" ]; then
+if [ "$1" == "list-packages" ]; then
     echo -e "\nBase: xorg xorg-xinit i3 
 -   xdotool maim xclip
 -   nitrogen rofi thunar kitty
@@ -42,8 +42,8 @@ if [ $1 == "list-packages" ]; then
 "
     exit 0
 fi
+
 install_aur_helper() {
-    STAGE=0
     PARU_EXISTS=/sbin/paru
     YAY_EXISTS=/sbin/yay
     GIT_EXISTS=/sbin/git
@@ -125,9 +125,10 @@ stage_1() {
     echo -e "The following has been added to $LOC.\n"
     echo -e "[connection]\nwifi.powersave = 2" | sudo tee -a $LOC
     echo -e "\n"
-    echo -e "Restarting NetworkManager service...\n"
+    echo -e "Restarting NetworkManager service..."
     sudo systemctl restart NetworkManager
-    sleep 3
+    echo -e "Waiting for Internet to reconnect..."
+    sleep 5
 
     echo -e "Copying config files..."
     cp -rv ../.config/autoclicker   ~/.config
@@ -152,6 +153,8 @@ stage_1() {
     if [ $STAGE -gt 1 ]; then 
         echo -e "Entering stage 2"
         stage_2
+    else 
+        echo -e "Stage-${STAGE} installation finished!"
     fi
 }
 
@@ -195,6 +198,8 @@ stage_2() {
     if [ $STAGE -gt 2 ]; then 
         echo -e "Entering stage 3"
         stage_3
+    else 
+        echo -e "Stage-${STAGE} installation finished!"
     fi
 }
 
@@ -212,13 +217,18 @@ stage_3() {
     if [ $STAGE -gt 3 ]; then 
         echo -e "Entering stage 4"
         stage_4
+    else 
+        echo -e "Stage-${STAGE} installation finished!"
     fi
 }
 
 stage_4() {
     echo -e "Executing Stage 4"
+        
     echo -e "todo! Not yet implemented"
     echo -e "Packages to be installed when finished: grapejuice steam bottles lutris"
+        
+    echo -e "Stage-${STAGE} installation finished!"
     exit 0
 }
 
