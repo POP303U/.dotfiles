@@ -18,7 +18,7 @@ if [ "$1" == "list-packages" ]; then
 -   neovim p7zip unrar 
 -   tar rsync github-cli git 
 -   exfat-utils fuse-exfat 
--   ntfs-3g 
+-   ntfs-3g ani-cli
 -   xfsprogs xfsdump 
 -   flac jasper aria2 less 
 -   neofetch htop curl wget jp2a 
@@ -37,7 +37,9 @@ if [ "$1" == "list-packages" ]; then
 "
 
     echo -e "\Gaming: 
-    gaming is unimplemented yet
+-   steam
+-   wine wine-mono wine-gecko grapejuice
+-   bottles lutris
 #
 "
     exit 0
@@ -173,17 +175,15 @@ stage_2() {
     ### install useful tools ###
     $AUR_HELPER -S --noconfirm \
         p7zip unrar tar rsync github-cli git \
-        \
         exfat-utils fuse-exfat \
         ntfs-3g \
         xfsprogs xfsdump \
-        \
         flac jasper aria2 less \
         neofetch htop curl wget jp2a \
-        \
         cmatrix hollywood \
         neofetch pfetch fastfetch uwufetch cpufetch  \
-        vi vim micro nano pico helix kakoune
+        vi vim micro nano pico helix kakoune \
+        ani-cli
 
     ### Install Opendoas ###
     echo -e 'Installing opendoas...'
@@ -224,12 +224,14 @@ stage_3() {
 
 stage_4() {
     echo -e "Executing Stage 4"
-        
-    echo -e "todo! Not yet implemented"
-    echo -e "Packages to be installed when finished: grapejuice steam bottles lutris"
+
+    ### Installing useful tools
+    $AUR_HELPER -S --noconfirm \
+        steam \
+        wine wine-mono wine-gecko grapejuice \
+        bottles lutris
         
     echo -e "Stage-${STAGE} installation finished!"
-    exit 0
 }
 
 echo -e "#-------------------#"
