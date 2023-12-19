@@ -1,6 +1,7 @@
 #!/bin/sh
 
 cp -rv ../.config/autoclicker   ~/.config
+cp -rv ../.config/gtk-3.0       ~/.config
 cp -rv ../.config/hypr          ~/.config
 cp -rv ../.config/swww          ~/.config
 cp -rv ../.config/waybar        ~/.config
