@@ -3,7 +3,8 @@
 if [ "$1" == "list-packages" ]; then
     echo -e "\nBase: xorg xorg-xinit i3 
 -   xdotool maim xclip
--   nitrogen rofi rofi-power-menu thunar kitty
+-   nitrogen thunar kitty
+-   rofi rofi-power-menu rofi-emoji 
 -   materia-gtk-theme
 -   alacritty dunst curl wget
 -   picom polybar pokemon-colorscripts-git
@@ -111,7 +112,7 @@ stage_1() {
 
     echo -e 'Installing Needed dependencies...'
     $AUR_HELPER -S --noconfirm xorg xorg-xinit i3 xdotool maim xclip \
-        nitrogen rofi thunar kitty alacritty dunst curl wget picom polybar pokemon-colorscripts-git \
+        nitrogen rofi rofi-emoji thunar kitty alacritty dunst curl wget picom polybar pokemon-colorscripts-git \
         ttf-jetbrains-mono-nerd ttf-cascadia-code-nerd noto-fonts-emoji \
         lxpolkit lxappearance xfce4-settings \
         materia-gtk-theme \
