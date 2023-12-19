@@ -3,7 +3,8 @@
 if [ "$1" == "list-packages" ]; then
     echo -e "\nBase: xorg xorg-xinit i3 
 -   xdotool maim xclip
--   nitrogen rofi thunar kitty
+-   nitrogen rofi rofi-power-menu thunar kitty
+-   materia-gtk-theme
 -   alacritty dunst curl wget
 -   picom polybar pokemon-colorscripts-git
 -   ttf-jetbrains-mono-nerd ttf-cascadia-code-nerd
@@ -113,6 +114,7 @@ stage_1() {
         nitrogen rofi thunar kitty alacritty dunst curl wget picom polybar pokemon-colorscripts-git \
         ttf-jetbrains-mono-nerd ttf-cascadia-code-nerd noto-fonts-emoji \
         lxpolkit lxappearance xfce4-settings \
+        materia-gtk-theme \
         pamixer alsa-utils \
         networkmanager network-manager-applet \
         bluez bluez-utils 
@@ -132,12 +134,18 @@ stage_1() {
     echo -e "Waiting for Internet to reconnect..."
     sleep 5
 
+    ### Install rofi-power-menu ###
+    wget https://raw.githubusercontent.com/jluttine/rofi-power-menu/master/rofi-power-menu
+    chmod +x rofi-power-menu
+    sudo mv rofi-power-menu /bin
+
     echo -e "Copying config files..."
     cp -rv ../.config/autoclicker   ~/.config
     cp -rv ../.config/alacritty     ~/.config
     cp -rv ../.config/i3blocks      ~/.config
     cp -rv ../.config/neofetch      ~/.config
     cp -rv ../.config/polybar       ~/.config
+    cp -rv ../.config/gtk-3.0       ~/.config
     cp -rv ../.config/dunst         ~/.config
     cp -rv ../.config/kitty         ~/.config
     cp -rv ../.config/picom         ~/.config
@@ -230,7 +238,7 @@ stage_4() {
         steam \
         wine wine-mono wine-gecko grapejuice \
         bottles lutris
-        
+
     echo -e "Stage-${STAGE} installation finished!"
 }
 
