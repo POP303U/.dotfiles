@@ -141,6 +141,7 @@ start_wireless() {
 copy_config() {
     cp -rv ../.config/autoclicker   ~/.config
     cp -rv ../.config/swaylock      ~/.config
+    cp -rv ../.config/swww          ~/.config
     cp -rv ../.config/hypr          ~/.config
     cp -rv ../.config/wofi          ~/.config
     cp -rv ../.config/alacritty     ~/.config
@@ -157,6 +158,8 @@ copy_config() {
 
     # Set some files as exacutable 
     chmod +x ~/.config/hypr/xdg-portal-hyprland
+    chmod +x ~/.config/swww/scripts/init_wallpaper
+    chmod +x ~/.config/swww/scripts/change_wallpaper
     chmod +x ~/.config/waybar/scripts/waybar-wttr.py
 
     # Clean out other portals
