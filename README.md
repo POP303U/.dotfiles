@@ -7,6 +7,7 @@ This is an i3 config designed to be lightweight and efficient.
 The color scheme is based on Rose-Pine
 
 **How to install**
+
 Clone the repository with `git clone https://github.com/POP303U/dotfiles`
 Change directory into the `dotfiles/setup-i3` directory and run the install file with the command:
 `sh install`.
