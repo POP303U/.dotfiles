@@ -387,7 +387,6 @@ alias bottles-fix='flatpak override --user --filesystem="host" com.usebottles.bo
 alias roblox='nohup flatpak run net.brinkervii.grapejuice app&'
 alias fix-roblox='pkill -9 Roblox'
 alias debug-dunst='pkill -9 dunst && dunst &'
-alias sudo='doas'
 alias keysoup='sudo systemctl restart keyd && sudo systemctl enable keyd && sudo systemctl start keyd'    
 
 # For editing configs
