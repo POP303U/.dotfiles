@@ -6,13 +6,11 @@ This repository is the continuation of [lightweight-i3-config](https://github.co
 This is an i3 config designed to be lightweight and efficient.
 The color scheme is based on Rose-Pine
 
-**Necessary packages / Sources**
-+ **Packages**: kitty nitrogen feh picom maim xclip xdotool rofi neofetch i3 i3blocks i3status
-+ **Fonts**: CaskaydiaCove Nerd Font
+**How to install**
 
-**Setup**
-Change directory into the `bootstrap` directory and run the setup.sh file with the command:
-`sh setup.sh`.
+Clone the repository with `git clone https://github.com/POP303U/dotfiles`, Change directory into the `dotfiles/setup-i3` directory and run the install file with the command:
+`sh install`.
+Select your profile to install and you're ready to go!
 
 ***Done!***
 
