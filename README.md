@@ -8,10 +8,9 @@ The color scheme is based on Rose-Pine
 
 **How to install**
 
-Clone the repository with `git clone https://github.com/POP303U/dotfiles`
-Change directory into the `dotfiles/setup-i3` directory and run the install file with the command:
+Clone the repository with `git clone https://github.com/POP303U/dotfiles`, Change directory into the `dotfiles/setup-i3` directory and run the install file with the command:
 `sh install`.
-Select your profile to install and you're ready to go
+Select your profile to install and you're ready to go!
 
 ***Done!***
 
