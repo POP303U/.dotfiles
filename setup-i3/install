@@ -28,7 +28,7 @@ packages["extended"]="brave-bin emacs
         thunar pavucontrol filezilla
         libreoffice-fresh"
 
-packages["gaming"]="team
+packages["gaming"]="steam
         wine wine-mono wine-gecko grapejuice
         bottles lutris"
 
