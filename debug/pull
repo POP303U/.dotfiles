@@ -6,6 +6,9 @@ mkdir -v ../.config
 cp -rv ~/.config/autoclicker    ../.config
 cp -rv ~/.config/gtk-3.0        ../.config
 cp -rv ~/.config/swww           ../.config
+cp -rv ~/.config/swaylock       ../.config
+cp -rv ~/.config/mako           ../.config
+cp -rv ~/.config/wofi           ../.config
 cp -rv ~/.config/hypr           ../.config
 cp -rv ~/.config/waybar         ../.config
 cp -rv ~/.config/alacritty      ../.config
