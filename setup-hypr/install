@@ -1,0 +1,69 @@
+#!/bin/sh
+
+if [[ "$1" == "--list-packages" || "$1" == "-l" ]]; then
+    cat <<"EOF" 
+--^ Base: xorg xorg-xinit i3 
+-   xdotool maim xclip
+-   nitrogen thunar kitty
+-   rofi rofi-power-menu rofi-emoji 
+-   dracula-gtk-theme dracula-icons-git
+-   alacritty dunst curl wget
+-   picom polybar pokemon-colorscripts-git
+-   ttf-jetbrains-mono-nerd ttf-cascadia-code-nerd
+-   noto-fonts-emoji
+-   lxpolkit lxappearance xfce4-settings
+-   pamixer alsa-utils
+-   networkmanager network-manager-applet
+-   bluez bluez-utils 
+
+EOF
+    cat <<"EOF" 
+--^ Minimal: 
+-   neovim p7zip unrar 
+-   tar rsync github-cli git 
+-   exfat-utils fuse-exfat 
+-   ntfs-3g ani-cli
+-   xfsprogs xfsdump 
+-   flac jasper aria2 less 
+-   neofetch htop curl wget jp2a 
+-   cmatrix hollywood 
+-   neofetch pfetch fastfetch uwufetch cpufetch 
+-   vi vim micro nano pico helix kakoune
+-   opendoas
+
+EOF
+    cat <<"EOF" 
+--^ Extended: 
+-   brave-bin emacs
+-   vencord-desktop-bin
+-   thunar pavucontrol filezilla
+-   libreoffice-fresh
+
+EOF
+    cat <<"EOF"
+--^ Gaming:
+-   steam
+-   wine wine-mono wine-gecko grapejuice
+-   bottles lutris
+
+EOF
+    exit 0
+fi
+
+### Install all of the above pacakges ####
+read -n1 -rep 'Would you like to install the packages? (y,n)' INST
+if [[ $INST == "Y" || $INST == "y" ]]; then
+    yay -S --noconfirm \
+    hyprland kitty waybar 
+    swaybg swaylock-effects wofi wlogout mako thunar \
+    ttf-jetbrains-mono-nerd noto-fonts-emoji \
+    polkit-gnome python-requests \
+    swappy grim slurp pamixer brightnessctl gvfs \
+    bluez bluez-utils lxappearance xfce4-settings \
+    dracula-gtk-theme dracula-icons-git xdg-desktop-portal-hyprland
+    
+    # Set some files as exacutable 
+    chmod +x ~/.config/hypr/xdg-portal-hyprland
+    chmod +x ~/.config/waybar/scripts/waybar-wttr.py
+fi
+
