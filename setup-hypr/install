@@ -1,69 +1,265 @@
 #!/bin/sh
 
+# Define an associative array of packages
+declare -A packages
+
+packages["base"]="hyprland kitty waybar
+        swaybg swaylock-effects wofi wlogout mako thunar
+        ttf-jetbrains-mono-nerd noto-fonts-emoji
+        polkit-gnome python-requests
+        swappy grim slurp pamixer brightnessctl gvfs
+        bluez bluez-utils lxappearance xfce4-settings
+        dracula-gtk-theme dracula-icons-git xdg-desktop-portal-hyprland"
+
+packages["minimal"]="p7zip unrar tar rsync github-cli git
+        exfat-utils fuse-exfat
+        ntfs-3g
+        xfsprogs xfsdump
+        flac jasper aria2 less
+        neofetch htop curl wget jp2a
+        cmatrix hollywood
+        neofetch pfetch fastfetch uwufetch cpufetch
+        vi vim micro nano pico helix kakoune
+        ani-cli"
+
+packages["extended"]="brave-bin emacs
+        vencord-desktop-bin
+        thunar pavucontrol filezilla
+        libreoffice-fresh"
+
+packages["gaming"]="steam
+        wine wine-mono wine-gecko grapejuice
+        bottles lutris"
+
 if [[ "$1" == "--list-packages" || "$1" == "-l" ]]; then
-    cat <<"EOF" 
---^ Base: xorg xorg-xinit i3 
--   xdotool maim xclip
--   nitrogen thunar kitty
--   rofi rofi-power-menu rofi-emoji 
--   dracula-gtk-theme dracula-icons-git
--   alacritty dunst curl wget
--   picom polybar pokemon-colorscripts-git
--   ttf-jetbrains-mono-nerd ttf-cascadia-code-nerd
--   noto-fonts-emoji
--   lxpolkit lxappearance xfce4-settings
--   pamixer alsa-utils
--   networkmanager network-manager-applet
--   bluez bluez-utils 
+    echo -e "\n"
+    echo -e "Base: "
+    while read -r item; do
+        echo "$item"
+    done <<< "${packages["base"]}"
+    echo -e "\n"
 
-EOF
-    cat <<"EOF" 
---^ Minimal: 
--   neovim p7zip unrar 
--   tar rsync github-cli git 
--   exfat-utils fuse-exfat 
--   ntfs-3g ani-cli
--   xfsprogs xfsdump 
--   flac jasper aria2 less 
--   neofetch htop curl wget jp2a 
--   cmatrix hollywood 
--   neofetch pfetch fastfetch uwufetch cpufetch 
--   vi vim micro nano pico helix kakoune
--   opendoas
+    echo -e "Minimal: "
+    while read -r item; do
+        echo "$item"
+    done <<< "${packages["minimal"]}"
+    echo -e "\n"
+        
+    echo -e "Extended: "
+    while read -r item; do
+        echo "$item"
+    done <<< "${packages["extended"]}"
+    echo -e "\n"
 
-EOF
-    cat <<"EOF" 
---^ Extended: 
--   brave-bin emacs
--   vencord-desktop-bin
--   thunar pavucontrol filezilla
--   libreoffice-fresh
+    echo -e "Gaming: "
+    while read -r item; do
+        echo "$item"
+    done <<< "${packages["gaming"]}"
+    echo -e "\n"
 
-EOF
-    cat <<"EOF"
---^ Gaming:
--   steam
--   wine wine-mono wine-gecko grapejuice
--   bottles lutris
-
-EOF
     exit 0
 fi
 
-### Install all of the above pacakges ####
-read -n1 -rep 'Would you like to install the packages? (y,n)' INST
-if [[ $INST == "Y" || $INST == "y" ]]; then
-    yay -S --noconfirm \
-    hyprland kitty waybar 
-    swaybg swaylock-effects wofi wlogout mako thunar \
-    ttf-jetbrains-mono-nerd noto-fonts-emoji \
-    polkit-gnome python-requests \
-    swappy grim slurp pamixer brightnessctl gvfs \
-    bluez bluez-utils lxappearance xfce4-settings \
-    dracula-gtk-theme dracula-icons-git xdg-desktop-portal-hyprland
-    
+install_aur_helper() {
+    PARU_EXISTS=/sbin/paru
+    YAY_EXISTS=/sbin/yay
+    GIT_EXISTS=/sbin/git
+
+    # initialize [multilib] if not enables
+    echo -e "Enabling [multilib]"
+    sudo sed -i '/#\[multilib\]/,/#Include = \/etc\/pacman\.d\/mirrorlist/c\[multilib]\nInclude = /etc/pacman.d/mirrorlist' /etc/pacman.conf
+
+    if [[ -f $PARU_EXISTS || -f $YAY_EXISTS ]]; then
+        if [ -f "$PARU_EXISTS" ]; then 
+            AUR_HELPER=paru
+            echo -e "Paru was detected, using Paru..."
+            $AUR_HELPER -Suy --noconfirm
+        fi
+
+        if [ -f "$YAY_EXISTS" ]; then
+            AUR_HELPER=yay
+            echo -e "Paru was detected, using Paru..."
+            $AUR_HELPER -Suy --noconfirm
+        fi
+    else
+        # kinda unnecessary because you need git to even get this install bruh
+        if [ ! -f "$GIT_EXISTS" ]; then
+            sudo pacman -S git --noconfirm
+        fi
+
+        echo -e "An AUR Helper is needed for this to work, which one you like to install? (1,2): "
+        echo -e "1. Yay"
+        echo -e "2. Paru"
+        read -n1 -rep "$: " AUR_HELPER
+
+        if [[ $AUR_HELPER == "1" || $AUR_HELPER == "2" ]]; then
+            # install paru
+            if [ $AUR_HELPER == "1" ]; then
+                sudo pacman -S --needed base-devel --noconfirm
+                git clone https://aur.archlinux.org/yay.git
+                cd yay
+                makepkg -si --noconfirm
+                cd ..
+                rm -rf yay
+                AUR_HELPER=yay
+            fi
+
+            if [ $AUR_HELPER == "2" ]; then
+                sudo pacman -S --needed base-devel --noconfirm
+                git clone https://aur.archlinux.org/paru.git
+                cd paru
+                makepkg -si --noconfirm
+                cd ..
+                rm -rf paru
+                AUR_HELPER=paru
+            fi
+        else 
+            echo -e "An AUR Helper is needed for this script, exiting..."
+            exit 0
+        fi
+    fi
+}
+
+start_wireless() {
+    # Start the bluetooth service
+    echo -e "Starting the Bluetooth Service..."
+    sudo systemctl enable --now bluetooth.service 
+    sleep 2
+
+    ### Disable wifi powersave mode ###
+    echo 'Disabling wifi powersave...' 
+    LOC="/etc/NetworkManager/conf.d/wifi-powersave.conf"
+    echo -e "The following has been added to $LOC.\n"
+    echo -e "[connection]\nwifi.powersave = 2" | sudo tee -a $LOC
+    echo -e "\n"
+    echo -e "Restarting NetworkManager service..."
+    sudo systemctl restart NetworkManager
+    echo -e "Waiting for Internet to reconnect..."
+    sleep 5
+}
+
+copy_config() {
+    cp -rv ../.config/autoclicker   ~/.config
+    cp -rv ../.config/swaylock      ~/.config
+    cp -rv ../.config/hypr          ~/.config
+    cp -rv ../.config/wofi          ~/.config
+    cp -rv ../.config/alacritty     ~/.config
+    cp -rv ../.config/neofetch      ~/.config
+    cp -rv ../.config/gtk-3.0       ~/.config
+    cp -rv ../.config/dunst         ~/.config
+    cp -rv ../.config/kitty         ~/.config
+    cp -rv ../.config/waybar        ~/.config
+    cp -rv ../.config/cava          ~/.config
+    cp -rv ../.tmux.conf            ~
+    cp -rv ../.bashrc               ~
+    cp -rv ../.Xmodmap              ~
+    cp -rv ../.xinitrc              ~
+
     # Set some files as exacutable 
     chmod +x ~/.config/hypr/xdg-portal-hyprland
     chmod +x ~/.config/waybar/scripts/waybar-wttr.py
-fi
 
+    # Clean out other portals
+    echo -e "Cleaning out conflicting xdg portals...\n"
+    $AUR_HELPER -R --noconfirm xdg-desktop-portal-gnome xdg-desktop-portal-gtk
+
+}
+
+install_doas() {
+    ### Install Opendoas ###
+    echo -e 'Installing opendoas...'
+    sudo pacman -S opendoas --noconfirm
+    sudo chown -c root:root /etc/doas.conf
+    sudo chmod -c 0400 /etc/doas.conf
+    sudo rm -f /etc/doas.conf
+    echo "permit :wheel 
+    permit nopass '$(whoami)'
+    " | sudo tee -a /etc/doas.conf > /dev/null
+}
+
+stage_1() {
+    echo -e "Executing Stage 1"
+
+    echo -e "Installing base packages"
+    $AUR_HELPER -S --noconfirm ${packages["base"]}
+    
+    echo -e "Copying config files..."
+    copy_config 
+
+    echo -e "Trying to switch stage..."
+    if [ $STAGE -gt 1 ]; then 
+        echo -e "Entering stage 2"
+        stage_2
+    else 
+        echo -e "Stage-${STAGE} installation finished!"
+    fi
+}
+
+stage_2() {
+    echo -e "Executing Stage 2"
+
+    echo -e 'Installing useful utilities...'
+    $AUR_HELPER -S --noconfirm ${packages["minimal"]}
+        
+    echo -e "Trying to switch stage..."
+    if [ $STAGE -gt 2 ]; then 
+        echo -e "Entering stage 3"
+        stage_3
+    else 
+        echo -e "Stage-${STAGE} installation finished!"
+    fi
+}
+
+stage_3() {
+    echo -e "Executing Stage 3"
+
+    echo -e 'Installing Browsers and Multimedia...'
+    $AUR_HELPER -S --noconfirm ${packages["extended"]}
+
+    echo -e "Trying to switch stage..."
+    if [ $STAGE -gt 3 ]; then 
+        echo -e "Entering stage 4"
+        stage_4
+    else 
+        echo -e "Stage-${STAGE} installation finished!"
+    fi
+}
+
+stage_4() {
+    echo -e "Executing Stage 4"
+
+    echo -e 'Installing tools for Gaming'
+    $AUR_HELPER -S --noconfirm ${packages["gaming"]}
+    
+    echo -e "Stage-${STAGE} installation finished!"
+}
+
+cat <<"EOF"
+
+#-------------------#
+# Easy i3 installer #
+#-------------------#-----------------------------------------------------------------------#
+    This Script installs my i3 configuration starting from a minimal arch install
+    It will install all dependencies if they are missing!
+#-------------------------------------------------------------------------------------------#
+Run the script with '--list-packages' or '-l' as its first argument for more information of
+which packages are installed in what stage!
+Example: If you install 'Extended' the script will go through Stage 1 till 3 and install
+all the packages in those stages
+#-------------------------------------------------------------------------------------------#
+    Choose type of installation: 
+    1. Base 
+    2. Minimal
+    3. Extended
+    4. Gaming
+#-------------------------------------------------------------------------------------------#
+
+EOF
+read -n1 -rep "$: " STAGE
+
+if [[ $STAGE -lt 1 || $STAGE -gt 4 ]]; then 
+    echo -e "Choose a valid option"
+else 
+    install_aur_helper 
+    stage_1
+fi
