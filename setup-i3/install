@@ -1,49 +1,63 @@
 #!/bin/sh
 
-if [ "$1" == "list-packages" ]; then
-    echo -e "\nBase: xorg xorg-xinit i3 
--   xdotool maim xclip
--   nitrogen thunar kitty
--   rofi rofi-power-menu rofi-emoji 
--   materia-gtk-theme
--   alacritty dunst curl wget
--   picom polybar pokemon-colorscripts-git
--   ttf-jetbrains-mono-nerd ttf-cascadia-code-nerd
--   noto-fonts-emoji
--   lxpolkit lxappearance xfce4-settings
--   pamixer alsa-utils
--   networkmanager network-manager-applet
--   bluez bluez-utils 
-#
-"
-    echo -e "\nMinimal: 
--   neovim p7zip unrar 
--   tar rsync github-cli git 
--   exfat-utils fuse-exfat 
--   ntfs-3g ani-cli
--   xfsprogs xfsdump 
--   flac jasper aria2 less 
--   neofetch htop curl wget jp2a 
--   cmatrix hollywood 
--   neofetch pfetch fastfetch uwufetch cpufetch 
--   vi vim micro nano pico helix kakoune
--   opendoas
-#
-"
-    echo -e "\nExtended: 
--   brave-bin emacs
--   vencord-desktop-bin
--   thunar pavucontrol filezilla
--   libreoffice-fresh
-#
-"
+# Define an associative array of packages
+declare -A packages
 
-    echo -e "\Gaming: 
--   steam
--   wine wine-mono wine-gecko grapejuice
--   bottles lutris
-#
-"
+packages["base"]="xorg xorg-xinit i3 xdotool maim xclip
+        nitrogen rofi rofi-emoji thunar kitty alacritty dunst curl wget picom polybar pokemon-colorscripts-git
+        ttf-jetbrains-mono-nerd ttf-cascadia-code-nerd noto-fonts-emoji
+        lxpolkit lxappearance xfce4-settings
+        dracula-gtk-theme dracula-icons-git
+        pamixer alsa-utils
+        networkmanager network-manager-applet
+        bluez bluez-utils"
+
+packages["minimal"]="p7zip unrar tar rsync github-cli git
+        exfat-utils fuse-exfat
+        ntfs-3g
+        xfsprogs xfsdump
+        flac jasper aria2 less
+        neofetch htop curl wget jp2a
+        cmatrix hollywood
+        neofetch pfetch fastfetch uwufetch cpufetch
+        vi vim micro nano pico helix kakoune
+        ani-cli"
+
+packages["extended"]="brave-bin emacs
+        vencord-desktop-bin
+        thunar pavucontrol filezilla
+        libreoffice-fresh"
+
+packages["gaming"]="team
+        wine wine-mono wine-gecko grapejuice
+        bottles lutris"
+
+if [[ "$1" == "--list-packages" || "$1" == "-l" ]]; then
+    echo -e "\n"
+    echo -e "Base: "
+    while read -r item; do
+        echo "$item"
+    done <<< "${packages["base"]}"
+    echo -e "\n"
+
+    echo -e "Minimal: "
+    while read -r item; do
+        echo "$item"
+    done <<< "${packages["minimal"]}"
+    echo -e "\n"
+        
+    echo -e "Extended: "
+    while read -r item; do
+        echo "$item"
+    done <<< "${packages["extended"]}"
+    echo -e "\n"
+
+    echo -e "Gaming: "
+    while read -r item; do
+        echo "$item"
+    done <<< "${packages["gaming"]}"
+    echo -e "\n"
+
     exit 0
 fi
 
@@ -107,19 +121,7 @@ install_aur_helper() {
     fi
 }
 
-stage_1() {
-    echo -e "Executing Stage 1"
-
-    echo -e 'Installing Needed dependencies...'
-    $AUR_HELPER -S --noconfirm xorg xorg-xinit i3 xdotool maim xclip \
-        nitrogen rofi rofi-emoji thunar kitty alacritty dunst curl wget picom polybar pokemon-colorscripts-git \
-        ttf-jetbrains-mono-nerd ttf-cascadia-code-nerd noto-fonts-emoji \
-        lxpolkit lxappearance xfce4-settings \
-        materia-gtk-theme \
-        pamixer alsa-utils \
-        networkmanager network-manager-applet \
-        bluez bluez-utils 
-
+start_wireless() {
     # Start the bluetooth service
     echo -e "Starting the Bluetooth Service..."
     sudo systemctl enable --now bluetooth.service sleep 2
@@ -134,13 +136,25 @@ stage_1() {
     sudo systemctl restart NetworkManager
     echo -e "Waiting for Internet to reconnect..."
     sleep 5
+}
 
-    ### Install rofi-power-menu ###
+install_nvim_config() {
+    ### Install my neovim configuration ###
+    echo -e 'Installing my Neovim configuration...'
+    $AUR_HELPER -S --noconfirm neovim
+    rm -rf ~/.config/nvim && rm -rf ~/.local/share/nvim
+    git clone https://github.com/POP303U/kickstart-nvim \
+        ~/.config/nvim \
+        --depth 1
+}
+
+install_rofi_power_menu() {
     wget https://raw.githubusercontent.com/jluttine/rofi-power-menu/master/rofi-power-menu
     chmod +x rofi-power-menu
     sudo mv rofi-power-menu /bin
+}
 
-    echo -e "Copying config files..."
+copy_config() {
     cp -rv ../.config/autoclicker   ~/.config
     cp -rv ../.config/alacritty     ~/.config
     cp -rv ../.config/i3blocks      ~/.config
@@ -160,7 +174,33 @@ stage_1() {
 
     # Set some files as exacutable 
     chmod +x ~/.config/i3blocks/scripts *
+}
 
+install_doas() {
+    ### Install Opendoas ###
+    echo -e 'Installing opendoas...'
+    sudo pacman -S opendoas --noconfirm
+    sudo chown -c root:root /etc/doas.conf
+    sudo chmod -c 0400 /etc/doas.conf
+    sudo rm -f /etc/doas.conf
+    echo "permit :wheel 
+    permit nopass '$(whoami)'
+    " | sudo tee -a /etc/doas.conf > /dev/null
+}
+
+stage_1() {
+    echo -e "Executing Stage 1"
+
+    echo -e "Installing base packages"
+    $AUR_HELPER -S --noconfirm ${packages["base"]}
+    
+    echo -e "Installing rofi-power-menu"
+    install_rofi_power_menu
+    
+    echo -e "Copying config files..."
+    copy_config 
+
+    echo -e "Trying to switch stage..."
     if [ $STAGE -gt 1 ]; then 
         echo -e "Entering stage 2"
         stage_2
@@ -172,38 +212,10 @@ stage_1() {
 stage_2() {
     echo -e "Executing Stage 2"
 
-    ### Install my neovim configuration ###
-    echo -e 'Installing my Neovim configuration...'
-    $AUR_HELPER -S --noconfirm neovim
-    rm -rf ~/.config/nvim && rm -rf ~/.local/share/nvim
-    git clone https://github.com/POP303U/kickstart-nvim \
-        ~/.config/nvim \
-        --depth 1
-
     echo -e 'Installing useful utilities...'
-    ### install useful tools ###
-    $AUR_HELPER -S --noconfirm \
-        p7zip unrar tar rsync github-cli git \
-        exfat-utils fuse-exfat \
-        ntfs-3g \
-        xfsprogs xfsdump \
-        flac jasper aria2 less \
-        neofetch htop curl wget jp2a \
-        cmatrix hollywood \
-        neofetch pfetch fastfetch uwufetch cpufetch  \
-        vi vim micro nano pico helix kakoune \
-        ani-cli
-
-    ### Install Opendoas ###
-    echo -e 'Installing opendoas...'
-    sudo pacman -S opendoas --noconfirm
-    sudo chown -c root:root /etc/doas.conf
-    sudo chmod -c 0400 /etc/doas.conf
-    sudo rm -f /etc/doas.conf
-    echo "permit :wheel 
-    permit nopass '$(whoami)'
-    " | sudo tee -a /etc/doas.conf > /dev/null
-
+    $AUR_HELPER -S --noconfirm ${packages["minimal"]}
+        
+    echo -e "Trying to switch stage..."
     if [ $STAGE -gt 2 ]; then 
         echo -e "Entering stage 3"
         stage_3
@@ -214,15 +226,11 @@ stage_2() {
 
 stage_3() {
     echo -e "Executing Stage 3"
-    echo -e 'Installing Browsers and Multimedia...' GENERICS
 
-    ### Installing useful tools
-    $AUR_HELPER -S --noconfirm \
-        brave-bin emacs \
-        vencord-desktop-bin \
-        thunar pavucontrol filezilla \
-        libreoffice-fresh
+    echo -e 'Installing Browsers and Multimedia...'
+    $AUR_HELPER -S --noconfirm ${packages["extended"]}
 
+    echo -e "Trying to switch stage..."
     if [ $STAGE -gt 3 ]; then 
         echo -e "Entering stage 4"
         stage_4
@@ -234,30 +242,33 @@ stage_3() {
 stage_4() {
     echo -e "Executing Stage 4"
 
-    ### Installing useful tools
-    $AUR_HELPER -S --noconfirm \
-        steam \
-        wine wine-mono wine-gecko grapejuice \
-        bottles lutris
-
+    echo -e 'Installing tools for Gaming'
+    $AUR_HELPER -S --noconfirm ${packages["gaming"]}
+    
     echo -e "Stage-${STAGE} installation finished!"
 }
 
-echo -e "#-------------------#"
-echo -e "# Easy i3 installer #"
-echo -e "#-------------------#--------------------------------------------------------------------------------------#"
-echo -e "This Script installs my i3 configuration starting from a minimal arch install"
-echo -e "It will install all dependencies if they are missing!"
-echo -e "#----------------------------------------------------------------------------------------------------------#"
-echo -e "Run the script with 'list-packages' as its first argument for more information of"
-echo -e "which packages are installed in what stage!"
-echo -e "#----------------------------------------------------------------------------------------------------------#"
-echo -e "Choose type of installation: "
-echo -e "1. Base (this configuration without extra packages)"
-echo -e "2. Minimal (...+ tools, (nvim, helix, jp2a, wget/curl, kakoune, fastfetch, xfs/exfat/ntfs support)...)"
-echo -e "3. Extended (...+ browsers, pavucontrol (audio management), filezilla, brave, thunar, grapejuice (roblox)...)"
-echo -e "4. Gaming (...+ steam, wine, proton, soda, bottles...)"
-echo -e "#----------------------------------------------------------------------------------------------------------#"
+cat <<"EOF"
+
+#-------------------#
+# Easy i3 installer #
+#-------------------#-----------------------------------------------------------------------#
+    This Script installs my i3 configuration starting from a minimal arch install
+    It will install all dependencies if they are missing!
+#-------------------------------------------------------------------------------------------#
+Run the script with '--list-packages' or '-l' as its first argument for more information of
+which packages are installed in what stage!
+Example: If you install 'Extended' the script will go through Stage 1 till 3 and install
+all the packages in those stages
+#-------------------------------------------------------------------------------------------#
+    Choose type of installation: 
+    1. Base 
+    2. Minimal
+    3. Extended
+    4. Gaming
+#-------------------------------------------------------------------------------------------#
+
+EOF
 read -n1 -rep "$: " STAGE
 
 if [[ $STAGE -lt 1 || $STAGE -gt 4 ]]; then 
