@@ -7,7 +7,7 @@ packages["base"]="xorg xorg-xinit i3 xdotool maim xclip
         nitrogen rofi rofi-emoji thunar kitty alacritty dunst curl wget picom polybar pokemon-colorscripts-git
         ttf-jetbrains-mono-nerd ttf-cascadia-code-nerd noto-fonts-emoji
         lxpolkit lxappearance xfce4-settings
-        dracula-gtk-theme dracula-icons-git
+        rose-pine-gtk-theme-full
         autotiling
         pamixer alsa-utils
         networkmanager network-manager-applet
