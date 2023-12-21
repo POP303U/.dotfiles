@@ -6,7 +6,7 @@ declare -A packages
 packages["base"]="hyprland kitty waybar
         swaybg swaylock-effects wofi wlogout mako thunar
         ttf-jetbrains-mono-nerd noto-fonts-emoji
-        polkit-gnome python-requests
+        polkit-gnome python-requests swww
         swappy grim slurp pamixer brightnessctl gvfs
         bluez bluez-utils lxappearance xfce4-settings
         dracula-gtk-theme dracula-icons-git xdg-desktop-portal-hyprland"
@@ -28,7 +28,7 @@ packages["extended"]="brave-bin emacs
         libreoffice-fresh"
 
 packages["gaming"]="steam
-        wine wine-mono wine-gecko grapejuice
+        wine wine-mono wine-gecko vinegar
         bottles lutris"
 
 if [[ "$1" == "--list-packages" || "$1" == "-l" ]]; then
