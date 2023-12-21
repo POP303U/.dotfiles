@@ -8,7 +8,7 @@
 }
 
 window#waybar {
-    background: rgba(21, 18, 27, 0);
+    background: rgba(31, 29, 46, 0);
     color: #cdd6f4;
 }
 
@@ -56,12 +56,15 @@ tooltip {
 #battery,
 #pulseaudio,
 #network,
+#memory,
+#disk,
+#cpu,
 #bluetooth,
 #temperature,
 #workspaces,
 #tray,
 #backlight {
-    background: #1e1e2e;
+    background: #1f1d2e;
     opacity: 0.8;
     padding: 0px 10px;
     margin: 3px 0px;
@@ -95,7 +98,7 @@ tooltip {
 }
 
 #custom-bg_switcher {
-    color: #c4a7e7;
+    color: #ebbcba;
     border-radius: 10px 10px 10px 10px;
     margin-right: 10px;
 }
@@ -113,10 +116,32 @@ tooltip {
 }
 
 #clock {
-    color: #3e8fb0;
+    color: #9ccfd8;
     border-radius: 10px 0px 0px 10px;
     margin-left: 10px;
     border-right: 0px;
+}
+
+#disk {
+    color: #eb6f92;
+    border-radius: 10px 0px 0px 10px;
+    border-left: 0px;
+    border-right: 0px;
+}
+
+#memory {
+    color: #9ccfd8;
+    border-radius: 0px 0px 0px 0px;
+    border-left: 0px;
+    border-right: 0px;
+}
+
+#cpu {
+    color: #c4a7e7;
+    border-radius: 0px 10px 10px 0px;
+    border-left: 0px;
+    border-right: 0px;
+    margin-right: 10px;
 }
 
 #network {
