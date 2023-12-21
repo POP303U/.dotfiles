@@ -1,6 +1,5 @@
 #!/bin/sh
 
 dir="${HOME}/.config/swww/walls"
-BG="$(find "$dir" -name '*.jpg' -o -name '*.png' | shuf -n1)"
-swww init && swww img "$BG"
+swww init && swww img "$dir/cat_leaves.png"
 
