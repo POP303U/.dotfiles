@@ -3,8 +3,7 @@
 dir="${HOME}/.config/swww/walls"
 BG="$(find "$dir" -name '*.jpg' -o -name '*.png' | shuf -n1)"
 
-# Initialize if needed (Check if the program is running)
-# 
+# Check if the program is running
 if pgrep "swww-deamon" >/dev/null; then
 	swww init
 fi
