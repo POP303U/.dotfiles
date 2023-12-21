@@ -32,8 +32,10 @@ Select your profile to install and you're ready to go!
 ***Done!***
 
 ## **Current Setup!**
-### i3
-![Mo_11__Dez_14_58_16_CET_2023_](https://github.com/POP303U/dotfiles/assets/115036828/58141551-9e0a-4aaf-9c05-0fa4a706d05d)
+### i3 (i3blocks)
+![Thu_Dec_21_08_54_52_PM_UTC_2023_](https://github.com/POP303U/dotfiles/assets/115036828/f7745a65-e302-42ef-9958-64f4a69f481e)
+
+### i3 (polybar)
 
 ### Hyprland
 ![image](https://github.com/POP303U/dotfiles/assets/115036828/42fcb2c2-a5d4-4003-953a-fd9bdc6bc69a)
