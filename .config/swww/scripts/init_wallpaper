@@ -1,5 +1,5 @@
 #!/bin/sh
 
-swww init; 
+swww init
 swww img ~/.config/swww/walls/cat_leaves.png
 
