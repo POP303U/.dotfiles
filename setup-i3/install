@@ -30,7 +30,7 @@ packages["extended"]="brave-bin emacs
         libreoffice-fresh"
 
 packages["gaming"]="steam
-        wine wine-mono wine-gecko grapejuice
+        wine wine-mono wine-gecko vinegar
         bottles lutris"
 
 if [[ "$1" == "--list-packages" || "$1" == "-l" ]]; then
