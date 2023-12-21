@@ -8,7 +8,7 @@
     "height": 50,
     "modules-left": ["clock","custom/weather","hyprland/workspaces"],
     "modules-center": ["hyprland/window"],
-    "modules-right": ["custom/bg_switcher", "network","custom/power_profile","pulseaudio","pulseaudio#microphone","tray"],
+    "modules-right": ["custom/bg_switcher", "disk", "memory", "cpu", "network","custom/power_profile","pulseaudio","pulseaudio#microphone","tray"],
 
     "hyprland/workspaces": {
         "disable-scroll": true,
@@ -24,12 +24,13 @@
         }
     },
 
+    
     "hyprland/window": {
         "max-length": 80,
         "seperate-outputs": true,
     },
-    
-   "custom/weather" : {
+
+    "custom/weather" : {
         //shows the current weather and forecast
         "tooltip" : true,
         "format" : "{}",
@@ -37,7 +38,7 @@
         "exec" : "~/.config/waybar/scripts/waybar-wttr.py",
         "return-type" : "json"
     },
-        
+
     "custom/bg_switcher" : {
         "on-click": "~/.config/swww/scripts/change_wallpaper",
         "format" : "󱨀",
@@ -61,6 +62,24 @@
     "clock": {
         "format": "{: %I:%M %p   %a, %b %e}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+    },
+
+    "disk": {
+        "interval": 30,
+        "format": "󱛟 {percentage_free}% free",
+        "path": "/"
+    },
+
+    "memory": {
+        "interval": 30,
+        "format": " {}%",
+        "max-length": 10
+    },
+
+    "cpu": {
+        "interval": 1,
+        "format": "󰻠 {}%",
+        "max-length": 10
     },
 
     "pulseaudio": {
@@ -91,7 +110,7 @@
         "on-scroll-down": "pamixer --default-source -d 5",
         "scroll-step": 5
     },
-    
+
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
         "format-wifi": "  {signalStrength}%",
@@ -103,14 +122,14 @@
     },
 
     /*"bluetooth": {
-	    "format": " {status}",
-	    "format-disabled": "", // an empty format will hide the module
-	    "format-connected": " {num_connections}",
-	    "tooltip-format": "{device_alias}",
-	    "tooltip-format-connected": " {device_enumerate}",
-	    "tooltip-format-enumerate-connected": "{device_alias}"
+        "format": " {status}",
+        "format-disabled": "", // an empty format will hide the module
+        "format-connected": " {num_connections}",
+        "tooltip-format": "{device_alias}",
+        "tooltip-format-connected": " {device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}"
     }
-    
+
     "battery": {
         "states": {
             "good": 95,
