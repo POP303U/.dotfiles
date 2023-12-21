@@ -1,6 +1,5 @@
 #!/bin/sh
 
-rm -rvf ../.config
 mkdir -v ../.config
     
 cp -rvf ~/.config/autoclicker    ../.config
