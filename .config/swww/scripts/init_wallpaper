@@ -1,5 +1,9 @@
 #!/bin/sh
 
 dir="${HOME}/.config/swww/walls"
-swww init && swww img "$dir/cat_leaves.png"
+if pgrep "swww-deamon" >/dev/null; then
+	swww init
+fi
+
+swww img $dir/cat_leaves.png
 
