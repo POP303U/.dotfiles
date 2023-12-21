@@ -4,7 +4,8 @@
 declare -A packages
 
 packages["base"]="hyprland kitty waybar
-        swaylock swaylock-effects wofi wlogout mako thunar
+        swaylock swaylock-effects wofi wlogout thunar
+        wl-clipboard wlr-randr
         ttf-jetbrains-mono-nerd noto-fonts-emoji
         polkit-gnome python-requests swww
         swappy grim slurp pamixer gvfs
