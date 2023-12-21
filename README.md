@@ -1,32 +1,49 @@
 # dotfiles
 
-Personal i3wm config with i3blocks! 
-This repository is the continuation of [lightweight-i3-config](https://github.com/POP303U/lightweight-i3-config)!
+Personal dotfiles
+This repository contains the continuation of [lightweight-i3-config](https://github.com/POP303U/lightweight-i3-config)!
+And my personal Hyprland config!
 
-This is an i3 config designed to be lightweight and efficient.
-The color scheme is based on Rose-Pine
+All of my configs use the colorscheme Rosé-Pine
 
 **How to install**
 
 Paste this code into your nearest terminal to get started with the installer:
 
+i3
 ```sh
 git clone https://github.com/POP303U/dotfiles
 cd dotfiles/setup-i3
 ./install
 ```
+
+Hyprland
+```sh
+git clone https://github.com/POP303U/dotfiles
+cd dotfiles/setup-hypr
+./install
+```
+
+You don't have to clone the repo twice if you want to install both i3 and Hyprland
+just go to the setup folder corresponding for your install and run the installer!
+
 Select your profile to install and you're ready to go!
 
 ***Done!***
 
 ## **Current Setup!**
+### i3
 ![Mo_11__Dez_14_58_16_CET_2023_](https://github.com/POP303U/dotfiles/assets/115036828/58141551-9e0a-4aaf-9c05-0fa4a706d05d)
+
+### Hyprland
+![image](https://github.com/POP303U/dotfiles/assets/115036828/42fcb2c2-a5d4-4003-953a-fd9bdc6bc69a)
+
 
 **Troubleshooting**
 
 If errors occur (no transparency, no statusbar, etc...) look at the neccessary packages!
 Be ready to read errors and google if you don't understand something.
-Check out the i3 docs and the many config guides. I recommend you have at least some experience before trying my config.
+Read the documentation and the many config guides. I recommend you have at least some experience before trying my configs.
 
 **Use**
 These files are free of use for anybody, however credit must be given if my config / modified config is posted.
