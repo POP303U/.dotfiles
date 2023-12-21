@@ -46,5 +46,6 @@ Be ready to read errors and google if you don't understand something.
 Read the documentation and the many config guides. I recommend you have at least some experience before trying my configs.
 
 **Use**
+
 These files are free of use for anybody, however credit must be given if my config / modified config is posted.
 Have fun customizing your own!
