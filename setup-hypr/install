@@ -4,12 +4,12 @@
 declare -A packages
 
 packages["base"]="hyprland kitty waybar
-        swaybg swaylock-effects wofi wlogout mako thunar
+        swaylock swaylock-effects wofi wlogout mako thunar
         ttf-jetbrains-mono-nerd noto-fonts-emoji
         polkit-gnome python-requests swww
-        swappy grim slurp pamixer brightnessctl gvfs
+        swappy grim slurp pamixer gvfs
         bluez bluez-utils lxappearance xfce4-settings
-        dracula-gtk-theme dracula-icons-git xdg-desktop-portal-hyprland"
+        rose-pine-gtk-theme-full xdg-desktop-portal-hyprland"
 
 packages["minimal"]="p7zip unrar tar rsync github-cli git
         exfat-utils fuse-exfat
