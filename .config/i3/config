@@ -44,7 +44,7 @@ exec --no-startup-id cmus-discord-rpc
 exec_always --no-startup-id picom --config ~/.config/picom/picom.conf
 exec_always --no-startup-id autotiling
 exec_always --no-startup-id xmodmap ~/.Xmodmap
-# not needed polybar exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # rofi 
 bindsym $mod+d exec "rofi -modi drun,run,keys -show drun"
@@ -103,39 +103,39 @@ for_window [class="^.*"] border pixel 2
 gaps inner $inner_gaps_size
 gaps outer $outer_gaps_size
 
-bar {
-    status_command 2>/tmp/i3blocks.err /usr/bin/i3blocks -vvv -c ~/.config/i3blocks/i3blocks.conf | tee /tmp/i3blocks.out
-
-    position                top
-    tray_output             primary
-    separator_symbol        " "
-    workspace_buttons       yes
-    strip_workspace_numbers no
-
-    colors {
-        # light mode
-        # background  #fffaf3
-        # statusline  #dddddd
-        # separator   #fffaf3
-
-        # dark mode
-        background  #1f1d2e
-        statusline  #dddddd
-        separator   #fffaf3
-
-        # light mode
-        # focused_workspace #CECECE #CECECE #000000
-        # active_workspace #333333 #333333 #888888
-        # inactive_workspace #CECECE #333333 #f1f1f1
-        # urgent_workspace #eb709b #eb709b #ffffff
-
-        # dark mode
-        focused_workspace #ea9a97 #ea9a97 #000000
-        active_workspace #1f1d2e #1f1d2e #333333
-        inactive_workspace #1f1d2e #1f1d2e #f1f1f1
-        urgent_workspace #eb709b #eb709b #ffffff
-    }
-}
+#bar {
+#    status_command 2>/tmp/i3blocks.err /usr/bin/i3blocks -vvv -c ~/.config/i3blocks/i3blocks.conf | tee /tmp/i3blocks.out
+#
+#    position                top
+#    tray_output             primary
+#    separator_symbol        " "
+#    workspace_buttons       yes
+#    strip_workspace_numbers no
+#
+#    colors {
+#        # light mode
+#        # background  #fffaf3
+#        # statusline  #dddddd
+#        # separator   #fffaf3
+#
+#        # dark mode
+#        background  #1f1d2e
+#        statusline  #dddddd
+#        separator   #fffaf3
+#
+#        # light mode
+#        # focused_workspace #CECECE #CECECE #000000
+#        # active_workspace #333333 #333333 #888888
+#        # inactive_workspace #CECECE #333333 #f1f1f1
+#        # urgent_workspace #eb709b #eb709b #ffffff
+#
+#        # dark mode
+#        focused_workspace #ea9a97 #ea9a97 #000000
+#        active_workspace #1f1d2e #1f1d2e #333333
+#        inactive_workspace #1f1d2e #1f1d2e #f1f1f1
+#        urgent_workspace #eb709b #eb709b #ffffff
+#    }
+#}
 
 # ----------------------- #
 #                         #
@@ -143,8 +143,7 @@ bar {
 #                         #
 # ----------------------- #
 
-# Ignore the rest of the file if you don't need any other 
-# customization options
+# Ignore the rest of the file if you don't need any other customization options
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
