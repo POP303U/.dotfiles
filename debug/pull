@@ -1,8 +1,9 @@
 #!/bin/sh
 
 mkdir -v ../.config
+rm -r ../.config # really fucking dangerous operation
     
-cp -rvf ~/.config/autoclicker    ../.config
+cp -rv  ~/.config/autoclicker    ../.config
 cp -rvf ~/.config/gtk-3.0        ../.config
 cp -rvf ~/.config/swww           ../.config
 cp -rvf ~/.config/swaylock       ../.config
@@ -24,4 +25,8 @@ cp -rvf ~/.xinitrc               ..
 cp -rvf ~/.Xmodmap               ..
 cp -rvf ~/.bashrc                ..
 cp -rvf ~/.tmux.conf             ..
+
+mkdir ../.config/autoclicker
+mv ../.config/clicker_start ../.config/autoclicker
+mv ../.config/clicker_stop ../.config/autoclicker
 # nice
