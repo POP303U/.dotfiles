@@ -340,10 +340,11 @@ PROMPT_COMMAND=bash_prompt_command
 ##	It will set $PS1 with colors and relative to $NEW_PWD, 
 ##	which gets updated by $PROMT_COMMAND on behalf of the terminal
 
-# exports for pipx cargo gcc
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 source "$HOME/.cargo/env"
 
+export $(envsubst < .env)
+export QT_QPA_PLATFORMTHEME=gnome
 export PATH=$PATH:~/.cargo/bin
 export PATH=$PATH:~/.config/emacs/bin
 export PATH=$PATH:/home/archy/.local/bin
@@ -354,15 +355,15 @@ export VISUAL=nvim
 export PROJECTS="/mnt/sdc1/Projects/"
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-export blk='\[\033[01;30m\]'   # Black
-export red='\[\033[01;31m\]'   # Red
-export grn='\[\033[01;32m\]'   # Green
-export ylw='\[\033[01;33m\]'   # Yellow
-export blu='\[\033[01;34m\]'   # Blue
-export pur='\[\033[01;35m\]'   # Purple
-export cyn='\[\033[01;36m\]'   # Cyan
-export wht='\[\033[01;37m\]'   # White
-export clr='\[\033[00m\]'      # Reset
+blk='\[\033[01;30m\]'   # Black
+red='\[\033[01;31m\]'   # Red
+grn='\[\033[01;32m\]'   # Green
+ylw='\[\033[01;33m\]'   # Yellow
+blu='\[\033[01;34m\]'   # Blue
+pur='\[\033[01;35m\]'   # Purple
+cyn='\[\033[01;36m\]'   # Cyan
+wht='\[\033[01;37m\]'   # White
+clr='\[\033[00m\]'      # Reset
 
 # good aliases
 alias ..='cd ..'
@@ -373,14 +374,12 @@ alias ......='cd ../../../../..'
 alias vim=nvim
 alias vi=nvim
 alias v=nvim
-alias btw=neofetch
+alias btw=neofetch # i use arch btw 
 alias dir='dir --color=auto'
 alias vdir='vdir --color=auto'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
-alias ll='ls -alF'
-alias la='ls -A'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias bottles-run='nohup flatpak run com.usebottles.bottles&'
 alias bottles-fix='flatpak override --user --filesystem="host" com.usebottles.bottles'
@@ -388,6 +387,13 @@ alias roblox='nohup flatpak run net.brinkervii.grapejuice app&'
 alias fix-roblox='pkill -9 Roblox'
 alias debug-dunst='pkill -9 dunst && dunst &'
 alias keysoup='sudo systemctl restart keyd && sudo systemctl enable keyd && sudo systemctl start keyd'    
+
+alias vf='${EDITOR} $(fzf)'
+alias dvf='doas ${EDITOR} $(fzf)'
+
+#alias cvf='${EDITOR} $(fzf) | sed 's|/[^/]*$||'b
+#alias cdvf='doas ${EDITOR} $(fzf) | sed 's|/[^/]*$||'"
+#alias cdfzf='$(fzf) | sed 's|/[^/]*$||''
 
 # For editing configs
 alias v-i3='cd ~/.config/i3 && ${EDITOR} ~/.config/i3/config'
@@ -414,6 +420,8 @@ alias v-waybar='cd ~/.config/waybar && ${EDITOR} ~/.config/waybar/config.jsonc'
 alias v-autoclicker='cd ~/.config/autoclicker && ${EDITOR} ~/.config/autoclicker/clicker_start'
 alias v-wofi='cd ~/.config/wofi && ${EDITOR} ~/.config/wofi/style.css'
 alias v-swww='cd ~/.config/swww/scripts && ${EDITOR} ~/.config/swww/scripts/change_wallpaper'
+
+#sudo
 alias dv-keyd='cd /etc/keyd/ && doas ${EDITOR} /etc/keyd/default.conf'
 alias dv-tty='cd /etc/ && doas ${EDITOR} /etc/issue'
 alias g-projects='cd ~/personal/github' 
@@ -571,6 +579,10 @@ bf () {
     du -h -x -s -- * | sort -r -h | head -20;
 }
 
+die () {
+    pkill -SIGTERM $1
+}
+
 ex ()
 {
     if [ -f $1 ] ; then
@@ -594,42 +606,6 @@ ex ()
     else
         echo "'$1' is not a valid file"
     fi
-}
-
-plihac ()
-{
-
-    packages=()
-
-    # Iterate over the remaining arguments (package names)
-    while [ "$#" -gt 0 ]; do
-        # Add the current argument (package name) to the array
-        packages+=("$1")
-
-            # Move to the next argument
-            shift
-    done
-
-    case $1 in
-        -u)   sudo pacman -Syu                ;;
-        -s)   sudo pacman -Syy                ;;
-        -i)   sudo pacman -S   ${packages[@]} ;;
-        -r)   sudo pacman -R   ${packages[@]} ;;
-        -q)   sudo pacman -Qs  ${packages[@]} ;;
-        -h)   echo "usage:  pac <operation> [package/...]
-operations:
-    pac { -u (system upgrade) }
-    pac { -i (install package) } <package(s)>
-    pac {-h --help}
-    pac {-V --version}
-    pac {-D --database} <options> <package(s)>
-    pac {-F --files}    [options] [file(s)]
-    pac {-Q --query}    [options] [package(s)]
-    pac {-R --remove}   [options] <package(s)>
-    pac {-S --sync}     [options] [package(s)]
-    pac {-U --upgrade}  [options] <file(s)>" 
-    esac
-
 }
 
 pac() {
@@ -659,16 +635,18 @@ pac() {
         -u|--upgrade) shift
                 sudo pacman -Syu "$@" ;;
         -s|--sync) shift
-                sudo pacman -S "$@" ;;
+                sudo pacman -Syy "$@" ;;
 
-         *) echo "Usage: pac <operation> [...]
+         *) echo "usage: pac <operation> [...]
 operations:
     pac { -i --install } <packages(s)>
     pac { -r --remove  } <packages(s)>
     pac { -q --query   } <packages(s)>
     pac { -u --upgrade } Perform a full system upgrade
     pac { -s --sync    } Sync all packages with the repository
-    pac { -h --help    } Display this help message";;
+    pac { -h --help    } Display this help message
+"
+    ;;
      esac
 }
 # vim mode yay
