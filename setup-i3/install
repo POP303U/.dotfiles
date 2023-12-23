@@ -13,16 +13,13 @@ packages["base"]="xorg xorg-xinit i3 xdotool maim xclip
         networkmanager network-manager-applet
         bluez bluez-utils"
 
-packages["minimal"]="p7zip unrar tar rsync github-cli git
+packages["minimal"]="p7zip unrar tar 
+        rsync github-cli git
         exfat-utils fuse-exfat
-        ntfs-3g
-        xfsprogs xfsdump
+        ntfs-3g xfsprogs xfsdump
         flac jasper aria2 less
-        neofetch htop curl wget jp2a
-        cmatrix hollywood
-        neofetch pfetch fastfetch uwufetch cpufetch
-        vi vim micro nano pico helix kakoune
-        ani-cli"
+        neofetch htop btop curl wget jp2a pfetch  
+        helix kakoune neovim"
 
 packages["extended"]="brave-bin emacs
         vencord-desktop-bin
