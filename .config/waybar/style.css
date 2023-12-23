@@ -64,7 +64,7 @@ tooltip {
 #tray,
 #backlight {
     background: #1f1d2e;
-    opacity: 1.0;
+    opacity: 9.9;
     padding: 0px 10px;
     margin: 3px 0px;
     margin-top: 10px;
@@ -109,6 +109,7 @@ tooltip {
 }
 
 #window {
+    color: #e0def4;
     border-radius: 10px;
     margin-left: 60px;
     margin-right: 60px;
