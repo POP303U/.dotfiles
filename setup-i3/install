@@ -14,7 +14,7 @@ packages["base"]="xorg xorg-xinit i3 xdotool maim xclip
         bluez bluez-utils"
 
 packages["minimal"]="p7zip unrar tar 
-        rsync github-cli git
+        rsync github-cli git fzf
         exfat-utils fuse-exfat
         ntfs-3g xfsprogs xfsdump
         flac jasper aria2 less
