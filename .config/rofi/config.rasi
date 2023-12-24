@@ -30,6 +30,7 @@ configuration {
 
 window {
   width: 30%;
+  height: 30%;
   background-color: @bg;
 }
 
@@ -86,5 +87,5 @@ prompt {
 }
 
 element-icon {
-    size:             0 ch ;
+    size:             4 ch ;
 }
