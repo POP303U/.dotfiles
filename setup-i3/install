@@ -188,6 +188,8 @@ install_doas() {
 
 stage_1() {
     echo -e "Executing Stage 1"
+    mkdir ~/Desktop
+    mkdir ~/Pictures
 
     echo -e "Installing base packages"
     $AUR_HELPER -S --noconfirm ${packages["base"]}
