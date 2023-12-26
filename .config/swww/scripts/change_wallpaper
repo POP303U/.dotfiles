@@ -9,8 +9,25 @@ if pgrep "swww-deamon" >/dev/null; then
 fi
 
 swww img "$BG" \
-    --transition-type grow \
+    --transition-type wipe \
     --transition-pos "$(hyprctl cursorpos)" \
     --invert-y \
-    --transition-fps 144 \
-    --transition-step 255 
+    --transition-fps 60 \
+    --transition-angle 30 \
+    --transition-step 90
+
+### transitions:
+#"none"
+#"simple"
+#"left"
+#"right"
+#"top"
+#"bottom"
+#"wipe"
+#"grow"
+#"center"
+#"outer"
+#"any"
+#"wave"
+#"random"
+#"fade"
