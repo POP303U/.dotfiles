@@ -1,6 +1,7 @@
 #!/bin/sh
 
 cp -rvf ../.config/swaylock      ~/.config
+cp -rvf ../.config/wlogout       ~/.config
 cp -rvf ../.config/mako          ~/.config
 cp -rvf ../.config/wofi          ~/.config
 cp -rvf ../.config/autoclicker   ~/.config
