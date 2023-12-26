@@ -14,41 +14,17 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# vim mode yay
+set -o vi
 shopt -s histappend
 shopt -s checkwinsize
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=10000
+HISTSIZE=-1
+HISTSIZE=~/.bash_history
+HISTFILESIZE=10000000
 HISTTIMEFORMAT="%F %T "
 HISTCONTROL=ignoreboth
-
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
-esac
-
-if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
-    else
-	color_prompt=
-    fi
-fi
-
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
-fi
 
 ##	FUNCTIONS:
 ##
@@ -128,17 +104,13 @@ format_font()
 
 	case $# in
 	2)
-		eval $output="'\[\033[0;${2}m\]'"
-		;;
+		eval $output="'\[\033[0;${2}m\]'";;
 	3)
-		eval $output="'\[\033[0;${2};${3}m\]'"
-		;;
+		eval $output="'\[\033[0;${2};${3}m\]'";;
 	4)
-		eval $output="'\[\033[0;${2};${3};${4}m\]'"
-		;;
+		eval $output="'\[\033[0;${2};${3};${4}m\]'";;
 	*)
-		eval $output="'\[\033[0m\]'"
-		;;
+		eval $output="'\[\033[0m\]'";;
 	esac
 }
 
@@ -343,7 +315,7 @@ PROMPT_COMMAND=bash_prompt_command
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 source "$HOME/.cargo/env"
 
-export $(envsubst < .env)
+#export $(envsubst < .env)
 export QT_QPA_PLATFORMTHEME=gnome
 export PATH=$PATH:~/.cargo/bin
 export PATH=$PATH:~/.config/emacs/bin
@@ -381,16 +353,16 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-alias bottles-run='nohup flatpak run com.usebottles.bottles&'
-alias bottles-fix='flatpak override --user --filesystem="host" com.usebottles.bottles'
+#alias bottles-run='nohup flatpak run com.usebottles.bottles&'
+#alias bottles-fix='flatpak override --user --filesystem="host" com.usebottles.bottles'
 alias roblox='nohup flatpak run net.brinkervii.grapejuice app&'
-alias fix-roblox='pkill -9 Roblox'
+#alias fix-roblox='pkill -9 Roblox'
 alias debug-dunst='pkill -9 dunst && dunst &'
 alias keysoup='sudo systemctl restart keyd && sudo systemctl enable keyd && sudo systemctl start keyd'    
 
 alias vf='${EDITOR} $(fzf)'
 alias dvf='doas ${EDITOR} $(fzf)'
-
+alias s-bashrc='source ~/.bashrc'
 #alias cvf='${EDITOR} $(fzf) | sed 's|/[^/]*$||'b
 #alias cdvf='doas ${EDITOR} $(fzf) | sed 's|/[^/]*$||'"
 #alias cdfzf='$(fzf) | sed 's|/[^/]*$||''
@@ -418,11 +390,12 @@ alias v-hypr='cd ~/.config/hypr && ${EDITOR} ~/.config/hypr/hyprland.conf'
 alias v-hypr-binds='cd ~/.config/emacs && ${EDITOR} ~/config.org'
 alias v-waybar='cd ~/.config/waybar && ${EDITOR} ~/.config/waybar/config.jsonc'
 alias v-autoclicker='cd ~/.config/autoclicker && ${EDITOR} ~/.config/autoclicker/clicker_start'
+alias v-wlogout='cd ~/.config/wlogout && ${EDITOR} ~/.config/wlogout/style.css '
 alias v-wofi='cd ~/.config/wofi && ${EDITOR} ~/.config/wofi/style.css'
 alias v-swww='cd ~/.config/swww/scripts && ${EDITOR} ~/.config/swww/scripts/change_wallpaper'
 
 #sudo
-alias dv-keyd='cd /etc/keyd/ && doas ${EDITOR} /etc/keyd/default.conf'
+alias dv-keyd='cd /etc/keyd/ && doas ${EDITOR} /etc/keyd/default_shell.conf'
 alias dv-tty='cd /etc/ && doas ${EDITOR} /etc/issue'
 alias g-projects='cd ~/personal/github' 
 alias v-projects='cd $PROJECTS && nvim'
@@ -517,7 +490,15 @@ function nice_shell_void() {
     PS1=''${blu}'$(current_git)'${grn}'  '${clr}'$(current_path) '${grn}' '${clr}''
 }
 
-function default() {
+function simplistica() {
+    PS1=''${ylw}'$(current_path)\n'${blu}' '${clr}''
+}
+
+function powerliney() {
+    PS1=''${ylw}'$(current_path) '${pur}' '${blu}'$(current_user)@$(current_host) '${pur}' '${clr}''
+}
+
+function default_shell() {
     PS1='[\u@\h \W]\$'
 }
 
@@ -531,7 +512,7 @@ function small_arrow() {
     PS2=''${blu}'-> '${clr}''
 }
 
-function default() {
+function default_arrow() {
     PS2=''${clr}'> '
 }   
 
@@ -561,14 +542,16 @@ nice_shell_artix       # simple shell i use (artix)
 #artix_iso              # prompt based on artix live iso
 #gentoo_iso             # prompt based on gentoo live iso
 #general_iso            # prompt based on mostly all linux distros defaults
-#default                # default bash prompt
+#default_shell          # default bash prompt
+#simplistica            # simple, kinda like those zsh prompts or something
+#powerliney             # powerline based bash prompt
 
 # PS2 =>
 #fat_arrow             # simple fat blue arrow 
 #small_arrow           # simple small blue arrow 
-#pretty_angle          # angle brackets like 'nice_shell_artix' prompt         
-pretty_dollar         # dollar prompt but pretty
-#default               # default arrow
+pretty_angle          # angle brackets like 'nice_shell_artix' prompt         
+#pretty_dollar         # dollar prompt but pretty
+#default_arrow         # default arrow
 
 
 hg() {
@@ -649,13 +632,7 @@ operations:
     ;;
      esac
 }
-# vim mode yay
-set -o vi
-
-clear # Could cause issues if errors aren't reported
-
-# Fetching scripts
-
+### Fetching scripts
 #neofetch
 #pfetch
 #screenfetch
@@ -663,4 +640,3 @@ clear # Could cause issues if errors aren't reported
 pokemon-colorscripts --no-title -r 
 
 ### EOF ###
-
