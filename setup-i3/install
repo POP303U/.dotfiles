@@ -3,7 +3,7 @@
 # Define an associative array of packages
 declare -A packages
 
-packages["base"]="xorg xorg-xinit i3 xdotool maim xclip
+packages["base"]="noto-fonts xorg xorg-xinit i3 xdotool maim xclip
         nitrogen rofi rofi-emoji thunar kitty alacritty dunst curl wget picom polybar pokemon-colorscripts-git
         ttf-jetbrains-mono-nerd ttf-cascadia-code-nerd noto-fonts-emoji
         lxpolkit lxappearance xfce4-settings
