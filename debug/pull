@@ -3,7 +3,8 @@
 mkdir -v ../.config
 rm -r ../.config # really fucking dangerous operation
     
-cp -rv  ~/.config/autoclicker    ../.config
+cp -rvf ~/.config/autoclicker    ../.config
+cp -rvf ~/.config/wlogout        ../.config
 cp -rvf ~/.config/gtk-3.0        ../.config
 cp -rvf ~/.config/swww           ../.config
 cp -rvf ~/.config/swaylock       ../.config
