@@ -1,6 +1,5 @@
 * {
     border: none;
-    border-radius: 0;
     font-family: "JetbrainsMono Nerd Font";
     font-weight: bold;
     font-size: 16px;
@@ -50,6 +49,8 @@ tooltip {
 #custom-power_profile,
 #custom-weather,
 #custom-bg_switcher,
+#keyboard-state,
+#user,
 #window,
 #clock,
 #battery,
@@ -66,7 +67,7 @@ tooltip {
     background: #1f1d2e;
     opacity: 9.9;
     padding: 0px 10px;
-    margin: 3px 0px;
+    margin: 0px 0px;
     margin-top: 10px;
     border: 1px solid #181825;
 }
@@ -96,16 +97,28 @@ tooltip {
     padding-left: 5px;
 }
 
+#keyboard-state {
+    color: #ebbcba;
+    background: #1e1d2e;
+    border-radius: 10px;
+    margin-left: 10px;
+    padding-right: 0px;
+    padding-left: 5px;
+}
+
+#user {
+    color: #c4a7e7;
+    background: #1e1d2e;
+    border-radius: 10px;
+    margin-left: 10px;
+    padding-right: 0px;
+    padding-left: 5px;
+}
+
 #custom-bg_switcher {
     color: #ebbcba;
     border-radius: 10px 10px 10px 10px;
     margin-right: 10px;
-}
-
-#custom-power_profile {
-    color: #a6e3a1;
-    border-left: 0px;
-    border-right: 0px;
 }
 
 #window {
@@ -117,7 +130,7 @@ tooltip {
 
 #clock {
     color: #9ccfd8;
-    border-radius: 10px 0px 0px 10px;
+    border-radius: 10px 10px 10px 10px;
     margin-left: 10px;
     border-right: 0px;
 }
@@ -174,7 +187,7 @@ tooltip {
 
 #custom-weather {
     color: #9ccfd8;
-    border-radius: 0px 10px 10px 0px;
+    border-radius: 10px 10px 10px 10px;
     border-right: 0px;
-    margin-left: 0px;
+    margin-left: 10px;
 }
