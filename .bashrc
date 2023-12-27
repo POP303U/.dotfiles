@@ -343,16 +343,18 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
 alias ......='cd ../../../../..'
-alias vim=nvim
-alias vi=nvim
-alias v=nvim
-alias btw=neofetch # i use arch btw 
+alias edit='${EDITOR}'
+alias vim='nvim'
+alias vi='nvim'
+alias v='nvim'
+alias btw='clear; neofetch' # i use arch btw 
 alias dir='dir --color=auto'
 alias vdir='vdir --color=auto'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
 #alias bottles-run='nohup flatpak run com.usebottles.bottles&'
 #alias bottles-fix='flatpak override --user --filesystem="host" com.usebottles.bottles'
 alias roblox='nohup flatpak run net.brinkervii.grapejuice app&'
@@ -536,14 +538,14 @@ function pretty_dollar() {
 #simple_and_functional  # simple prompt with all information necessary
 #fancy_bash_prompt      # fancy bash prompt 
 #useful_shell           # two line bash prompt with much information
-nice_shell_artix       # simple shell i use (artix)
+#nice_shell_artix       # simple shell i use (artix)
 #nice_shell_void        # simple shell i use (void)
 #arch_iso               # prompt based on artix live iso
 #artix_iso              # prompt based on artix live iso
 #gentoo_iso             # prompt based on gentoo live iso
 #general_iso            # prompt based on mostly all linux distros defaults
 #default_shell          # default bash prompt
-#simplistica            # simple, kinda like those zsh prompts or something
+simplistica            # simple, kinda like those zsh prompts or something
 #powerliney             # powerline based bash prompt
 
 # PS2 =>
@@ -639,4 +641,83 @@ operations:
 #fastfetch
 pokemon-colorscripts --no-title -r 
 
+alias hypr-binds='printf "
+#----------------------#
+# Hyprland Cheat Sheet #
+#----------------------#
+Super = Alt;
+    
+### Programs ###
+Open Kitty:         Super + Enter,
+Kill Window:        Super + Shift + Q,
+Open Thunar:        Super + Shift + E
+Open Rust docs:     Super + Shift + D
+Open Brave:         Super + Shift + W
+Open Wofi-emoji:    Super + E,
+Open Wlogout:       Super + M,
+Open Wofi:          Super + D,
+
+### Resizing by 1 ###
+Resize Left:        Super + Ctrl + H
+Resize Down:        Super + Ctrl + J
+Resize Up:          Super + Ctrl + K
+Resize Right:       Super + Ctrl + L
+
+### Resizing by 10 ###
+Resize Left:        Super + Shift + Ctrl + H
+Resize Down:        Super + Shift + Ctrl + J
+Resize Up:          Super + Shift + Ctrl + K
+Resize Right:       Super + Shift + Ctrl + L
+
+### Change window focus ###
+Move Left:          Super + H
+Move Down:          Super + J
+Move Up:            Super + K
+Move Right:         Super + L
+
+### Change workspaces ###
+Go to Workspace 1:  Super + 1
+Go to Workspace 2:  Super + 2
+Go to Workspace 3:  Super + 3
+Go to Workspace 4:  Super + 4
+Go to Workspace 5:  Super + 5
+Go to Workspace 6:  Super + 6
+Go to Workspace 7:  Super + 7
+Go to Workspace 8:  Super + 8
+Go to Workspace 9:  Super + 9
+Go to Workspace 10: Super + 0
+Scroll to the right: Super + MouseScrollUp
+Scroll to the left: Super + MouseScrollUp
+
+### Move focused window to workspace ###
+Get to Workspace 1: Super + Shift + 1
+Get to Workspace 2: Super + Shift + 2
+Get to Workspace 3: Super + Shift + 3
+Get to Workspace 4: Super + Shift + 4
+Get to Workspace 5: Super + Shift + 5
+Get to Workspace 6: Super + Shift + 6
+Get to Workspace 7: Super + Shift + 7
+Get to Workspace 8: Super + Shift + 8
+Get to Workspace 9: Super + Shift + 9
+Get to Workspace 10:Super + Shift + 0
+
+### Misc ###
+Toggle floating:    Super + Shift + J
+Change splits:      Super + Shift + I   
+Start autoclicker:  Super + Shift + C
+Stop autoclicker:   Super + Shift + V
+Change fullscreen:  Super + F
+Pseudo Tiling:      Super + P
+Screenshots:        Super + Print || Shift + Print
+Move Window:        Super + RightMouse
+Resize Window:      Super + LeftMouse
+Force quit:         Super + Shift + M
+
+## Extra Information ##
+Waybar has popup menus which you can access by hovering the mouse over
+each individual module that contain useful information like weather, cpu usage,
+battery, memory and more!
+
+"
+'
 ### EOF ###
