@@ -139,6 +139,7 @@ start_wireless() {
 copy_config() {
     cp -rv ../.config/autoclicker   ~/.config
     cp -rv ../.config/swaylock      ~/.config
+    cp -rv ../.config/mako          ~/.config
     cp -rv ../.config/swww          ~/.config
     cp -rv ../.config/hypr          ~/.config
     cp -rv ../.config/wofi          ~/.config
