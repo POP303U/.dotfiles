@@ -6,14 +6,45 @@
     "passthrough": false,
     "gtk-layer-shell": true,
     "height": 50,
-    "modules-left": ["clock","custom/weather","hyprland/workspaces"],
-    "modules-center": ["hyprland/window"],
-    "modules-right": ["custom/bg_switcher", "disk", "memory", "cpu", "battery", "network", "pulseaudio","pulseaudio#microphone", "tray"],
+    "modules-left": [
+        "clock",
+        "custom/weather", 
+        "keyboard-state",
+        "user",
+    ],
+    // "user",
+
+    "modules-center": [
+        "hyprland/workspaces",
+    ],
+
+    "modules-right": [
+        "custom/bg_switcher",
+        "disk",
+        "memory",
+        "cpu",
+        "battery",
+        "network",
+        "pulseaudio",
+        "pulseaudio#microphone",
+        "tray",
+    ],
 
     "hyprland/workspaces": {
         "disable-scroll": true,
         "all-outputs": true,
         "on-click": "activate",
+        "format": "{icon}",
+        "urgent": " ",
+        "format-icons": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "",
+            "6": "",
+            "7": "",
+        },
         "persistent-workspaces": {
             "1": [],
             "2": [],
@@ -21,6 +52,7 @@
             "4": [],
             "5": [],
             "6": [],
+            "7": [],
         }
     },
 
@@ -54,6 +86,27 @@
         "return-type" : "json"
     },
 
+    "keyboard-state": {
+        "numlock": true,
+        "capslock": true,
+        "format": {
+            "capslock": " Caps: {icon}",                                                                                                                                                       
+            "numlock": " Num: {icon} "
+        },
+        "format-icons": {
+            "locked": " ",
+            "unlocked": " "
+        }
+    }, 
+
+    "user": {
+        "format": "{user} (up {work_H}h ↑) ",
+        "interval": 60,
+        "height": 30,
+        "width": 30,
+        "icon": true,
+    },
+
     "tray": {
         "icon-size": 18,
         "spacing": 10
@@ -66,13 +119,13 @@
 
     "disk": {
         "interval": 30,
-        "format": "󱛟 {percentage_free}%",
+        "format": "󱛟 {used}",
         "path": "/"
     },
 
     "memory": {
         "interval": 30,
-        "format": " {}%",
+        "format": " {used}GiB",
         "max-length": 10
     },
 
