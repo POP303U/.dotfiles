@@ -1,7 +1,8 @@
-window {
+#window {
     margin: 0px;
     border: 5px solid #1f1d2e;
-    background-color: #1f1d2e;
+    font-size: 16px;
+    background-color: rgba(31, 29, 46, 0.8);
     border-radius: 15px;
 }
 
@@ -12,13 +13,14 @@ window {
     border: none;
     color: #e0def4;
     font-weight: bold;
-    background-color: #1f1d2e;
+    background-color: rgba(0,0,0,0);
     background: #1f1d2e;
    	outline: none;
     border-radius: 15px;
     margin: 10px;
     margin-bottom: 2px;
 }
+
 #input:focus {
     border: 0px solid #1f1d2e;
     margin-bottom: 0px;
@@ -37,7 +39,6 @@ window {
     margin: 0px;
     border: none;
     border-radius: 15px;
-    background-color: #1f1d2e;
 }
 
 #scroll {
