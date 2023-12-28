@@ -8,7 +8,7 @@ packages["base"]="hyprland kitty waybar
         wl-clipboard wlr-randr jq wofi-emoji
         ttf-jetbrains-mono-nerd noto-fonts-emoji
         polkit-gnome python-requests swww
-        swappy grim slurp pamixer gvfs
+        swappy grim slurp pamixer gvfs pokemon-colorscripts-git
         bluez bluez-utils lxappearance xfce4-settings
         rose-pine-gtk-theme-full xdg-desktop-portal-hyprland"
 
