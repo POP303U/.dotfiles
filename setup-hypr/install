@@ -91,6 +91,9 @@ install_aur_helper() {
         read -n1 -rep "$: " AUR_HELPER
 
         if [[ $AUR_HELPER == "1" || $AUR_HELPER == "2" ]]; then
+            # remember to sync after enabling multilib
+            sudo pacman -Sy
+
             # install paru
             if [ $AUR_HELPER == "1" ]; then
                 sudo pacman -S --needed base-devel --noconfirm
