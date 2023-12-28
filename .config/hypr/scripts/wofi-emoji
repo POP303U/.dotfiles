@@ -6,4 +6,7 @@ if pgrep -x "wofi" >/dev/null; then
     exit 0
 fi
 
+#wofi-emoji --height 590px \
+#           --width 1140px \
+#           --allow-images true
 wofi-emoji
