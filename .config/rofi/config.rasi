@@ -15,25 +15,35 @@ configuration {
 @theme "/dev/null"
 
 * {
-  bg: #1f1d2e;
+  bg: #1f1d2e00;
   bg-alt: #26233a;
   bg-selected: #524f67;
 
   fg: #cdd6f4;
   fg-alt: #7f849c;
-
-  border: 0;
-  margin: 0;
-  padding: 1;
-  spacing: 0;
 }
 
 window {
-  width: 30%;
-  height: 30%;
-  background-color: @bg;
+    //width: 30%;
+    //height: 30%;
+    height:                      590px;
+    width:                       1140px;
+    spacing:                     0px;
+    padding:                     0px;
+    border:                      2px;
+    border-radius:               40px;
+    border-color:                @main-br;
+    background-color:            transparent;
+    background-color: @bg;
+    fullscreen: false;
 }
 
+// Main //
+window {
+    transparency:                "real";
+    enabled:                     true;
+    cursor:                      "default";
+}
 element {
   padding: 8 12;
   background-color: transparent;
@@ -76,6 +86,7 @@ listview {
 
 mainbox {
   children: [inputbar, listview];
+  background-image: url("~/.config/swww/walls/cat_leaves.png");
   background-color: @bg;
 }
 
