@@ -8,7 +8,7 @@ configuration {
     display-window:              " ";
     drun-display-format:         "{name}";
     window-format:               "{w}{t}";
-    font:                        "JetBrainsMono Nerd Font 10";
+    font:                        "JetBrainsMono Nerd Font 14";
 }
 
 @theme "~/.config/rofi/theme/rose-pine.rasi"
@@ -47,6 +47,7 @@ inputbar {
     background-color:            transparent;
     background-image:            url("~/.config/swww/walls/rain_world1.png", height);
 }
+
 entry {
     enabled:                     false;
 }
