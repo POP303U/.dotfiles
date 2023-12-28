@@ -6,7 +6,7 @@ declare -A packages
 packages["base"]="hyprland kitty waybar
         swaylock swaylock-effects wofi wlogout thunar
         wl-clipboard wlr-randr jq wofi-emoji
-        ttf-jetbrains-mono-nerd noto-fonts-emoji
+        ttf-jetbrains-mono-nerd ttf-cascadia-code-nerd noto-fonts-emoji
         polkit-gnome python-requests swww
         swappy grim slurp pamixer gvfs pokemon-colorscripts-git
         bluez bluez-utils lxappearance xfce4-settings
@@ -142,10 +142,12 @@ start_wireless() {
 copy_config() {
     cp -rv ../.config/autoclicker   ~/.config
     cp -rv ../.config/swaylock      ~/.config
+    cp -rv ../.config/wlogout       ~/.config
     cp -rv ../.config/mako          ~/.config
     cp -rv ../.config/swww          ~/.config
     cp -rv ../.config/hypr          ~/.config
     cp -rv ../.config/wofi          ~/.config
+    cp -rv ../.config/rofi          ~/.config
     cp -rv ../.config/alacritty     ~/.config
     cp -rv ../.config/neofetch      ~/.config
     cp -rv ../.config/gtk-3.0       ~/.config
