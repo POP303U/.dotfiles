@@ -1,7 +1,7 @@
 #!/bin/sh
 
-dir="${HOME}/.config/swww/walls"
-BG="$(find "$dir" -name '*.jpg' -o -name '*.png' | shuf -n1)"
+DIR="${HOME}/.config/swww/walls"
+CURRENT_BG="$(find "$DIR" -name '*.jpg' -o -name '*.png' | shuf -n1)"
 
 # Check if the program is running
 if pgrep "swww-deamon" >/dev/null; then
@@ -12,7 +12,7 @@ fi
 #hyprdots:         .43,1.19,1,.4  https://github.com/prasanthrangan/hyprdots/blob/main/Configs/.config/hypr/scripts/swwwallpaper.sh
 #ease-in-out:      .6,.94,.86,.23
 #ease`ish:         .75,.47,.29,.83
-swww img "$BG" \
+swww img "$CURRENT_BG" \
     --transition-bezier .6,.94,.86,.23\
     --transition-type "grow" \
     --transition-duration 1 \
