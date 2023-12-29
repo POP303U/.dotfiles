@@ -312,14 +312,12 @@ PROMPT_COMMAND=bash_prompt_command
 ##	It will set $PS1 with colors and relative to $NEW_PWD, 
 ##	which gets updated by $PROMT_COMMAND on behalf of the terminal
 
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-source "$HOME/.cargo/env"
-
-#export $(envsubst < .env)
+if [[ -f "~/.config/swww/change_wallpaper" ]]; then . ~/.config/swww/change_wallpaper; fi
 export QT_QPA_PLATFORMTHEME=gnome
 export PATH=$PATH:~/.cargo/bin
 export PATH=$PATH:~/.config/emacs/bin
 export PATH=$PATH:/home/archy/.local/bin
+export SUDO_PROMPT='sudo (%p@%h) password: ' # doas like password thing
 export TERM_PROGRAM=tmux
 export TERMINAL=/usr/bin/kitty
 export EDITOR=nvim
@@ -634,6 +632,7 @@ operations:
     ;;
      esac
 }
+clear
 ### Fetching scripts
 #neofetch
 #pfetch
@@ -720,4 +719,5 @@ battery, memory and more!
 
 "
 '
+
 ### EOF ###
