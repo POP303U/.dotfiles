@@ -15,6 +15,8 @@ BASE_PACKAGES=(
 "wofi-emoji"
 "ttf-jetbrains-mono-nerd"
 "ttf-cascadia-code-nerd"
+"bibata-cursor-theme-bin"
+"nwg-look"
 "noto-fonts-emoji"
 "polkit-gnome"
 "python-requests"
@@ -125,6 +127,10 @@ install_yay() {
     fi
 }
 
+fix_groups() {
+    sudo usermod -aG input $USER
+}
+
 start_wireless() {
     # Start the bluetooth service
     echo -e "[${PURPLE}info${RESET}] Starting the Bluetooth Service..."
@@ -204,6 +210,8 @@ stage_1() {
     start_wireless
     echo -e "[${PURPLE}info${RESET}] Copying config files..."
     copy_config 
+
+    fix_groups
 
     echo -e "[${PURPLE}info${RESET}] Trying to switch stage..."
     if [ $STAGE -gt 1 ]; then 
