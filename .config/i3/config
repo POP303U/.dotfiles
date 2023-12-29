@@ -37,7 +37,7 @@ bindsym $mod+Return exec --no-startup-id $terminal
 font pango:CaskaydiaCove Nerd Font, Italic $font_size
 
 #Start all custom services (nitrogen, autotiling, picom, polybar):
-exec_always --no-startup-id nitrogen --set-zoom-fill ~/.config/i3/cat_leaves.png
+exec_always --no-startup-id nitrogen --set-zoom-fill ~/.config/i3/walls/rain_world1.png
 exec --no-startup-id lxpolkit
 exec --no-startup-id dunst
 exec --no-startup-id cmus-discord-rpc
@@ -47,7 +47,9 @@ exec_always --no-startup-id xmodmap ~/.Xmodmap
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # rofi 
-bindsym $mod+d exec "rofi -modi drun,run,keys -show drun"
+#bindsym $mod+d exec "rofi -modi drun,run,keys -show drun"
+bindsym $mod+d exec "rofi -show drun -config ~/.config/rofi/config_hypr.rasi"
+
 bindsym $mod+p exec "rofi -show power-menu -modi power-menu:rofi-power-menu --symbols 'CaskaydiaCove Nerd Font'"
 bindsym $mod+e exec "rofi -modi emoji -show emoji"
 
