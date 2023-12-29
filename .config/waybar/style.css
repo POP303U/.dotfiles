@@ -48,6 +48,7 @@ tooltip {
 
 #custom-power_profile,
 #custom-weather,
+#custom-power_button,
 #custom-bg_switcher,
 #keyboard-state,
 #user,
@@ -116,10 +117,21 @@ tooltip {
 }
 
 #custom-bg_switcher {
-    color: #ebbcba;
-    border-radius: 10px 10px 10px 10px;
-    margin-right: 10px;
+    color: #c4a7e7;
+    background: #1e1d2e;
+    border-radius: 10px 0px 0px 10px;
+    border-left: 0px;
+    border-right: 0px;
 }
+
+#custom-power_button {
+    color: #eb6f92;
+    background: #1e1d2e;
+    border-radius: 0px 10px 10px 0px;
+    margin-right: 10px;
+    border-left: 0px;
+}
+
 
 #window {
     color: #e0def4;
