@@ -1,164 +1,170 @@
 #!/bin/sh
 
-# Define an associative array of packages
-declare -A packages
+BASE_PACKAGES=(
+"hyprland"
+"kitty" 
+"waybar"
+"swaylock-effects"
+"rofi"
+"wofi"
+"wlogout"
+"thunar"
+"wl-clipboard"
+"wlr-randr"
+"jq"
+"wofi-emoji"
+"ttf-jetbrains-mono-nerd"
+"ttf-cascadia-code-nerd"
+"noto-fonts-emoji"
+"polkit-gnome"
+"python-requests"
+"swww"
+"swappy"
+"grim"
+"slurp"
+"pamixer"
+"gvfs"
+"pokemon-colorscripts-git"
+"bluez"
+"bluez-utils"
+"lxappearance"
+"xfce4-settings"
+"vim"
+"rose-pine-gtk-theme-full"
+"xdg-desktop-portal-hyprland"
+)
 
-packages["base"]="hyprland kitty waybar
-        swaylock swaylock-effects rofi wofi wlogout thunar
-        wl-clipboard wlr-randr jq wofi-emoji
-        ttf-jetbrains-mono-nerd ttf-cascadia-code-nerd noto-fonts-emoji
-        polkit-gnome python-requests swww
-        swappy grim slurp pamixer gvfs pokemon-colorscripts-git
-        bluez bluez-utils lxappearance xfce4-settings
-        rose-pine-gtk-theme-full xdg-desktop-portal-hyprland"
+MINIMAL_PACKAGES=(
+"p7zip" 
+"unrar"
+"tar"
+"rsync"
+"github-cli"
+"git"
+"fzf"
+"exfat-utils"
+"fuse-exfat"
+"ntfs-3g"
+"xfsprogs"
+"xfsdump"
+"flac"
+"jasper"
+"aria2"
+"less"
+"neofetch"
+"htop"
+"btop"
+"curl"
+"wget"
+"jp2a"
+"pfetch"
+"helix"
+"neovim"
+)
 
-packages["minimal"]="p7zip unrar tar 
-        rsync github-cli git fzf
-        exfat-utils fuse-exfat
-        ntfs-3g xfsprogs xfsdump
-        flac jasper aria2 less
-        neofetch htop btop curl wget jp2a pfetch  
-        helix kakoune neovim"
+EXTENDED_PACKAGES=(
+"brave-bin"
+"emacs"
+"vencord-desktop-bin"
+"thunar"
+"pavucontrol"
+"filezilla"
+"libreoffice-fresh"
+)
 
-packages["extended"]="brave-bin emacs
-        vencord-desktop-bin
-        thunar pavucontrol filezilla
-        libreoffice-fresh"
+GAMING_PACKAGES=(
+"steam"
+"wine"
+"wine-mono"
+"wine-gecko"
+"vinegar"
+"bottles"
+"lutris"
+)
 
-packages["gaming"]="steam
-        wine wine-mono wine-gecko vinegar
-        bottles lutris"
+BLUE='\033[1;34m'
+RED='\033[1;31m'
+CYAN='\033[01;36m'
+YELLOW='\033[01;33m'
+WHITE_BOLD="\033[1;38;5;15m"
+RESET='\033[0m'
+PURPLE='\033[01;35m'
+WHITE='\033[01;37m'
 
-if [[ "$1" == "--list-packages" || "$1" == "-l" ]]; then
-    echo -e "\n"
-    echo -e "Base: "
-    while read -r item; do
-        echo "$item"
-    done <<< "${packages["base"]}"
-    echo -e "\n"
-
-    echo -e "Minimal: "
-    while read -r item; do
-        echo "$item"
-    done <<< "${packages["minimal"]}"
-    echo -e "\n"
-        
-    echo -e "Extended: "
-    while read -r item; do
-        echo "$item"
-    done <<< "${packages["extended"]}"
-    echo -e "\n"
-
-    echo -e "Gaming: "
-    while read -r item; do
-        echo "$item"
-    done <<< "${packages["gaming"]}"
-    echo -e "\n"
-
-    exit 0
-fi
-
-install_aur_helper() {
-    PARU_EXISTS=/sbin/paru
+install_yay() {
     YAY_EXISTS=/sbin/yay
-    GIT_EXISTS=/sbin/git
 
     # initialize [multilib] if not enables
-    echo -e "Enabling [multilib]"
+    echo -e "[${PURPLE}info${RESET}] Enabling multilib"
     sudo sed -i '/#\[multilib\]/,/#Include = \/etc\/pacman\.d\/mirrorlist/c\[multilib]\nInclude = /etc/pacman.d/mirrorlist' /etc/pacman.conf
+    echo -e "[${PURPLE}info${RESET}] Syncing multilib repositories"
+    sudo pacman -Syy --noconfirm >/dev/null 2>&1
 
-    if [[ -f $PARU_EXISTS || -f $YAY_EXISTS ]]; then
-        if [ -f "$PARU_EXISTS" ]; then 
-            AUR_HELPER=paru
-            echo -e "Paru was detected, using Paru..."
-            $AUR_HELPER -Suy --noconfirm
-        fi
-
-        if [ -f "$YAY_EXISTS" ]; then
-            AUR_HELPER=yay
-            echo -e "Paru was detected, using Paru..."
-            $AUR_HELPER -Suy --noconfirm
-        fi
+    if [ -f "$YAY_EXISTS" ]; then
+        AUR_HELPER=yay
+        echo -e "[${PURPLE}info${RESET}] Yay was detected, using yay..."
     else
-        # kinda unnecessary because you need git to even get this install bruh
-        if [ ! -f "$GIT_EXISTS" ]; then
-            sudo pacman -S git --noconfirm
-        fi
+        echo -e "[${PURPLE}info${RESET}] Performing full system sync"
+        sudo pacman -Syu >/dev/null 2>&1 
 
-        echo -e "An AUR Helper is needed for this to work, which one you like to install? (1,2): "
-        echo -e "1. Yay"
-        echo -e "2. Paru"
-        read -n1 -rep "$: " AUR_HELPER
+        # install yay
+        sudo pacman -S --needed base-devel --noconfirm >/dev/null 2>&1
 
-        if [[ $AUR_HELPER == "1" || $AUR_HELPER == "2" ]]; then
-            # remember to sync after enabling multilib
-            sudo pacman -Sy
+        git clone https://aur.archlinux.org/yay.git >/dev/null 2>&1
+        echo -e "[${BLUE}ok${RESET}] Cloned yay from the AUR"
 
-            # install paru
-            if [ $AUR_HELPER == "1" ]; then
-                sudo pacman -S --needed base-devel --noconfirm
-                git clone https://aur.archlinux.org/yay.git
-                cd yay
-                makepkg -si --noconfirm
-                cd ..
-                rm -rf yay
-                AUR_HELPER=yay
-            fi
+        cd yay
+        echo -e "[${PURPLE}info${RESET}] Installing yay..."
+        makepkg -si --noconfirm && echo -e "[${BLUE}ok${RESET}] Building yay from the AUR"
 
-            if [ $AUR_HELPER == "2" ]; then
-                sudo pacman -S --needed base-devel --noconfirm
-                git clone https://aur.archlinux.org/paru.git
-                cd paru
-                makepkg -si --noconfirm
-                cd ..
-                rm -rf paru
-                AUR_HELPER=paru
-            fi
-        else 
-            echo -e "An AUR Helper is needed for this script, exiting..."
-            exit 0
-        fi
+        echo -e "[${PURPLE}info${RESET}] Removing temporary files..."
+        cd ..
+        rm -rf yay
+
+        AUR_HELPER=yay
     fi
 }
 
 start_wireless() {
     # Start the bluetooth service
-    echo -e "Starting the Bluetooth Service..."
-    sudo systemctl enable --now bluetooth.service 
+    echo -e "[${PURPLE}info${RESET}] Starting the Bluetooth Service..."
+    sudo systemctl enable --now bluetooth.service >/dev/null 2>&1
+
     sleep 2
 
     ### Disable wifi powersave mode ###
-    echo 'Disabling wifi powersave...' 
+    echo -e "[${PURPLE}info${RESET}] Disabling wifi powersave..." 
+
     LOC="/etc/NetworkManager/conf.d/wifi-powersave.conf"
-    echo -e "The following has been added to $LOC.\n"
+    echo -e "[${PURPLE}info${RESET}] The following has been added to $LOC.\n"
     echo -e "[connection]\nwifi.powersave = 2" | sudo tee -a $LOC
-    echo -e "\n"
-    echo -e "Restarting NetworkManager service..."
+
+    echo -e "[${PURPLE}info${RESET}] Restarting NetworkManager service..."
     sudo systemctl restart NetworkManager
-    echo -e "Waiting for Internet to reconnect..."
+    echo -e "[${PURPLE}info${RESET}] Waiting for Internet to reconnect..."
     sleep 5
 }
 
 copy_config() {
-    cp -rv ../.config/autoclicker   ~/.config
-    cp -rv ../.config/swaylock      ~/.config
-    cp -rv ../.config/wlogout       ~/.config
-    cp -rv ../.config/mako          ~/.config
-    cp -rv ../.config/swww          ~/.config
-    cp -rv ../.config/hypr          ~/.config
-    cp -rv ../.config/wofi          ~/.config
-    cp -rv ../.config/rofi          ~/.config
-    cp -rv ../.config/alacritty     ~/.config
-    cp -rv ../.config/neofetch      ~/.config
-    cp -rv ../.config/gtk-3.0       ~/.config
-    cp -rv ../.config/dunst         ~/.config
-    cp -rv ../.config/kitty         ~/.config
-    cp -rv ../.config/waybar        ~/.config
-    cp -rv ../.config/cava          ~/.config
-    cp -rv ../.tmux.conf            ~
-    cp -rv ../.bashrc               ~
-    cp -rv ../.Xmodmap              ~
-    cp -rv ../.xinitrc              ~
+    cp -r ../.config/autoclicker   ~/.config
+    cp -r ../.config/swaylock      ~/.config
+    cp -r ../.config/wlogout       ~/.config
+    cp -r ../.config/mako          ~/.config
+    cp -r ../.config/swww          ~/.config
+    cp -r ../.config/hypr          ~/.config
+    cp -r ../.config/wofi          ~/.config
+    cp -r ../.config/rofi          ~/.config
+    cp -r ../.config/alacritty     ~/.config
+    cp -r ../.config/neofetch      ~/.config
+    cp -r ../.config/gtk-3.0       ~/.config
+    cp -r ../.config/dunst         ~/.config
+    cp -r ../.config/kitty         ~/.config
+    cp -r ../.config/waybar        ~/.config
+    cp -r ../.config/cava          ~/.config
+    cp -r ../.tmux.conf            ~
+    cp -r ../.bashrc               ~
+    cp -r ../.Xmodmap              ~
+    cp -r ../.xinitrc              ~
 
     # Set some files as exacutable 
     chmod +x ~/.config/hypr/xdg-portal-hyprland
@@ -168,8 +174,7 @@ copy_config() {
 
     # Clean out other portals
     echo -e "Cleaning out conflicting xdg portals...\n"
-    $AUR_HELPER -R --noconfirm xdg-desktop-portal-gnome xdg-desktop-portal-gtk
-
+    $AUR_HELPER -R --noconfirm xdg-desktop-portal-gnome xdg-desktop-portal-gtk >/dev/null 2>&1
 }
 
 install_doas() {
@@ -185,88 +190,102 @@ install_doas() {
 }
 
 stage_1() {
-    echo -e "Executing Stage 1"
+    echo -e "[${PURPLE}info${RESET}] Executing Stage 1"
 
-    echo -e "Installing base packages"
-    $AUR_HELPER -S --noconfirm ${packages["base"]}
-    
-    echo -e "Copying config files..."
+    echo -e "[${PURPLE}info${RESET}] Installing base packages"
+    for PACKAGE in "${BASE_PACKAGES[@]}"; do
+        if $AUR_HELPER -S --noconfirm "$PACKAGE" --noconfirm >/dev/null 2>&1; then
+            echo -e "[${BLUE}ok${RESET}] $PACKAGE installed successfully"
+        else
+            echo -e "[${RED}fail${RESET}] $PACKAGE installation failed"
+        fi
+    done
+
+    start_wireless
+    echo -e "[${PURPLE}info${RESET}] Copying config files..."
     copy_config 
 
-    echo -e "Trying to switch stage..."
+    echo -e "[${PURPLE}info${RESET}] Trying to switch stage..."
     if [ $STAGE -gt 1 ]; then 
-        echo -e "Entering stage 2"
+        echo -e "[${PURPLE}info${RESET}] Entering stage 2"
         stage_2
     else 
-        echo -e "Stage-${STAGE} installation finished!"
+        echo -e "[${BLUE}ok${RESET}] Stage-${STAGE} installation finished!"
     fi
 }
 
 stage_2() {
     echo -e "Executing Stage 2"
 
-    echo -e 'Installing useful utilities...'
-    $AUR_HELPER -S --noconfirm ${packages["minimal"]}
-        
-    echo -e "Trying to switch stage..."
+    echo -e "[${PURPLE}info${RESET}] Installing minimal packages"
+    for PACKAGE in "${MINIMAL_PACKAGES[@]}"; do
+        if $AUR_HELPER -S --noconfirm "$PACKAGE" --noconfirm >/dev/null 2>&1; then
+            echo -e "[${BLUE}ok${RESET}] $PACKAGE installed successfully"
+        else
+            echo -e "[${RED}fail${RESET}] $PACKAGE installation failed"
+        fi
+    done
+   
+    echo -e "[${PURPLE}info${RESET}] Trying to switch stage..."
     if [ $STAGE -gt 2 ]; then 
-        echo -e "Entering stage 3"
+        echo -e "[${PURPLE}info${RESET}] Entering stage 3"
         stage_3
     else 
-        echo -e "Stage-${STAGE} installation finished!"
+        echo -e "[${BLUE}ok${RESET}] Stage-${STAGE} installation finished!"
     fi
 }
 
 stage_3() {
-    echo -e "Executing Stage 3"
+    echo -e "[${PURPLE}info${RESET}] Executing Stage 3"
 
-    echo -e 'Installing Browsers and Multimedia...'
-    $AUR_HELPER -S --noconfirm ${packages["extended"]}
-
-    echo -e "Trying to switch stage..."
+    echo -e "[${PURPLE}info${RESET}]Installing extended packages..."
+    for PACKAGE in "${EXTENDED_PACKAGES[@]}"; do
+        if $AUR_HELPER -S --noconfirm "$PACKAGE" --noconfirm >/dev/null 2>&1; then
+            echo -e "[${BLUE}ok${RESET}] $PACKAGE installed successfully"
+        else
+            echo -e "[${RED}fail${RESET}] $PACKAGE installation failed"
+        fi
+    done
+    echo -e "[${PURPLE}info${RESET}] Trying to switch stage..."
     if [ $STAGE -gt 3 ]; then 
-        echo -e "Entering stage 4"
+        echo -e "[${PURPLE}info${RESET}] Entering stage 4"
         stage_4
     else 
-        echo -e "Stage-${STAGE} installation finished!"
+        echo -e "[${BLUE}ok${RESET}] Stage-${STAGE} installation finished!"
     fi
 }
 
 stage_4() {
-    echo -e "Executing Stage 4"
+    echo -e "[${PURPLE}info${RESET}] Executing Stage 4"
 
-    echo -e 'Installing tools for Gaming'
-    $AUR_HELPER -S --noconfirm ${packages["gaming"]}
-    
+    echo -e "[${PURPLE}info${RESET}] Installing gaming packages"
+     for PACKAGE in "${GAMING_PACKAGES[@]}"; do
+        if $AUR_HELPER -S --noconfirm "$PACKAGE" --noconfirm >/dev/null 2>&1; then
+            echo -e "[${BLUE}ok${RESET}] $PACKAGE installed successfully"
+        else
+            echo -e "[${RED}fail${RESET}] $PACKAGE installation failed"
+        fi
+    done   
     echo -e "Stage-${STAGE} installation finished!"
 }
 
-cat <<"EOF"
+echo -e "
+#-------------------------#
+# ${BLUE}Easy Hyprland installer${RESET} #
+#-------------------------#
 
-#-------------------#
-# Easy i3 installer #
-#-------------------#-----------------------------------------------------------------------#
-    This Script installs my i3 configuration starting from a minimal arch install
-    It will install all dependencies if they are missing!
-#-------------------------------------------------------------------------------------------#
-Run the script with '--list-packages' or '-l' as its first argument for more information of
-which packages are installed in what stage!
-Example: If you install 'Extended' the script will go through Stage 1 till 3 and install
-all the packages in those stages
-#-------------------------------------------------------------------------------------------#
-    Choose type of installation: 
-    1. Base 
-    2. Minimal
-    3. Extended
-    4. Gaming
-#-------------------------------------------------------------------------------------------#
+${WHITE_BOLD}Tip: See installed packages at the top of the script${RESET}
+${CYAN}1${RESET}. Base 
+${CYAN}2${RESET}. Minimal
+${CYAN}3${RESET}. Extended
+${CYAN}4${RESET}. Gaming
+"
 
-EOF
 read -n1 -rep "$: " STAGE
 
 if [[ $STAGE -lt 1 || $STAGE -gt 4 ]]; then 
-    echo -e "Choose a valid option"
+    echo -e "${RED}Choose a valid option${RESET}"
 else 
-    install_aur_helper 
+    install_yay 
     stage_1
 fi
